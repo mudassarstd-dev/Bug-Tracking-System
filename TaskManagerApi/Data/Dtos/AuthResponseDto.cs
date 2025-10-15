@@ -1,0 +1,1 @@
+public record AuthResponseDto(string username, string token, string role);

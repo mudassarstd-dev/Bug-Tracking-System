@@ -1,0 +1,1 @@
+public record TaskItemDto(string title, string description);

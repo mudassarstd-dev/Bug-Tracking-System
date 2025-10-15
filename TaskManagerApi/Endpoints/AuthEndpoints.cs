@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using TaskManagerApi.Data.Database;
 using TaskManagerApi.Data.Enums;
@@ -11,23 +12,18 @@ public static class AuthEndpoints
     {
         var group = app.MapGroup("/api/auth");
 
-        group.MapPost("/register", async (RegisterDto registerDto, AppDbContext db) =>
+        group.MapPost("/register", async (RegisterDto registerDto, AuthService authService) =>
         {
-
-            var user = new User
-            {
-                Name = registerDto.name,
-                Role = registerDto.role
-            };
-
-            db.Users.Add(user);
-            await db.SaveChangesAsync();
-            return Results.Created($"/api/auth/{user.Id}", user);
+            return (await authService.Register(registerDto)).ToHttpResult();
         });
 
-        // Example: get all users
+        group.MapPost("login", async (LoginDto loginDto, AuthService authService) =>
+        {
+            return TypedResults.Ok( await authService.Login(loginDto));
+        });
+
         group.MapGet("/users", async (AppDbContext db) =>
-            await db.Users.ToListAsync());
+            await db.Users.ToListAsync<User>());
 
         return app;
     }

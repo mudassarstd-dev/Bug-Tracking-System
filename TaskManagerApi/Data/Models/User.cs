@@ -9,5 +9,6 @@ public class User
     [Key]
     public int Id { get; set; }
     public required string Name { get; set; }
-    public required string Role { get; set; }
+    public required string Password { get; set; }
+    public required Role Role { get; set; }
 }

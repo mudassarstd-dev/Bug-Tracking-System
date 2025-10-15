@@ -1,0 +1,13 @@
+Tasks 
+
+api/tasks/create
+api/tasks/delete?task-id
+api/tasks/update
+
+Manager
+api/manager/Tasks?status
+api/manager/Assignments
+api/manager/employees
+
+employee
+api/emp/Tasks
