@@ -19,7 +19,7 @@ public static class AuthEndpoints
 
         group.MapPost("login", async (LoginDto loginDto, AuthService authService) =>
         {
-            return TypedResults.Ok( await authService.Login(loginDto));
+            return ( await authService.Login(loginDto)).ToHttpResult();
         });
 
         group.MapGet("/users", async (AppDbContext db) =>

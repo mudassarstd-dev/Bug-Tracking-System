@@ -17,20 +17,20 @@ public class AuthService
         _jwtService = jwtService;
     }
 
-    public async Task<string> Login(LoginDto loginDto)
+    public async Task<ApiResponse<AuthResponseDto>> Login(LoginDto loginDto)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == loginDto.name && u.Password == loginDto.password);
-        if (user == null) return "Invalid creds";
-        return _jwtService.GenerateToken(user);
+        if (user == null) return ApiResponse<AuthResponseDto>.Fail("Invalid credentials", ErrorCode.InvalidCredentials);
+        return ApiResponse<AuthResponseDto>.Ok(new AuthResponseDto(user.Name, _jwtService.GenerateToken(user), user.Role.ToString()), message: "Logged in successfully");
     } 
 
     public async Task<ApiResponse<AuthResponseDto>> Register(RegisterDto registerDto)
     {
-        if (await _context.Users.AnyAsync(u => u.Name == registerDto.name)) return ApiResponse<AuthResponseDto>.Fail("User exists already");
+        if (await _context.Users.AnyAsync(u => u.Name == registerDto.name)) return ApiResponse<AuthResponseDto>.Fail("User exists already", ErrorCode.UserExists);
 
          if (!Enum.TryParse<Role>(registerDto.role, true, out var role))
             {
-                return ApiResponse<AuthResponseDto>.Fail("Invalid role");
+                return ApiResponse<AuthResponseDto>.Fail("Invalid role", ErrorCode.InvalidRole);
             }
 
         var user = new User
