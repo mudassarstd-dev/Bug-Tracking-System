@@ -27,6 +27,9 @@ public static class TaskEndpoints
         group.MapGet("/", async (TaskService taskService) =>
             await taskService.GetManagerTasks());
 
+        // group.MapGet("/emps", async (TaskService taskService) =>
+        //     (await taskService.GetEmps()).ToHttpResult());
+
         return app;
     }
 }

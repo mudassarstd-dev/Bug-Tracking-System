@@ -3,16 +3,16 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';  // 👈 import here
 import { ApiResponse } from '../common/ApiResponse';
 import { AuthResponse } from '../common/AuthResponse';
-
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-private api_url = `${environment.taskManagerApi_base}/auth`;
+  private api_url = `${environment.taskManagerApi_base}/auth`;
 
   login(creds: {name: string, password:string}) {
       return this.http.post<ApiResponse<AuthResponse>>(`${this.api_url}/login`, creds)
@@ -20,5 +20,23 @@ private api_url = `${environment.taskManagerApi_base}/auth`;
 
   register(data: {name: string, password: string, role: string}) {
       return this.http.post<ApiResponse<AuthResponse>>(`${this.api_url}/register`, data)
+  }
+
+  logout() {
+    localStorage.removeItem("auth-token")
+    localStorage.removeItem("user-role")
+    this.router.navigate(['/login'])
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('auth-token');
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem('user-role');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 }

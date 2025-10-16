@@ -6,8 +6,12 @@
       Create Task
     </button>
 
-    <button (click)="GetDummyEmployees()" *ngIf="isManager" class="btn btn-secondary">
+    <button (click)="GetEmployees()" *ngIf="isManager" class="btn btn-secondary">
       Load Employees
+    </button>
+    
+    <button (click)="logout()" class="btn btn-tertiary">
+      Logout
     </button>
   </div>
 

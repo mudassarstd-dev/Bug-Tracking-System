@@ -41,6 +41,10 @@
   color: #fff;
 }
 
+.btn-tertiary {
+  background-color: #e70d23;
+  color: #fff;
+}
 .btn-primary:hover {
   background-color: #303f9f;
   transform: translateY(-1px);

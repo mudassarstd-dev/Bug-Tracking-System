@@ -9,7 +9,7 @@ import { tokenName } from '@angular/compiler';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
     loginForm: FormGroup
     loading = false
@@ -23,6 +23,9 @@ export class LoginComponent {
         password: ['', [Validators.required, Validators.minLength(6)]]
       })
     }  
+  ngOnInit(): void {
+    this.authService.logout()
+  }
 
     onSubmit() {
       this.loading = true
@@ -31,9 +34,10 @@ export class LoginComponent {
           this.loading = false
           if (res.success && res.data?.token) {
             localStorage.setItem("auth-token", res.data.token)
+            localStorage.setItem("user-role", res.data.role)
             this.successMessage = res.message || "Logged in"
             this.errorMessage = ""
-            this.navToHome()
+            this.navToDash(res.data.role)
           } else {
             this.successMessage = ""
             this.errorMessage = res.error || "Login failed"
@@ -48,7 +52,11 @@ export class LoginComponent {
       })
     }
 
-  navToHome() {
-     setTimeout(() => this.router.navigate(['/home']), 1000);
+  navToDash(role: string) {
+    if (role === "Manager") {
+      setTimeout(() => this.router.navigate(['/m-dash']), 1000); 
+    } else {
+      setTimeout(() => this.router.navigate(['/e-dash']), 1000);
+    }
   }
 }

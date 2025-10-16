@@ -12,7 +12,7 @@ public class ApiResponse<T>
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Error { get; set; }   
-    
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
      public ErrorCode? Code { get; set; }
 
@@ -26,6 +26,6 @@ public class ApiResponse<T>
         };
     }
 
-       public static ApiResponse<T> Fail(string error, ErrorCode code = ErrorCode.Unknown)
+    public static ApiResponse<T> Fail(string error, ErrorCode code = ErrorCode.Unknown)
         => new() { Success = false, Error = error, Code = code };
 }

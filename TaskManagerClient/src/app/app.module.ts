@@ -5,16 +5,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { EmpDashboardComponent } from './emp-dashboard/emp-dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    ManagerDashboardComponent,
+    EmpDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +27,13 @@ import { HomeComponent } from './home/home.component';
     HttpClientModule,
     ReactiveFormsModule    
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true 
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

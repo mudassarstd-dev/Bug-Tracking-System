@@ -11,4 +11,5 @@ public class User
     public required string Name { get; set; }
     public required string Password { get; set; }
     public required Role Role { get; set; }
+    public int? ManagerId { get; set; }
 }

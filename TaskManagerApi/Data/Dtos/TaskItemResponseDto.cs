@@ -1,0 +1,1 @@
+public record TaskItemResponseDto(string title, string description, TaskStatus status, int emp);

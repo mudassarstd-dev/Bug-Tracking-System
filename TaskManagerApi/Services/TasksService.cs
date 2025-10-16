@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
 using TaskManagerApi.Data.Database;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models;
@@ -38,7 +39,6 @@ public class TaskService
         return "Created successfully";
     }
 
-
     // on delete, need to check assignment first
     public async Task<ApiResponse<string>> Delete(int taskItemId)
     {
@@ -56,13 +56,23 @@ public class TaskService
 
         return ApiResponse<string>.Ok("Deleted successfully");
     }
-
-
     public async Task<List<TaskItem>> GetManagerTasks()
     {
         if (_user.Id == null) return [];
         return await _context.Tasks.Where(t => t.CreatedBy == _user.Id).ToListAsync();
     }
+
+
+
+    // public async Task<ApiResponse<List<>>> GetEmps()
+    // {
+    //     var users = await _context.Users.Where(u => u.Role == Role.Employee).Select(u => new
+    //     {
+    //         id = u.Id,
+    //         name = u.Name
+    //     }).ToListAsync();
+    //     return ApiResponse<List<User>>.Ok(users);
+    // }
 
 
     // only manager can create task

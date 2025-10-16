@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MasterService } from '../services/master.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ export class HomeComponent implements OnInit {
   taskForm : FormGroup
   isManager: boolean = false
 
-  constructor(private masterSerivce: MasterService, private fb: FormBuilder) { }
+  constructor(private masterSerivce: MasterService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
       this.taskForm = this.fb.group({
@@ -56,5 +57,11 @@ export class HomeComponent implements OnInit {
       'Jane Smith',
       'Robert Brown'
     ];
+  }
+
+  logout() {
+    localStorage.removeItem("auth-token")
+    localStorage.removeItem("user-role")
+    this.router.navigate(['/login'])
   }
 }
