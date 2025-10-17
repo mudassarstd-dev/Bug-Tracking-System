@@ -46,4 +46,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #9e9e9e !important;
 }
 
-
+/* Override disabled button color */
+.mat-button[disabled],
+.mat-raised-button[disabled],
+.mat-flat-button[disabled] {
+  background-color: #e0e0e0 !important;  // light grey background
+  color: #616161 !important;            // darker grey text
+  opacity: 1 !important;                 // remove default opacity
+  cursor: not-allowed !important;        // show not-allowed cursor
+}

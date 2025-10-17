@@ -115,10 +115,10 @@ export class RegisterComponent implements OnInit{
       this.authService.register(formValueWithRole).subscribe({
         next: res => {
           this.loading = false
-          
           if (res.success && res.data?.token) {
             localStorage.setItem("auth-token", res.data.token)
             localStorage.setItem("user-role", res.data.role)
+            localStorage.removeItem("onboard-selected-role")
             this.successMessage = res.message || "Registration successful!"
             this.errorMessage = ""
             this.registerForm.reset({role: "Employee"})
@@ -129,11 +129,17 @@ export class RegisterComponent implements OnInit{
           }
         },
         error: err => {
-          this.loading = false
-          this.errorMessage = "Something went wrong"
-          this.successMessage = ""
-          console.log(err)
-        }
+            this.loading = false;
+            this.successMessage = "";
+
+            if (err.error && err.error.error) {
+              this.errorMessage = err.error.error; 
+            } else if (err.message) {
+              this.errorMessage = err.message;
+            } else {
+              this.errorMessage = "Something went wrong";
+            }
+    }
       })
   }
   navToHome() {

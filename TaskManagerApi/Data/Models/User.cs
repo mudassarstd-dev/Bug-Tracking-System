@@ -4,7 +4,7 @@ using TaskManagerApi.Data.Models;
 
 namespace TaskManagerApi.Data.Models;
 
-public class User
+public class UserDeprecated
 {
     [Key]
     public int Id { get; set; }

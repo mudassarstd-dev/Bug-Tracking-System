@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
    constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { 
       this.loginForm = this.fb.group({
-        name: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email] ],
         password: ['', [Validators.required, Validators.minLength(6)]]
       })
     }  
@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit {
   }
 
     onSubmit() {
+      if (this.loginForm.invalid) return
+
       this.loading = true
       this.authService.login(this.loginForm.value).subscribe({
         next: res => {
@@ -45,11 +47,17 @@ export class LoginComponent implements OnInit {
           }
         }, 
         error: err => {
-          this.loading = false
-          this.errorMessage = "Something went wrong" 
-          this.successMessage = ""
-          console.log(err)
-        }
+            this.loading = false;
+            this.successMessage = "";
+
+            if (err.error && err.error.error) {
+              this.errorMessage = err.error.error; 
+            } else if (err.message) {
+              this.errorMessage = err.message;
+            } else {
+              this.errorMessage = "Something went wrong";
+            }
+    }
       })
     }
 
