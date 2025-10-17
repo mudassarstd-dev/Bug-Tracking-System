@@ -1,1 +1,1 @@
-public record TaskItemDto(string title, string description);
+public record TaskItemDto(string title, string description, int? asssignedTo);

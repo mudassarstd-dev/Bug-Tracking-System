@@ -2,6 +2,6 @@ namespace TaskManagerApi.Data.Enums;
 
 public enum Role
 {
-    Employee, Manager
+    Manager, Developer, QA
 }
 

@@ -1,0 +1,118 @@
+// .register-container {
+//   width: 300px;
+//   margin: auto;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 12px;
+// }
+
+// input, select, button {
+//   width: 100%;
+//   padding: 8px;
+// }
+// .success { color: green; }
+// .error { color: red; }
+
+
+
+.register-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* LEFT SECTION (branding, same as onboarding/login) */
+.register-left {
+  flex: 0 0 35%;
+  background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80')
+    center/cover no-repeat;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+  color: #fff;
+
+  .branding {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-direction: row;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+    filter: brightness(0) invert(1);
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+/* RIGHT SECTION */
+.register-right {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+/* FORM CONTENT */
+.register-content {
+  max-width: 400px;
+  width: 100%;
+
+  .headline {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #333;
+  }
+
+  .subtext {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .submit-btn {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      text-transform: none;
+    }
+
+    .error {
+      color: #e53935;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .success {
+      color: #43a047;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  .signup-text {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+}

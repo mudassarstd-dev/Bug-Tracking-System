@@ -1,0 +1,60 @@
+<div class="onboarding-container">
+  <!-- LEFT SIDE -->
+  <div class="onboarding-left">
+    
+    <div class="branding">
+        <img
+        src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
+        alt="App Logo"
+        class="logo"
+      />
+      <h2 class="app-title">ManageBug</h2>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="onboarding-right">
+
+     <div class="signin-link">
+      <span>Already have an account?</span>
+      <button mat-button color="primary" class="signin-btn" (click)="navToLogin()">
+        Sign in
+      </button>
+    </div>
+
+    <div class="onboarding-content">
+      <h1 class="headline">Join Us</h1>
+      <p class="subtext">
+        Simplify your workflow, stay organized, and achieve more with ease.
+      </p>
+
+      <div class="card-list">
+        <mat-card
+          class="onboard-card"
+          *ngFor="let item of cards"
+          (mouseenter)="item.hover = true"
+          (mouseleave)="item.hover = false"
+          [class.hovered]="item.hover"
+          (click)="navToRegister(item.title)"
+        >
+          <div class="card-content">
+            <mat-icon color="primary">{{ item.icon }}</mat-icon>
+
+            <div class="card-text">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+            </div>
+
+            <mat-icon
+              class="arrow-icon"
+              *ngIf="item.hover"
+              color="primary"
+              >arrow_forward</mat-icon
+            >
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using TaskManagerApi.Data.Database;
@@ -22,6 +23,11 @@ public class TaskService
         var creator = await _context.Users.FindAsync(_user.Id);
         if (creator == null || creator.Role != Role.Manager) return "Only manager can create tasks";
 
+        if (taskItemDto.asssignedTo != null)
+        {
+            // create an assignment here
+        }
+
         var newTask = new TaskItem
         {
             Title = taskItemDto.title,
@@ -45,7 +51,7 @@ public class TaskService
         if (_user.Id == null) return ApiResponse<string>.Fail("User unauthenticated");
 
         var creator = await _context.Users.FindAsync(_user.Id);
-        if (creator == null || creator.Role != Role.Manager) return  ApiResponse<string>.Fail("Only managers can commit crimes here");
+        if (creator == null || creator.Role != Role.Manager) return ApiResponse<string>.Fail("Only managers can commit crimes here");
 
         var taskItem = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskItemId);
 
@@ -62,6 +68,23 @@ public class TaskService
         return await _context.Tasks.Where(t => t.CreatedBy == _user.Id).ToListAsync();
     }
 
+    public async Task AssignTask(TaskAssignmentDto assignmentDto)
+    {
+        // lookup: task is not already assigned
+        // other imp condition: emp (assignee must be under manager)
+
+        var alreadyAssigned = await _context.Assignments.AnyAsync(a => a.AssignedTo == assignmentDto.assignedTo && a.TaskItemId == assignmentDto.taskItemId);
+        if (alreadyAssigned) return;
+        var emp = await _context.Users.Where(u => u.Id == assignmentDto.assignedTo).FirstOrDefaultAsync();
+        if (emp == null) return;
+        var task = await _context.Tasks.Where(u => u.Id == assignmentDto.taskItemId).FirstOrDefaultAsync();
+        if (task == null) return;
+
+        var newAssigment = TaskAssignment.Create(to: emp.Id, by: emp.Id, taskId: task.Id);
+
+        await _context.Assignments.AddAsync(newAssigment);
+        await _context.SaveChangesAsync();
+    }
 
 
     // public async Task<ApiResponse<List<>>> GetEmps()

@@ -1,0 +1,49 @@
+@import '~@angular/material/theming';
+
+// Includes all common styles that are used by multiple Angular Material components
+@include mat-core();
+
+// Define your application's custom theme.
+$primary-palette: mat-palette($mat-blue);
+$accent-palette:  mat-palette($mat-yellow, A200, A100, A400);
+$theme: mat-dark-theme(  
+  $primary-palette,
+  $accent-palette,  
+);
+
+// Include theme styles for Angular Material components and each component used in your app.
+@include angular-material-theme($theme);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* styles.scss */
+
+/* Normal outline color */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #bdbdbd !important; /* or your preferred grey tone */
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color:  #bdbdbd !important; /* primary blue */
+}
+
+.mat-form-field-label {
+  color: #9e9e9e !important; /* default grey */
+  opacity: 1 !important; /* ensure visible */
+}
+
+// .mat-form-field.mat-focused .mat-input-element::placeholder {
+//   color:#1522d2 !important;
+// }
+
+/* Focused outline color */
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #1976d2 !important; /* your primary color */
+}
+
+/* Hovered state (optional) */
+.mat-form-field-appearance-outline:not(.mat-focused):hover .mat-form-field-outline {
+  color: #9e9e9e !important;
+}
+
+
