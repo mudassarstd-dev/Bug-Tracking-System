@@ -22,8 +22,10 @@ public static class AuthEndpoints
             return ( await authService.LoginAsync(loginDto)).ToHttpResult();
         });
 
-        // group.MapGet("/users", async (AppDbContext db) =>
-        //     await db.Users.ToListAsync<User>());
+        group.MapGet("/test", (AppDbContext db) =>
+        {
+            throw new Exception("a new exception thrown in here");
+        });
 
         return app;
     }

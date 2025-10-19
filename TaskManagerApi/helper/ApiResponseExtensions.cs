@@ -6,6 +6,7 @@ public static class ApiResponseExtensions
             { Success: true } => TypedResults.Ok(response),
             { Code: ErrorCode.UserExists } => TypedResults.Conflict(response),
             { Code: ErrorCode.InvalidRole } => TypedResults.BadRequest(response),
+            { Code: ErrorCode.NotFound } => TypedResults.NotFound(response),
             { Code: ErrorCode.InvalidCredentials } => TypedResults.Json(response, statusCode: StatusCodes.Status401Unauthorized),
             { Code: ErrorCode.ValidationError } => TypedResults.BadRequest(response),
             _ => TypedResults.BadRequest(response)

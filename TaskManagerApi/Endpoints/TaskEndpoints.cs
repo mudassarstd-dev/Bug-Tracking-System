@@ -24,8 +24,8 @@ public static class TaskEndpoints
             return await taskService.Delete(taskItemId);
         });
 
-        group.MapGet("/", async (TaskService taskService) =>
-            await taskService.GetManagerTasks());
+        // group.MapGet("/", async (TaskService taskService) =>
+        //     await taskService.GetManagerTasks());
 
         // group.MapGet("/emps", async (TaskService taskService) =>
         //     (await taskService.GetEmps()).ToHttpResult());

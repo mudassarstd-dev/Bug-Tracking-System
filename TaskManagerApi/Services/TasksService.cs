@@ -62,11 +62,11 @@ public class TaskService
 
         return ApiResponse<string>.Ok("Deleted successfully");
     }
-    public async Task<List<TaskItem>> GetManagerTasks()
-    {
-        if (_user.Id == null) return [];
-        return await _context.Tasks.Where(t => t.CreatedBy == _user.Id).ToListAsync();
-    }
+    // public async Task<List<TaskItem>> GetManagerTasks()
+    // {
+    //     if (_user.Id == null) return [];
+    //     return await _context.Tasks.Where(t => t.CreatedBy == _user.Id).ToListAsync();
+    // }
 
     public async Task AssignTask(TaskAssignmentDto assignmentDto)
     {
