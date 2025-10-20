@@ -1,5 +1,8 @@
 
+using TaskManagerApi.Data.Enums;
+
 public interface IUser
 {
-    int? Id { get; }
+    string? Id { get; }
+    string? Role { get; } 
 }

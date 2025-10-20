@@ -1,6 +1,5 @@
 using Amazon.DynamoDBv2.DataModel;
 
-
 namespace TaskManagerApi.Data.Models.Dynamo;
 
 
@@ -25,4 +24,7 @@ public class User
     
     [DynamoDBProperty]
     public string Password { get; set; }
+    
+    [DynamoDBProperty]
+    public string? ProfileImageUrl { get; set; }
 }

@@ -7,11 +7,7 @@ public class CurrentUser : IUser
     public CurrentUser(IHttpContextAccessor context)
         => _context = context;
 
-    public int? Id =>
-        int.TryParse(
-            _context.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier),
-            out var id
-        )
-        ? id
-        : null;
+    public string? Id => _context.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+    public string? Role => _context.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);
+
 }

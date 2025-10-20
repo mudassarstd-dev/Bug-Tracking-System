@@ -9,6 +9,7 @@ using TaskManagerApi.Data.Database;
 using TaskManagerApi.Endpoints;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,7 @@ builder.Services.AddAuthorization(options =>
 
 
 builder.Services.AddScoped<DynamoAuthService>();
+builder.Services.AddScoped<DynamoProjectService>();
 
 var awsRegion = Amazon.RegionEndpoint.EUNorth1;
 var awsAccessKey = builder.Configuration["AWS:AccessKey"];
@@ -72,6 +74,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        var response = ApiResponse<string>.Fail(exception?.Message ?? "Internal Server Error");
+
+        await context.Response.WriteAsJsonAsync(response);
+    });
+});
+
+
 app.UseCors(policy =>
     policy.AllowAnyOrigin()
           .AllowAnyMethod()
@@ -83,6 +100,6 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 
 app.MapAuthEndpoints();
-app.MapTaskEndpoints();
+app.MapProjectEndpoints();
 
 app.Run();
