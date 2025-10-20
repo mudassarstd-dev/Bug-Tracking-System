@@ -7,10 +7,13 @@ import { AuthGuard } from './auth/auth.guard';
 import { EmpDashboardComponent } from './emp-dashboard/emp-dashboard.component';
 import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
 import { RoleGuard } from './auth/role.guard';
+import { OnBoardComponent } from './on-board/on-board.component';
+import { WithRoleGuard } from './auth/register/with-role.guard';
 
 const routes: Routes = [
-  { path: 'register', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent, canActivate: [ WithRoleGuard ] },
   { path: 'login', component: LoginComponent },
+  { path: 'onBoard', component: OnBoardComponent },
   { path: 'home', component: HomeComponent, canActivate: [ AuthGuard ] },
   { path: 'e-dash', component: EmpDashboardComponent, canActivate: [ AuthGuard, RoleGuard ], data: {role: "Employee"} },
   { path: 'm-dash', component: ManagerDashboardComponent, canActivate: [ AuthGuard, RoleGuard ], data: {role: "Manager"} },

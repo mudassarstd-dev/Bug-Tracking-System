@@ -11,6 +11,9 @@ import { HomeComponent } from './home/home.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
 import { EmpDashboardComponent } from './emp-dashboard/emp-dashboard.component';
+import { OnBoardComponent } from './on-board/on-board.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -19,13 +22,16 @@ import { EmpDashboardComponent } from './emp-dashboard/emp-dashboard.component';
     RegisterComponent,
     HomeComponent,
     ManagerDashboardComponent,
-    EmpDashboardComponent
+    EmpDashboardComponent,
+    OnBoardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule    
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MaterialModule    
   ],
   providers: [
     {

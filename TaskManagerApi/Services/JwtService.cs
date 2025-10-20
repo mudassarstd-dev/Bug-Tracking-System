@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using TaskManagerApi.Data.Models;
+using TaskManagerApi.Data.Models.Dynamo;
 
 namespace IdentityDemo.IdentityService;
 

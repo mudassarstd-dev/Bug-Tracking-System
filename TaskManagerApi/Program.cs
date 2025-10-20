@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data.Database;
 using TaskManagerApi.Endpoints;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,19 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ManagerOnly", policy => policy.RequireRole("Manager"));
 });
+
+
+builder.Services.AddScoped<DynamoAuthService>();
+
+var awsRegion = Amazon.RegionEndpoint.EUNorth1;
+var awsAccessKey = builder.Configuration["AWS:AccessKey"];
+var awsSecretKey = builder.Configuration["AWS:SecretKey"];
+
+builder.Services.AddSingleton<IAmazonDynamoDB>(sp =>
+{
+    return new AmazonDynamoDBClient(awsAccessKey, awsSecretKey, awsRegion);
+});
+builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 
 var app = builder.Build();
 

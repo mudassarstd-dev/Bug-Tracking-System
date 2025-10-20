@@ -14,7 +14,7 @@ export class AuthService {
 
   private api_url = `${environment.taskManagerApi_base}/auth`;
 
-  login(creds: {name: string, password:string}) {
+  login(creds: {email: string, password:string}) {
       return this.http.post<ApiResponse<AuthResponse>>(`${this.api_url}/login`, creds)
   }
 

@@ -1,3 +1,3 @@
 namespace TaskManagerApi.Data.Models;
 
-public record LoginDto(string name, string password);
+public record LoginDto(string email, string password);

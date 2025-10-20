@@ -17,33 +17,33 @@ public class AuthService
         _jwtService = jwtService;
     }
 
-    public async Task<ApiResponse<AuthResponseDto>> Login(LoginDto loginDto)
-    {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == loginDto.name && u.Password == loginDto.password);
-        if (user == null) return ApiResponse<AuthResponseDto>.Fail("Invalid credentials", ErrorCode.InvalidCredentials);
-        return ApiResponse<AuthResponseDto>.Ok(new AuthResponseDto(user.Name, _jwtService.GenerateToken(user), user.Role.ToString()), message: "Logged in successfully");
-    } 
+    // public async Task<ApiResponse<AuthResponseDto>> Login(LoginDto loginDto)
+    // {
+    //     var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == loginDto.name && u.Password == loginDto.password);
+    //     if (user == null) return ApiResponse<AuthResponseDto>.Fail("Invalid credentials", ErrorCode.InvalidCredentials);
+    //     return ApiResponse<AuthResponseDto>.Ok(new AuthResponseDto(user.Name, _jwtService.GenerateToken(user), user.Role.ToString()), message: "Logged in successfully");
+    // } 
 
-    public async Task<ApiResponse<AuthResponseDto>> Register(RegisterDto registerDto)
-    {
-        if (await _context.Users.AnyAsync(u => u.Name == registerDto.name)) return ApiResponse<AuthResponseDto>.Fail("User exists already", ErrorCode.UserExists);
+    // public async Task<ApiResponse<AuthResponseDto>> Register(RegisterDto registerDto)
+    // {
+    //     if (await _context.Users.AnyAsync(u => u.Name == registerDto.name)) return ApiResponse<AuthResponseDto>.Fail("User exists already", ErrorCode.UserExists);
 
-         if (!Enum.TryParse<Role>(registerDto.role, true, out var role))
-            {
-                return ApiResponse<AuthResponseDto>.Fail("Invalid role", ErrorCode.InvalidRole);
-            }
+    //      if (!Enum.TryParse<Role>(registerDto.role, true, out var role))
+    //         {
+    //             return ApiResponse<AuthResponseDto>.Fail("Invalid role", ErrorCode.InvalidRole);
+    //         }
 
-        var user = new User
-            {
-                Name = registerDto.name,
-                Password = registerDto.password,  
-                Role = role
-            };
+    //     var user = new User
+    //         {
+    //             Name = registerDto.name,
+    //             Password = registerDto.password,  
+    //             Role = role
+    //         };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+    //     _context.Users.Add(user);
+    //     await _context.SaveChangesAsync();
 
-        // return _jwtService.GenerateToken(user);
-        return ApiResponse<AuthResponseDto>.Ok(new AuthResponseDto(user.Name, _jwtService.GenerateToken(user), user.Role.ToString()), message: "User registered successfully");
-    }
+    //     // return _jwtService.GenerateToken(user);
+    //     return ApiResponse<AuthResponseDto>.Ok(new AuthResponseDto(user.Name, _jwtService.GenerateToken(user), user.Role.ToString()), message: "User registered successfully");
+    // }
 }

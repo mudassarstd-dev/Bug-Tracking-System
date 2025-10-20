@@ -1,0 +1,1 @@
+public record TaskAssignmentDto(int assignedTo, int assignedBy, int taskItemId);

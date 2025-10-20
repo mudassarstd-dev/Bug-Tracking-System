@@ -12,18 +12,18 @@ public static class AuthEndpoints
     {
         var group = app.MapGroup("/api/auth");
 
-        group.MapPost("/register", async (RegisterDto registerDto, AuthService authService) =>
+        group.MapPost("/register", async (RegisterDto registerDto, DynamoAuthService authService) =>
         {
-            return (await authService.Register(registerDto)).ToHttpResult();
+            return (await authService.RegisterAsync(registerDto)).ToHttpResult();
         });
 
-        group.MapPost("login", async (LoginDto loginDto, AuthService authService) =>
+        group.MapPost("login", async (LoginDto loginDto, DynamoAuthService authService) =>
         {
-            return ( await authService.Login(loginDto)).ToHttpResult();
+            return ( await authService.LoginAsync(loginDto)).ToHttpResult();
         });
 
-        group.MapGet("/users", async (AppDbContext db) =>
-            await db.Users.ToListAsync<User>());
+        // group.MapGet("/users", async (AppDbContext db) =>
+        //     await db.Users.ToListAsync<User>());
 
         return app;
     }
