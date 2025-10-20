@@ -9,11 +9,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
-import { EmpDashboardComponent } from './emp-dashboard/emp-dashboard.component';
 import { OnBoardComponent } from './on-board/on-board.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { ProjectDashboardComponent } from './home/pages/project-dashboard/project-dashboard.component';
+import { ProjectDialogComponent } from './home/dialogs/project-dialog/project-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +21,9 @@ import { MaterialModule } from './material.module';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    ManagerDashboardComponent,
-    EmpDashboardComponent,
-    OnBoardComponent
+    OnBoardComponent,
+    ProjectDashboardComponent,
+    ProjectDialogComponent
   ],
   imports: [
     BrowserModule,

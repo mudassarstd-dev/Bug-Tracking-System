@@ -2,66 +2,53 @@ import { Component, OnInit } from '@angular/core';
 import { MasterService } from '../services/master.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
-  showTaskForm: boolean = false
-  employees: string[] = []
-  taskForm : FormGroup
   isManager: boolean = false
+  username: string = "NA"
+  navbarOptions: any
 
-  constructor(private masterSerivce: MasterService, private fb: FormBuilder, private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
-      this.taskForm = this.fb.group({
-      title: ['', Validators.required],
-      description: [''],
-      deadline: ['', Validators.required]
-    });
+    this.isManager = this.authService.isManager()
+    this.username = this.authService.getUsername().split(' ')[0] || "NA"
 
-    let userRole = localStorage.getItem("user-role")
-    if (userRole === "Manager") {
-      this.isManager = true
-    }
-  }
-  
-  onSubmitTask() {
-     if (this.taskForm.invalid) {
-    this.taskForm.markAllAsTouched(); // show all validation messages
-    return;
-  }
-    // implement proper error handling in here
-    this.masterSerivce.createTask(this.taskForm.value).subscribe()
-  }
+    this.navbarOptions = [
+    {
+      title: "Projects",
+      icon: "assets/icons/projects.png",
+      show: true
+    },
+    {
+      title: "Bugs",
+      icon: "assets/icons/bugs.svg",
+      show: true
+    },
+    {
+      title: "Manage",
+      icon: "bar_chart",
+      show: this.isManager
+    },
+    {
+      title: "Users",
+      icon: "bar_chart",
+      show: this.isManager
+    },
+  ];
 
-  toggleTaskForm() {
-    this.showTaskForm = !this.showTaskForm
-  }
-
-  GetEmployees() {
-    this.masterSerivce.getEmps().subscribe({
-      next: res => {
-        this.employees = res.data
-      }
-    })
+    this.renderDashboard()
   }
 
-   GetDummyEmployees() {
-    this.employees = [
-      'John Doe' ,
-      'Jane Smith',
-      'Robert Brown'
-    ];
-  }
 
-  logout() {
-    localStorage.removeItem("auth-token")
-    localStorage.removeItem("user-role")
-    this.router.navigate(['/login'])
+  private renderDashboard() {
+    this.router.navigate(['/home/dashboard'])
   }
 }

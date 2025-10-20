@@ -54,6 +54,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddScoped<DynamoAuthService>();
 builder.Services.AddScoped<DynamoProjectService>();
+builder.Services.AddScoped<DynamoUserService>();
 
 var awsRegion = Amazon.RegionEndpoint.EUNorth1;
 var awsAccessKey = builder.Configuration["AWS:AccessKey"];
@@ -100,6 +101,7 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 
 app.MapAuthEndpoints();
+app.MapUsersEndpoints();
 app.MapProjectEndpoints();
 
 app.Run();

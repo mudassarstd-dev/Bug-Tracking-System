@@ -1,5 +1,6 @@
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
 
 public class DynamoUserService
@@ -26,7 +27,23 @@ public class DynamoUserService
         // return a profile DTO with user image
         return ApiResponse<string>.Ok("Ok");
         // return user != null ? ApiResponse<User>.Ok(user) : ApiResponse<User>.Fail("User not found", ErrorCode.NotFound);
+    }
+    
+    public async Task<ApiResponse<List<ProjectAssigneeDto>>> GetNotManagers()
+    {
+        if (!isManager()) return ApiResponse<List<ProjectAssigneeDto>>.Fail("Manager Only", ErrorCode.InvalidRole);
 
+    var scanConditions = new List<ScanCondition>
+    {
+        new ScanCondition("Role", ScanOperator.In, new[] { Role.Developer.ToString(), Role.QA.ToString() })
+    };
+
+    var scan = _context.ScanAsync<User>(scanConditions);
+    var users = await scan.GetRemainingAsync();
+
+    var result = users.Select(u => new ProjectAssigneeDto(id: u.Id, username: u.Name, role: u.Role)).ToList();
+
+    return ApiResponse<List<ProjectAssigneeDto>>.Ok(result);
     }
 
     public async Task<ApiResponse<List<User>>> GetByRoleAsync(string role)
@@ -41,5 +58,11 @@ public class DynamoUserService
         var scan = _context.ScanAsync<User>(new List<ScanCondition>());
         var users = await scan.GetRemainingAsync();
         return ApiResponse<List<User>>.Ok(users);
+    }
+
+    private bool isManager()
+    {
+        if (_user.Id == null || _user.Role != Role.Manager.ToString()) return false;
+        return true;
     }
 }

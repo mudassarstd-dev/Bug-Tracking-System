@@ -1,4 +1,4 @@
-public record CreateProjectDto(string Name, string? Description);
+public record CreateProjectDto(string Name, string? Description, List<string>? assigneeIds);
 public record UpdateProjectDto(string? Name, string? Description);
 
 public record AssignUserDto(string ProjectId, string UserId, string Role);
@@ -20,3 +20,5 @@ public record UpdateBugDto(
     string? Type,
     string? Status,
     string? AssignedTo);
+
+public record ProjectAssigneeDto(string id, string username, string role, string? avatar = null);

@@ -1,0 +1,93 @@
+.navbar {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(0, 0, 0, 0.87); // text color on nav-bar
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+
+
+   /* Replace fixed margins with centering layout */
+  margin-top: 37px;
+  margin-inline: auto;
+  max-width: calc(100vw - 442px); /* same visual as 221px sides on large screens */
+  width: 100%;
+  padding: 0 16px;
+  overflow-x: hidden; /* safeguard */
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .app-logo {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+    }
+
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+
+  .navbar-center {
+    display: flex;
+    align-items: center;
+    margin-left: 120px;
+    gap: 8px;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #F5F5F7;
+      color: #333;
+
+      .user-avatar {
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+      }
+
+      .username {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.navbar-divider {
+  margin-top: 50px;
+  margin-inline: auto;
+  max-width: calc(100vw - 442px);
+  border: none;
+  border-top: 1px solid #ECECEE;
+  overflow-x: hidden;
+}
+
+.content-container {
+  margin: 20px 221px 0 221px; // top right bottom left
+  max-width: calc(100vw - 442px);
+  overflow-x: hidden; // prevent scroll if content gets wide
+}

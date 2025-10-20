@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
           if (res.success && res.data?.token) {
             localStorage.setItem("auth-token", res.data.token)
             localStorage.setItem("user-role", res.data.role)
+            localStorage.setItem("user-name", res.data.username)
             this.successMessage = res.message || "Logged in"
             this.errorMessage = ""
             this.navToDash(res.data.role)
@@ -62,10 +63,6 @@ export class LoginComponent implements OnInit {
     }
 
   navToDash(role: string) {
-    if (role === "Manager") {
-      setTimeout(() => this.router.navigate(['/m-dash']), 1000); 
-    } else {
-      setTimeout(() => this.router.navigate(['/e-dash']), 1000);
-    }
+    setTimeout(() => this.router.navigate(['/home']), 1000);
   }
 }

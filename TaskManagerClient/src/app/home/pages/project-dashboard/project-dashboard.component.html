@@ -1,0 +1,53 @@
+<div class="sub-navbar mat-elevation-z0">
+
+  <!-- Left: Green line + titles -->
+  <div class="subnav-left">
+    <div class="green-bar"></div>
+
+    <div class="titles">
+      <div class="title">Projects</div>
+      <div class="subtitle">Overview of active projects</div>
+    </div>
+  </div>
+
+  <!-- Right: Search + Add button -->
+  <div class="subnav-right">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search projects</mat-label>
+      <input matInput placeholder="Search..." />
+      <button mat-icon-button matSuffix>
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button 
+    mat-flat-button color="primary"
+    (click)="openProjectDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      {{ AddButtonText }}
+    </button>
+  </div>
+</div>
+
+<!-- Bottom divider line -->
+<hr class="navbar-divider" />
+
+<div class="projects-section">
+        <mat-card
+          class="project-card"
+          *ngFor="let item of projects"
+          (mouseenter)="item.hover = true"
+          (mouseleave)="item.hover = false"
+          [class.hovered]="item.hover"
+          (click)="navToRegister(item.title)"
+        >
+            <mat-icon color="primary" class="card-icon">  {{ item.icon }}</mat-icon>
+            <mat-card-title>{{ item.Name }}</mat-card-title>
+            <mat-card-content>
+                <p>{{ item.Description }}</p>
+                <p>Tasks Done</p>
+            </mat-card-content>
+
+        </mat-card>
+</div>

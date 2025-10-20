@@ -95,7 +95,8 @@
     background: #fff;
 
     &.hovered {
-      border-color: var(--mat-primary);
+      border-color: #007DFA;
+      background-color: #F5F5F7;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
 

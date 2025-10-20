@@ -25,6 +25,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem("auth-token")
     localStorage.removeItem("user-role")
+    localStorage.removeItem('user-name');
     this.router.navigate(['/login'])
   }
 
@@ -34,6 +35,14 @@ export class AuthService {
 
   getRole(): string | null {
     return localStorage.getItem('user-role');
+  }
+
+  getUsername(): string | null {
+    return localStorage.getItem('user-name');
+  }
+
+  isManager(): boolean {
+    if (localStorage.getItem('user-role') == "Manager") return true
   }
 
   isLoggedIn(): boolean {
