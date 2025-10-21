@@ -1,6 +1,8 @@
 using Amazon.DynamoDBv2.DataModel;
+using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
+using TaskManagerApi.helper;
 
 public class DynamoProjectService
 {
@@ -15,8 +17,8 @@ public class DynamoProjectService
     // ONLY MANAGER
     public async Task<ApiResponse<Project>> CreateProjectAsync(CreateProjectDto dto)
     {
-        if (!isManager()) 
-            return ApiResponse<Project>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
+        // if (!isManager())
+        //     return ApiResponse<Project>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
 
         if (string.IsNullOrWhiteSpace(dto.Name))
             return ApiResponse<Project>.Fail("Project name is required", ErrorCode.ValidationError);
@@ -25,8 +27,13 @@ public class DynamoProjectService
         {
             Name = dto.Name,
             Description = dto.Description,
-            ManagerId = _user.Id
+            ManagerId = _user.Id,
+            ImagePath = dto.logoPath
         };
+
+        // if (!dto.assigneeIds.IsNullOrEmpty())
+        // get all assignees, create project assignements, batch write it and then return ok 
+        // project creation and project assignment must be a transaction
 
         await _context.SaveAsync(project);
         return ApiResponse<Project>.Ok(project, "Project created successfully");
@@ -46,12 +53,25 @@ public class DynamoProjectService
         var projects = await scan.GetRemainingAsync();
         return ApiResponse<List<Project>>.Ok(projects);
     }
-    
-    public async Task<ApiResponse<List<Project>>> GetAllAsync()
+
+    public async Task<ApiResponse<List<ProjectDto>>> GetAllAsync()
     {
         var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
         var projects = await scan.GetRemainingAsync();
-        return ApiResponse<List<Project>>.Ok(projects);
+        var projectDtos = new List<ProjectDto>();
+
+        foreach (var project in projects)
+        {
+            var dto = new ProjectDto(
+                id: project.Id,
+                name: project.Name,
+                description: project.Description,
+                logoUrl: string.IsNullOrWhiteSpace(project.ImagePath) ? null : $"http://localhost:5153//uploads/{Path.GetFileName(project.ImagePath)}"
+            );
+
+            projectDtos.Add(dto);
+        }
+        return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
     }
 
     // ONLY MANAGER
@@ -59,7 +79,7 @@ public class DynamoProjectService
     {
         if (!isManager())
             return ApiResponse<Project>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
-        
+
         var project = await _context.LoadAsync<Project>(projectId);
         if (project == null) return ApiResponse<Project>.Fail("Project not found", ErrorCode.NotFound);
 
@@ -73,7 +93,7 @@ public class DynamoProjectService
     // ONLY MANAGER
     public async Task<ApiResponse<bool>> DeleteProjectAsync(string projectId)
     {
-        if (!isManager()) 
+        if (!isManager())
             return ApiResponse<bool>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
 
         var project = await _context.LoadAsync<Project>(projectId);
@@ -84,17 +104,6 @@ public class DynamoProjectService
         await _context.DeleteAsync<Project>(projectId);
         return ApiResponse<bool>.Ok(true, "Project deleted");
     }
-
-
-    // Double check from db
-
-    // private async Task<bool> isManager()
-    // {
-    //     if (_user.Id == null) return false;
-    //     var user = await _userService.GetByIdAsync(_user.Id);
-    //     if (user.Data?.Role == Role.Manager.ToString()) return true;
-    //     return false;
-    // }
 
     private bool isManager()
     {

@@ -10,6 +10,7 @@ using TaskManagerApi.Endpoints;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,17 +84,29 @@ app.UseExceptionHandler(errorApp =>
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        Console.WriteLine("🚨 Exception caught by middleware:");
+        Console.WriteLine(exception?.GetType().FullName);
+        Console.WriteLine(exception?.Message);
+        Console.WriteLine(exception?.StackTrace);
+
+
         var response = ApiResponse<string>.Fail(exception?.Message ?? "Internal Server Error");
 
         await context.Response.WriteAsJsonAsync(response);
     });
 });
 
-
 app.UseCors(policy =>
     policy.AllowAnyOrigin()
           .AllowAnyMethod()
           .AllowAnyHeader());
+          
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
+    RequestPath = "/uploads"
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

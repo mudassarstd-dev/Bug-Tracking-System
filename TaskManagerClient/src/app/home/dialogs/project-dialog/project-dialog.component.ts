@@ -11,6 +11,7 @@ import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
 export class ProjectDialogComponent {
   projectForm: FormGroup;
   assignees: ProjectAssigneeDto[];
+  logoPreview: string | ArrayBuffer | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -32,18 +33,32 @@ export class ProjectDialogComponent {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.projectForm.patchValue({ logo: file });
+      console.log(file)
+
+      const reader = new FileReader();
+      reader.onload = () => (this.logoPreview = reader.result);
+      reader.readAsDataURL(file);
     }
   }
 
   save() {
     if (this.projectForm.valid) {
-    
-      const payload = {
-        name: this.projectForm.value.name,
-        description: this.projectForm.value.description,
-        assigneeIds: this.projectForm.value.assignTo.map((u: ProjectAssigneeDto) => u.Id)
-      };
-      console.log(`payload: ${payload}`)
+      // const payload = {
+      //   name: this.projectForm.value.name,
+      //   description: this.projectForm.value.description,
+      //   assigneeIds: this.projectForm.value.assignTo.map((u: ProjectAssigneeDto) => u.Id)
+      // };
+
+      const { name, details, assignTo, logo } = this.projectForm.value;
+
+      // build payload to send to backend
+      const payload = new FormData();
+      payload.append('name', name);
+      payload.append('description', details || '');
+      payload.append('assigneeIds', JSON.stringify(assignTo.map((u: ProjectAssigneeDto) => u.Id)));
+      if (logo) payload.append('logo', logo);
+
+      console.log(`payload: ${payload.get('logo')}`)
       this.dialogRef.close(payload); 
     }
   }

@@ -45,14 +45,35 @@
   </div>
 
   <!-- Right: Upload section -->
-  <div class="upload-section">
+  <!-- <div class="upload-section">
     <label class="upload-placeholder" for="logoUpload">
       <input type="file" id="logoUpload" hidden (change)="onFileSelected($event)" />
       <img src="assets/icons/gallery-add.png" alt="project icon" width="52" height="52">
       <p>Upload Logo</p>
       <p *ngIf="projectForm.get('logo')?.value as file">{{ file.name }}</p>
     </label>
-  </div>
+  </div> -->
+
+  <!-- Right: Upload section -->
+<div class="upload-section">
+  <label class="upload-placeholder" for="logoUpload">
+    <input type="file" id="logoUpload" hidden (change)="onFileSelected($event)" accept="image/*" />
+
+    <ng-container *ngIf="logoPreview; else uploadIcon">
+      <img [src]="logoPreview" alt="Logo Preview" class="logo-preview" />
+    </ng-container>
+
+    <ng-template #uploadIcon>
+      <img src="assets/icons/gallery-add.png" alt="project icon" width="52" height="52" />
+      <p>Upload Logo</p>
+    </ng-template>
+
+    <p *ngIf="projectForm.get('logo')?.value as file">{{ file.name }}</p>
+  </label>
+</div>
+
+
+
 </mat-dialog-content>
 
 <div class="form-actions">

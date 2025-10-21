@@ -1,12 +1,12 @@
-public record CreateProjectDto(string Name, string? Description, List<string>? assigneeIds);
+public record CreateProjectDto(string Name, string? Description, List<string>? assigneeIds, string? logoPath);
 public record UpdateProjectDto(string? Name, string? Description);
-
 public record AssignUserDto(string ProjectId, string UserId, string Role);
+public record ProjectDto(string id, string name, string? description, string? logoUrl, int totalTasks = 0, int completedTasks = 0);
 
 public record CreateBugDto(
     string ProjectId,
     string Title,
-    string Type, 
+    string Type,
     string? Description,
     DateTime? Deadline,
     string? ScreenshotUrl,

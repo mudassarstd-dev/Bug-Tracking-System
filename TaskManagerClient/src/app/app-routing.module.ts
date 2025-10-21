@@ -12,7 +12,7 @@ import { ProjectDashboardComponent } from './home/pages/project-dashboard/projec
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent, canActivate: [ AuthGuard ], 
+    component: HomeComponent,
     children: [
       { path: 'dashboard', component: ProjectDashboardComponent }
     ]

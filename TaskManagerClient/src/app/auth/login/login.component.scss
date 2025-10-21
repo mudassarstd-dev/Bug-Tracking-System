@@ -146,3 +146,15 @@
     gap: 0.3rem;
   }
 }
+
+// mat-form-field.ng-untouched {
+//   background-color: #F5F5F7;
+//   border-radius: 8px; /* optional for a soft look */
+//   transition: background-color 0.3s ease;
+// }
+
+mat-form-field.ng-untouched .mat-form-field-flex {
+  background-color: #F5F5F7;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}

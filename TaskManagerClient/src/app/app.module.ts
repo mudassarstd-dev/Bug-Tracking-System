@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { ProjectDashboardComponent } from './home/pages/project-dashboard/project-dashboard.component';
 import { ProjectDialogComponent } from './home/dialogs/project-dialog/project-dialog.component';
+import { BugListComponent } from './home/pages/bug-list/bug-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ProjectDialogComponent } from './home/dialogs/project-dialog/project-di
     HomeComponent,
     OnBoardComponent,
     ProjectDashboardComponent,
-    ProjectDialogComponent
+    ProjectDialogComponent,
+    BugListComponent
   ],
   imports: [
     BrowserModule,

@@ -15,7 +15,7 @@ export class ProjectService {
 
   // createProject
 
-  createProject(data: {name: string, description: string, assigneeIds: string[]}) {
+  createProject(data: FormData) {
     return this.http.post<ApiResponse<string>>(this.api_url, data);
   }
 
