@@ -1,4 +1,6 @@
+using System.Data;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.Runtime;
 using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
@@ -17,8 +19,8 @@ public class DynamoProjectService
     // ONLY MANAGER
     public async Task<ApiResponse<Project>> CreateProjectAsync(CreateProjectDto dto)
     {
-        // if (!isManager())
-        //     return ApiResponse<Project>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
+        if (!isManager())
+            return ApiResponse<Project>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
 
         if (string.IsNullOrWhiteSpace(dto.Name))
             return ApiResponse<Project>.Fail("Project name is required", ErrorCode.ValidationError);
@@ -31,9 +33,37 @@ public class DynamoProjectService
             ImagePath = dto.logoPath
         };
 
-        // if (!dto.assigneeIds.IsNullOrEmpty())
-        // get all assignees, create project assignements, batch write it and then return ok 
-        // project creation and project assignment must be a transaction
+        if (dto.assigneeIds != null)
+        {
+            var users = new List<User>();
+
+            foreach (var id in dto.assigneeIds)
+            {
+                var user = await _context.LoadAsync<User>(id);
+                if (user is not null) users.Add(user);
+            }
+
+            if (!users.IsNullOrEmpty())
+            {
+                var assignments = new List<ProjectAssignment>();
+
+                foreach (var user in users)
+                {
+                    // check if not already assigned
+                    assignments.Add(new ProjectAssignment
+                    {
+                        UserId = user.Id,
+                        Role = user.Role.ToString(),
+                        ProjectId = project.Id
+                    });
+                }
+
+                // writing assignment batch to db
+                var batch = _context.CreateBatchWrite<ProjectAssignment>();
+                batch.AddPutItems(assignments);
+                await batch.ExecuteAsync();
+            }
+        }
 
         await _context.SaveAsync(project);
         return ApiResponse<Project>.Ok(project, "Project created successfully");

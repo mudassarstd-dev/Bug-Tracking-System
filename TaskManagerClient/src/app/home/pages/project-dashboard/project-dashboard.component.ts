@@ -5,6 +5,7 @@ import { ProjectDialogComponent } from '../../dialogs/project-dialog/project-dia
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
 import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -13,7 +14,7 @@ import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
 })
 export class ProjectDashboardComponent implements OnInit {
 
-  constructor(private authService: AuthService, private dialog: MatDialog, private projectService: ProjectService, private userService: UserService) { }
+  constructor(private authService: AuthService, private dialog: MatDialog, private projectService: ProjectService, private userService: UserService, private router: Router) { }
 
   isManager: boolean = true
   AddButtonText: string = "Add New Project"
@@ -21,112 +22,133 @@ export class ProjectDashboardComponent implements OnInit {
   // assignees: ProjectAssigneeDto[]
 
   ngOnInit(): void {
-    // this.checkRole()
+    this.checkRole()
     // this.userService.getNotManagers()
 
-
-    this.projects = [
-      {
-        id: 'p1',
-        name: 'Website Redesign',
-        description: 'Improve UI and add new components.',
-        logoUrl: 'https://via.placeholder.com/150x150?text=Logo1',
-        hover: false
-      },
-      {
-        id: 'p2',
-        name: 'API Migration',
-        description: 'Migrate backend from legacy system.',
-        logoUrl: 'http://localhost:5153/uploads/project-logo.png',
-        hover: false
-      },
-      {
-        id: 'p3',
-        name: 'Mobile App',
-        description: 'Build cross-platform Flutter app.',
-        logoUrl: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F1807538%2Fphone_icon&psig=AOvVaw1ECQpAELfev4QfA1l3DVAa&ust=1761135989515000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKiLzPyktZADFQAAAAAdAAAAABAE',
-        hover: false
-      }
-    ];
-
-
-    // this.projectService.getAllProjects().subscribe({
-    //   next: res => {
-    //     this.projects = res.data
+    // this.projects = [
+    //   {
+    //     id: 'p1',
+    //     name: 'Website Redesign',
+    //     description: 'Improve UI and add new components.',
+    //     logoUrl: 'http://localhost:5153/uploads/project-logo.png',
+    //     hover: false
+    //   },
+    //   {
+    //     id: 'p2',
+    //     name: 'API Migration',
+    //     description: 'Migrate backend from legacy system.',
+    //     logoUrl: 'http://localhost:5153/uploads/project-logo.png',
+    //     hover: false
+    //   },
+    //   {
+    //     id: 'p3',
+    //     name: 'Mobile App',
+    //     description: 'Build cross-platform Flutter app.',
+    //     logoUrl: 'http://localhost:5153/uploads/project-logo.png',
+    //     hover: false
     //   }
-    // })
+    // ];
+
+    this.getProjects()
+
   }
 
 
+  editProject(project: any) {
+    this.openProjectDialog()
+  }
 
   openProjectDialog() {
 
-    const assignees: ProjectAssigneeDto[] = [
-      {
-        Id: "u1",
-        username: "alice.wong",
-        avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-        role: "admin",
-      },
-      {
-        Id: "u2",
-        username: "ben.smith",
-        avatar: "https://randomuser.me/api/portraits/men/45.jpg",
-        role: "developer",
-      },
-      {
-        Id: "u3",
-        username: "carla.jones",
-        avatar: "https://randomuser.me/api/portraits/women/21.jpg",
-        role: "designer",
-      },
-      {
-        Id: "u4",
-        username: "david.ng",
-        avatar: "https://randomuser.me/api/portraits/men/52.jpg",
-        role: "tester",
-      },
-      {
-        Id: "u5",
-        username: "emma.li",
-        avatar: "https://randomuser.me/api/portraits/women/33.jpg",
-        role: "developer",
-      },
-      {
-        Id: "u6",
-        username: "frank.taylor",
-        avatar: "https://randomuser.me/api/portraits/men/13.jpg",
-        role: "project_manager",
-      },
-    ];
+    // const assignees: ProjectAssigneeDto[] = [
+    //   {
+    //     Id: "u1",
+    //     username: "alice.wong",
+    //     avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    //     role: "admin",
+    //   },
+    //   {
+    //     Id: "u2",
+    //     username: "ben.smith",
+    //     avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+    //     role: "developer",
+    //   },
+    //   {
+    //     Id: "u3",
+    //     username: "carla.jones",
+    //     avatar: "https://randomuser.me/api/portraits/women/21.jpg",
+    //     role: "designer",
+    //   },
+    //   {
+    //     Id: "u4",
+    //     username: "david.ng",
+    //     avatar: "https://randomuser.me/api/portraits/men/52.jpg",
+    //     role: "tester",
+    //   },
+    //   {
+    //     Id: "u5",
+    //     username: "emma.li",
+    //     avatar: "https://randomuser.me/api/portraits/women/33.jpg",
+    //     role: "developer",
+    //   },
+    //   {
+    //     Id: "u6",
+    //     username: "frank.taylor",
+    //     avatar: "https://randomuser.me/api/portraits/men/13.jpg",
+    //     role: "project_manager",
+    //   },
+    // ];
 
-    const dialogRef = this.dialog.open(ProjectDialogComponent, {
-      data: { assignees }
-    });
+    // const dialogRef = this.dialog.open(ProjectDialogComponent, {
+    //   data: { assignees }
+    // });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Project data:', result);
-        this.projectService.createProject(result).subscribe()
-      }
-    });
-
-    // this.userService.getNotManagers().subscribe({
-    //   next: res => {
-    //     const assignees = res.data || [];
-    //     const dialogRef = this.dialog.open(ProjectDialogComponent, {
-    //       data: { assignees }
-    //     });
-
-    //     dialogRef.afterClosed().subscribe(result => {
-    //       if (result) {
-    //         this.projectService.createProject(result).subscribe()
-    //         console.log('Project data:', result);
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     console.log('Project data:', result);
+    //     this.projectService.createProject(result).subscribe({
+    //       next: res => {
+    //         this.getProjects()
     //       }
-    //     });
-
+    //     })
     //   }
-    // })
+    // });
+
+    this.userService.getNotManagers().subscribe({
+      next: res => {
+        const assignees = res.data || [];
+        const dialogRef = this.dialog.open(ProjectDialogComponent, {
+          data: { assignees }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.projectService.createProject(result).subscribe()
+            console.log('Project data:', result);
+          }
+        });
+
+      }
+    })
+  }
+
+  navToDetails(projectTitle: string) {
+      this.router.navigate(['/home/bugs'])
+      localStorage.setItem("project-title", projectTitle)
+  }
+
+
+  private getProjects() {
+    this.projectService.getAllProjects().subscribe({
+      next: res => {
+        this.projects = res.data
+      }
+    })
+  }
+
+  deleteProject(projectId: string) {
+      console.log(` project id: ${projectId}`)
+      this.projectService.deleteById(projectId).subscribe()
   }
 
   private checkRole() {

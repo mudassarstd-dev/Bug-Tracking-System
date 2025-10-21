@@ -9,7 +9,15 @@ export class BugListComponent implements OnInit {
 
   constructor() { }
 
+  projectTitle: string = "Default"
+
   ngOnInit(): void {
+    this.projectTitle = localStorage.getItem("project-title")
+    localStorage.removeItem("project-title")
   }
+
+  items = [
+    {title: "one"}
+  ]
 
 }

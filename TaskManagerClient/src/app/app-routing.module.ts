@@ -8,13 +8,16 @@ import { RoleGuard } from './auth/role.guard';
 import { OnBoardComponent } from './on-board/on-board.component';
 import { WithRoleGuard } from './auth/register/with-role.guard';
 import { ProjectDashboardComponent } from './home/pages/project-dashboard/project-dashboard.component';
+import { BugListComponent } from './home/pages/bug-list/bug-list.component';
+import { audit } from 'rxjs/operators';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    component: HomeComponent, canActivate: [ AuthGuard ],
     children: [
-      { path: 'dashboard', component: ProjectDashboardComponent }
+      { path: 'dashboard', component: ProjectDashboardComponent },
+      { path: 'bugs', component: BugListComponent }
     ]
   },
   { path: 'register', component: RegisterComponent, canActivate: [ WithRoleGuard ] },

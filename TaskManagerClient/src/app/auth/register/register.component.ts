@@ -143,6 +143,6 @@ export class RegisterComponent implements OnInit{
       })
   }
   navToHome() {
-     setTimeout(() => this.router.navigate(['/home']), 1000);
+     setTimeout(() => this.router.navigate(['/login']), 1000);
   }
 }

@@ -19,9 +19,9 @@ public class DynamoAuthService
     {
         try
         {
-            var existingUser = await GetUserByEmailAsync(registerDto.email);
-            if (existingUser != null)
-                return ApiResponse<AuthResponseDto>.Fail("User with this email already exists.", ErrorCode.UserExists);
+            // var existingUser = await GetUserByEmailAsync(registerDto.email);
+            // if (existingUser != null)
+            //     return ApiResponse<AuthResponseDto>.Fail("User with this email already exists.", ErrorCode.UserExists);
 
             if (!Enum.TryParse<Role>(registerDto.role, true, out var role))
                 return ApiResponse<AuthResponseDto>.Fail("Invalid role", ErrorCode.InvalidRole);

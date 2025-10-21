@@ -23,4 +23,8 @@ export class ProjectService {
       return this.http.get<ApiResponse<any>>(this.api_url);
   }
 
+  deleteById(id: string) {
+      return this.http.delete<ApiResponse<any>>(`${this.api_url}/${id}`);
+  }
+
 }

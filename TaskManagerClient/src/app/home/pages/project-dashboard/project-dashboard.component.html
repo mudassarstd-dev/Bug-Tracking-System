@@ -1,33 +1,30 @@
 <div class="sub-navbar mat-elevation-z0">
 
-  <!-- Left: Green line + titles -->
-  <div class="subnav-left">
-    <div class="green-bar"></div>
+    <!-- Left: Green line + titles -->
+    <div class="subnav-left">
+        <div class="green-bar"></div>
 
-    <div class="titles">
-      <div class="title">Projects</div>
-      <div class="subtitle">Overview of active projects</div>
+        <div class="titles">
+            <div class="title">Projects</div>
+            <div class="subtitle">Overview of active projects</div>
+        </div>
     </div>
-  </div>
 
-  <!-- Right: Search + Add button -->
-  <div class="subnav-right">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Search projects</mat-label>
-      <input matInput placeholder="Search..." />
-      <button mat-icon-button matSuffix>
-        <mat-icon>search</mat-icon>
-      </button>
-    </mat-form-field>
+    <!-- Right: Search + Add button -->
+    <div class="subnav-right">
+        <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search projects</mat-label>
+            <input matInput placeholder="Search..." />
+            <button mat-icon-button matSuffix>
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
 
-    <button 
-    mat-flat-button color="primary"
-    (click)="openProjectDialog()"
-    >
-      <mat-icon>add</mat-icon>
-      {{ AddButtonText }}
-    </button>
-  </div>
+        <button mat-flat-button color="primary" (click)="openProjectDialog()">
+            <mat-icon>add</mat-icon>
+            {{ AddButtonText }}
+        </button>
+    </div>
 </div>
 
 <!-- Bottom divider line -->
@@ -53,36 +50,36 @@
 </div> -->
 
 <div class="projects-section">
-  <mat-card
-    class="project-card"
-    *ngFor="let item of projects"
-    (mouseenter)="item.hover = true"
-    (mouseleave)="item.hover = false"
-    [class.hovered]="item.hover"
-  >
-    <!-- Logo -->
-    <img
-      *ngIf="item.logoUrl"
-      [src]="item.logoUrl"
-      alt="{{ item.name }}"
-      class="project-logo"
-    />
+    <mat-card class="project-card" *ngFor="let item of projects" (mouseenter)="item.hover = true"
+        (mouseleave)="item.hover = false" [class.hovered]="item.hover" (click)="navToDetails(item.name)">
+        <!-- Logo -->
+        <img *ngIf="item.logoUrl" [src]="item.logoUrl" alt="{{ item.name }}" class="project-logo" />
 
-    <!-- Hover controls (visible only for manager + hover) -->
-    <div class="hover-actions" *ngIf="isManager && item.hover">
+        <!-- Hover controls (visible only for manager + hover) -->
+        <!-- <div class="hover-actions" *ngIf="isManager && item.hover">
       <button mat-icon-button (click)="editProject(item)">
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button (click)="deleteProject(item)">
         <mat-icon>delete</mat-icon>
       </button>
-    </div>
+    </div> -->
 
-    <!-- Content -->
-    <mat-card-title>{{ item.name }}</mat-card-title>
-    <mat-card-content>
-      <p>{{ item.description }}</p>
-      <p><strong>Tasks:</strong> {{ item.completedTasks || 0 }} / {{ item.totalTasks || 0 }}</p>
-    </mat-card-content>
-  </mat-card>
+        <div class="hover-actions" *ngIf="isManager && item.hover">
+            <button mat-icon-button (click)="editProject(item); $event.stopPropagation()">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteProject(item.id); $event.stopPropagation()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+
+
+        <!-- Content -->
+        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-content>
+            <p>{{ item.description }}</p>
+            <p><strong>Tasks:</strong> {{ item.completedTasks || 0 }} / {{ item.totalTasks || 0 }}</p>
+        </mat-card-content>
+    </mat-card>
 </div>

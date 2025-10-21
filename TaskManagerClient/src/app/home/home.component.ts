@@ -45,8 +45,12 @@ export class HomeComponent implements OnInit {
   ];
 
     this.renderDashboard()
+
   }
 
+  renderView() {
+    this.router.navigate(['/home/bugs'])
+  }
 
   private renderDashboard() {
     this.router.navigate(['/home/dashboard'])

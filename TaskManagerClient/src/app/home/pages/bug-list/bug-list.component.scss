@@ -1,0 +1,119 @@
+.sub-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 86px;
+    padding: 0;
+    position: relative;
+
+    .subnav-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        height: 100%;
+
+        .green-bar {
+            width: 4px;
+            height: 100%;
+            background-color: #2E7D32;
+            border-radius: 2px;
+        }
+
+        .titles {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+
+            .title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: rgba(0, 0, 0, 0.87);
+                margin-bottom: 4px;
+                line-height: 1.4;
+            }
+
+            .subtitle {
+                font-size: 0.875rem;
+                color: rgba(0, 0, 0, 0.6);
+                line-height: 1.2;
+            }
+        }
+    }
+
+    .subnav-right {
+        display: flex;
+        align-items: center;
+        /* vertically center search + button */
+        gap: 16px;
+        height: 100%;
+
+        .search-field {
+            width: 240px;
+
+            ::ng-deep .mat-mdc-form-field-outline {
+                border-radius: 20px;
+            }
+
+            input {
+                padding-left: 8px;
+            }
+
+            .mat-mdc-form-field-flex {
+                height: 40px;
+                /* matches button height visually */
+                align-items: center;
+            }
+        }
+
+        button[mat-flat-button] {
+            border-radius: 20px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 40px;
+        }
+    }
+}
+
+.navbar-divider {
+    margin-inline: auto;
+    max-width: calc(100vw - 442px);
+    border: none;
+    border-top: 1px solid #ECECEE;
+    overflow-x: hidden;
+}
+
+button[mat-flat-button] {
+    height: 45px !important;
+    width: 160px !important;
+    margin-bottom: 16px !important;
+    border-radius: 5px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    .mat-icon {
+        font-size: 20px;
+    }
+}
+
+.search-filter-section {
+    display: flex;
+    max-height: 72px;
+    align-items: start;
+    justify-content: flex-start;
+    padding: 0px;
+
+    .space {
+        flex: 1;
+    }
+
+    .right-content {
+        display: flex;
+        gap: 32px;
+        align-items: baseline;
+    }
+}

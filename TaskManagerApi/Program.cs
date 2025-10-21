@@ -57,14 +57,29 @@ builder.Services.AddScoped<DynamoAuthService>();
 builder.Services.AddScoped<DynamoProjectService>();
 builder.Services.AddScoped<DynamoUserService>();
 
-var awsRegion = Amazon.RegionEndpoint.EUNorth1;
-var awsAccessKey = builder.Configuration["AWS:AccessKey"];
-var awsSecretKey = builder.Configuration["AWS:SecretKey"];
+// var awsRegion = Amazon.RegionEndpoint.EUNorth1;
+// var awsAccessKey = builder.Configuration["AWS:AccessKey"];
+// var awsSecretKey = builder.Configuration["AWS:SecretKey"];
+
+// builder.Services.AddSingleton<IAmazonDynamoDB>(sp =>
+// {
+//     return new AmazonDynamoDBClient(awsAccessKey, awsSecretKey, awsRegion);
+// });
+
 
 builder.Services.AddSingleton<IAmazonDynamoDB>(sp =>
 {
-    return new AmazonDynamoDBClient(awsAccessKey, awsSecretKey, awsRegion);
+    var config = new AmazonDynamoDBConfig
+    {
+        ServiceURL = "http://localhost:8000", 
+        UseHttp = true
+    };
+
+    return new AmazonDynamoDBClient("FakeId", "FakeSecretKey", config);
 });
+
+
+
 builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 
 var app = builder.Build();
@@ -101,7 +116,7 @@ app.UseCors(policy =>
     policy.AllowAnyOrigin()
           .AllowAnyMethod()
           .AllowAnyHeader());
-          
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "uploads")),

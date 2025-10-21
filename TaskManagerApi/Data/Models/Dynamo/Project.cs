@@ -12,7 +12,7 @@ namespace TaskManagerApi.Data.Models.Dynamo;
         public string? Description { get; set; }
         public string? ImagePath { get; set; }
     
-        // [DynamoDBGlobalSecondaryIndexHashKey("ManagerId-Index")] 
+        [DynamoDBGlobalSecondaryIndexHashKey("ManagerIdIndex")] 
         public string ManagerId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
