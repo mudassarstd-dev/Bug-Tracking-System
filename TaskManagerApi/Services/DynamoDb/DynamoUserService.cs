@@ -1,5 +1,6 @@
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using SQLitePCL;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
 
@@ -28,23 +29,72 @@ public class DynamoUserService
         return ApiResponse<string>.Ok("Ok");
         // return user != null ? ApiResponse<User>.Ok(user) : ApiResponse<User>.Fail("User not found", ErrorCode.NotFound);
     }
-    
+
     public async Task<ApiResponse<List<ProjectAssigneeDto>>> GetNotManagers()
     {
         if (!isManager()) return ApiResponse<List<ProjectAssigneeDto>>.Fail("Manager Only", ErrorCode.InvalidRole);
 
-    var scanConditions = new List<ScanCondition>
-    {
-        new ScanCondition("Role", ScanOperator.In, new[] { Role.Developer.ToString(), Role.QA.ToString() })
-    };
+        // only get those users to whom project is not already assigned
 
-    var scan = _context.ScanAsync<User>(scanConditions);
-    var users = await scan.GetRemainingAsync();
+        var scanConditions = new List<ScanCondition>
+            {
+                new ScanCondition("Role", ScanOperator.In, new[] { Role.Developer.ToString(), Role.QA.ToString() })
+            };
 
-    var result = users.Select(u => new ProjectAssigneeDto(id: u.Id, username: u.Name, role: u.Role)).ToList();
+        var scan = _context.ScanAsync<User>(scanConditions);
+        var users = await scan.GetRemainingAsync();
 
-    return ApiResponse<List<ProjectAssigneeDto>>.Ok(result);
+        var result = users.Select(u => new ProjectAssigneeDto(id: u.Id, username: u.Name, role: u.Role)).ToList();
+
+        return ApiResponse<List<ProjectAssigneeDto>>.Ok(result);
     }
+    
+    public async Task<ApiResponse<List<UserAvatarDto>>> GetDevelopers()
+    {
+        // if (!isManager()) return ApiResponse<List<ProjectAssigneeDto>>.Fail("Manager Only", ErrorCode.InvalidRole);
+
+        var scanConditions = new List<ScanCondition>
+            {
+                new ScanCondition("Role", ScanOperator.In, new[] { Role.Developer.ToString() })
+            };
+
+        var scan = _context.ScanAsync<User>(scanConditions);
+        var users = await scan.GetRemainingAsync();
+
+        var result = users.Select(u => new UserAvatarDto(id: u.Id, avatar: u.ProfileImageUrl)).ToList();
+
+        return ApiResponse<List<UserAvatarDto>>.Ok(result);
+    }
+
+    public async Task<ApiResponse<List<ProjectAssigneeDto>>> GetProjectAssignees(string projectId)
+    {
+        if (!isManager()) return ApiResponse<List<ProjectAssigneeDto>>.Fail("Manager Only", ErrorCode.InvalidRole);
+
+        var query = _context.QueryAsync<ProjectAssignment>(
+            projectId,
+            new QueryConfig
+            {
+                IndexName = "ProjectIdIndex"
+            });
+
+        var assigees = await query.GetRemainingAsync();
+        var assigneeIds = assigees.Select(a => a.UserId);
+
+        var batchGet = _context.CreateBatchGet<User>();
+        foreach (var uid in assigneeIds)
+        {
+            batchGet.AddKey(uid); 
+        }
+
+        await batchGet.ExecuteAsync();
+
+        var users = batchGet.Results;
+        var result = users.Select(u => new ProjectAssigneeDto(id: u.Id, username: u.Name, role: u.Role)).ToList();
+
+        return ApiResponse<List<ProjectAssigneeDto>>.Ok(result);
+    }
+
+
 
     public async Task<ApiResponse<List<User>>> GetByRoleAsync(string role)
     {

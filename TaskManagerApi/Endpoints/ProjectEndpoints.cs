@@ -35,8 +35,32 @@ public static class ProjectEndpoints
         group.MapGet("/{projectId}", async (string projectId, DynamoProjectService service) =>
             (await service.GetByIdAsync(projectId)).ToHttpResult());
 
-        group.MapPut("/{projectId}", async (string projectId, [FromBody] UpdateProjectDto dto, DynamoProjectService service) =>
-            (await service.UpdateProjectAsync(projectId, dto)).ToHttpResult());
+        // group.MapPut("/{projectId}", async (string projectId, [FromBody] UpdateProjectDto dto, DynamoProjectService service) =>
+        //     (await service.UpdateProjectAsync(projectId, dto)).ToHttpResult());
+
+        group.MapPut("/{projectId}", async (
+            string projectId,
+            [FromForm] string name,
+            [FromForm] string? description,
+            [FromForm] string assigneeIds,
+            [FromForm] IFormFile? logo,
+            DynamoProjectService service
+        ) =>
+        {
+            var assigneeIdList = string.IsNullOrWhiteSpace(assigneeIds)
+                ? new List<string>()
+                : System.Text.Json.JsonSerializer.Deserialize<List<string>>(assigneeIds)!;
+
+            string? logoPath = null;
+            if (logo is not null)
+            {
+                logoPath = await FileHandler.SaveFileAsync(logo);
+            }
+
+            var dto = new UpdateProjectDto(name, description, assigneeIdList, logoPath);
+
+            return (await service.UpdateProjectAsync(projectId, dto)).ToHttpResult();
+        }).DisableAntiforgery();
 
         group.MapDelete("/{projectId}", async (string projectId, DynamoProjectService service) =>
             (await service.DeleteProjectAsync(projectId)).ToHttpResult());

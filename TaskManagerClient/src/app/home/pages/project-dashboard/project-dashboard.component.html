@@ -20,7 +20,7 @@
             </button>
         </mat-form-field>
 
-        <button mat-flat-button color="primary" (click)="openProjectDialog()">
+        <button *ngIf="isManager" mat-flat-button color="primary" (click)="openProjectDialog()">
             <mat-icon>add</mat-icon>
             {{ AddButtonText }}
         </button>
@@ -51,7 +51,7 @@
 
 <div class="projects-section">
     <mat-card class="project-card" *ngFor="let item of projects" (mouseenter)="item.hover = true"
-        (mouseleave)="item.hover = false" [class.hovered]="item.hover" (click)="navToDetails(item.name)">
+        (mouseleave)="item.hover = false" [class.hovered]="item.hover" (click)="navToDetails(item)">
         <!-- Logo -->
         <img *ngIf="item.logoUrl" [src]="item.logoUrl" alt="{{ item.name }}" class="project-logo" />
 
@@ -66,7 +66,7 @@
     </div> -->
 
         <div class="hover-actions" *ngIf="isManager && item.hover">
-            <button mat-icon-button (click)="editProject(item); $event.stopPropagation()">
+            <button mat-icon-button (click)="openProjectDialog(item); $event.stopPropagation()">
                 <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button (click)="deleteProject(item.id); $event.stopPropagation()">
@@ -82,4 +82,5 @@
             <p><strong>Tasks:</strong> {{ item.completedTasks || 0 }} / {{ item.totalTasks || 0 }}</p>
         </mat-card-content>
     </mat-card>
+
 </div>

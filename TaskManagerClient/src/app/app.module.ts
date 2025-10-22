@@ -15,6 +15,7 @@ import { MaterialModule } from './material.module';
 import { ProjectDashboardComponent } from './home/pages/project-dashboard/project-dashboard.component';
 import { ProjectDialogComponent } from './home/dialogs/project-dialog/project-dialog.component';
 import { BugListComponent } from './home/pages/bug-list/bug-list.component';
+import { BugDialogComponent } from './home/dialogs/bug-dialog/bug-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { BugListComponent } from './home/pages/bug-list/bug-list.component';
     OnBoardComponent,
     ProjectDashboardComponent,
     ProjectDialogComponent,
-    BugListComponent
+    BugListComponent,
+    BugDialogComponent
   ],
   imports: [
     BrowserModule,

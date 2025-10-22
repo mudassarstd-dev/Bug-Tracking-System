@@ -22,37 +22,37 @@ export class HomeComponent implements OnInit {
     this.username = this.authService.getUsername().split(' ')[0] || "NA"
 
     this.navbarOptions = [
-    {
-      title: "Projects",
-      icon: "assets/icons/projects.png",
-      show: true
-    },
-    {
-      title: "Bugs",
-      icon: "assets/icons/bugs.svg",
-      show: true
-    },
-    {
-      title: "Manage",
-      icon: "bar_chart",
-      show: this.isManager
-    },
-    {
-      title: "Users",
-      icon: "bar_chart",
-      show: this.isManager
-    },
-  ];
+      {
+        title: "Projects",
+        icon: "assets/icons/projects.png",
+        show: true
+      },
+      {
+        title: "Bugs",
+        icon: "assets/icons/bugs.svg",
+        show: true
+      },
+      {
+        title: "Manage",
+        icon: "bar_chart",
+        show: this.isManager
+      },
+      {
+        title: "Users",
+        icon: "bar_chart",
+        show: this.isManager
+      },
+    ];
 
     this.renderDashboard()
 
   }
 
   renderView() {
-    this.router.navigate(['/home/bugs'])
+    this.router.navigate(['/bugs'])
   }
 
   private renderDashboard() {
-    this.router.navigate(['/home/dashboard'])
+    this.router.navigate(['/dashboard'])
   }
 }

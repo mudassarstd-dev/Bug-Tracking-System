@@ -63,6 +63,6 @@ export class LoginComponent implements OnInit {
     }
 
   navToDash(role: string) {
-    setTimeout(() => this.router.navigate(['/home']), 1000);
+    setTimeout(() => this.router.navigate(['/']), 1000);
   }
 }

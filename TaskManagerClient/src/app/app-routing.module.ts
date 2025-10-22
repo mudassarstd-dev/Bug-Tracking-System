@@ -13,11 +13,13 @@ import { audit } from 'rxjs/operators';
 
 const routes: Routes = [
   {
-    path: 'home',
-    component: HomeComponent, canActivate: [ AuthGuard ],
+    path: '',
+    component: HomeComponent, 
+    // canActivate: [ AuthGuard ],
     children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: ProjectDashboardComponent },
-      { path: 'bugs', component: BugListComponent }
+      { path: 'projects/:projectId/bugs', component: BugListComponent }
     ]
   },
   { path: 'register', component: RegisterComponent, canActivate: [ WithRoleGuard ] },
@@ -26,7 +28,7 @@ const routes: Routes = [
   // { path: 'home', component: HomeComponent },
   // { path: 'e-dash', component: EmpDashboardComponent, canActivate: [ AuthGuard, RoleGuard ], data: {role: "Employee"} },
   // { path: 'm-dash', component: ManagerDashboardComponent, canActivate: [ AuthGuard, RoleGuard ], data: {role: "Manager"} },
-  { path: '**', redirectTo: '/login' }
+  // { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

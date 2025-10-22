@@ -56,6 +56,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<DynamoAuthService>();
 builder.Services.AddScoped<DynamoProjectService>();
 builder.Services.AddScoped<DynamoUserService>();
+builder.Services.AddScoped<DynamoBugService>();
 
 // var awsRegion = Amazon.RegionEndpoint.EUNorth1;
 // var awsAccessKey = builder.Configuration["AWS:AccessKey"];
@@ -100,7 +101,7 @@ app.UseExceptionHandler(errorApp =>
 
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
 
-        Console.WriteLine("🚨 Exception caught by middleware:");
+        Console.WriteLine("Exception caught by middleware:");
         Console.WriteLine(exception?.GetType().FullName);
         Console.WriteLine(exception?.Message);
         Console.WriteLine(exception?.StackTrace);
@@ -131,5 +132,6 @@ app.UseHttpsRedirection();
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
 app.MapProjectEndpoints();
+app.MapBugEndpoints();
 
 app.Run();

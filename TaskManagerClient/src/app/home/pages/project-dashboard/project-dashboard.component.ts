@@ -5,7 +5,7 @@ import { ProjectDialogComponent } from '../../dialogs/project-dialog/project-dia
 import { ProjectService } from 'src/app/services/project.service';
 import { UserService } from 'src/app/services/user.service';
 import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-dashboard',
@@ -14,12 +14,11 @@ import { Router } from '@angular/router';
 })
 export class ProjectDashboardComponent implements OnInit {
 
-  constructor(private authService: AuthService, private dialog: MatDialog, private projectService: ProjectService, private userService: UserService, private router: Router) { }
+  constructor(private authService: AuthService, private dialog: MatDialog, private projectService: ProjectService, private router: Router, private route: ActivatedRoute) { }
 
-  isManager: boolean = true
+  isManager: boolean = false
   AddButtonText: string = "Add New Project"
   projects: any
-  // assignees: ProjectAssigneeDto[]
 
   ngOnInit(): void {
     this.checkRole()
@@ -53,90 +52,37 @@ export class ProjectDashboardComponent implements OnInit {
 
   }
 
+  openProjectDialog(project?: any) {
 
-  editProject(project: any) {
-    this.openProjectDialog()
-  }
+    console.log(`project data being passed from dashobard: ${project}`)
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      data: { project }
+    });
 
-  openProjectDialog() {
-
-    // const assignees: ProjectAssigneeDto[] = [
-    //   {
-    //     Id: "u1",
-    //     username: "alice.wong",
-    //     avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-    //     role: "admin",
-    //   },
-    //   {
-    //     Id: "u2",
-    //     username: "ben.smith",
-    //     avatar: "https://randomuser.me/api/portraits/men/45.jpg",
-    //     role: "developer",
-    //   },
-    //   {
-    //     Id: "u3",
-    //     username: "carla.jones",
-    //     avatar: "https://randomuser.me/api/portraits/women/21.jpg",
-    //     role: "designer",
-    //   },
-    //   {
-    //     Id: "u4",
-    //     username: "david.ng",
-    //     avatar: "https://randomuser.me/api/portraits/men/52.jpg",
-    //     role: "tester",
-    //   },
-    //   {
-    //     Id: "u5",
-    //     username: "emma.li",
-    //     avatar: "https://randomuser.me/api/portraits/women/33.jpg",
-    //     role: "developer",
-    //   },
-    //   {
-    //     Id: "u6",
-    //     username: "frank.taylor",
-    //     avatar: "https://randomuser.me/api/portraits/men/13.jpg",
-    //     role: "project_manager",
-    //   },
-    // ];
-
-    // const dialogRef = this.dialog.open(ProjectDialogComponent, {
-    //   data: { assignees }
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     console.log('Project data:', result);
-    //     this.projectService.createProject(result).subscribe({
-    //       next: res => {
-    //         this.getProjects()
-    //       }
-    //     })
-    //   }
-    // });
-
-    this.userService.getNotManagers().subscribe({
-      next: res => {
-        const assignees = res.data || [];
-        const dialogRef = this.dialog.open(ProjectDialogComponent, {
-          data: { assignees }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            this.projectService.createProject(result).subscribe()
-            console.log('Project data:', result);
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      if (project) {
+        this.projectService.updateProject(project.id, result).subscribe({
+          next: () => {
+            console.log('Project updated successfully');
+            this.getProjects();
           }
         });
-
+      } else {
+        this.projectService.createProject(result).subscribe(resp => {
+            this.getProjects();
+        })
+        console.log('Project data:', result);
       }
-    })
+    });
   }
 
-  navToDetails(projectTitle: string) {
-      this.router.navigate(['/home/bugs'])
-      localStorage.setItem("project-title", projectTitle)
+  navToDetails(project: any) {
+    // this.router.navigate(['/home/bugs'])
+    console.log(`got here with projectid: ${project.id}`)
+    this.router.navigate([ `projects/${project.id}/bugs`]);
+    localStorage.setItem("project-title", project.name)
   }
-
 
   private getProjects() {
     this.projectService.getAllProjects().subscribe({
@@ -147,8 +93,11 @@ export class ProjectDashboardComponent implements OnInit {
   }
 
   deleteProject(projectId: string) {
-      console.log(` project id: ${projectId}`)
-      this.projectService.deleteById(projectId).subscribe()
+    this.projectService.deleteById(projectId).subscribe({
+      next: res => {
+        this.getProjects()
+      }
+    })
   }
 
   private checkRole() {

@@ -113,7 +113,199 @@ button[mat-flat-button] {
 
     .right-content {
         display: flex;
+        background: #000;
         gap: 32px;
         align-items: baseline;
     }
+}
+
+/* ===================== TABLE BASE ===================== */
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb; /* outer border */
+  border-radius: 6px;
+}
+
+.custom-material-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+  table-layout: auto;
+}
+
+/* ===================== HEADER ===================== */
+
+.header-row {
+  background-color: #f9fafb;
+}
+
+.custom-header {
+  position: relative;
+  padding: 12px 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #374151;
+  font-weight: 600;
+  border: none;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Vertical divider between headers */
+.custom-header:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 56%;
+  width: 1px;
+  background-color: #d1d5db;
+}
+
+/* Header bottom border */
+.header-row .custom-header {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ===================== ROWS ===================== */
+
+.data-row {
+  background: #ffffff;
+}
+
+.custom-cell {
+  padding: 12px 16px;
+  color: #4b5563;
+  border: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Horizontal row borders */
+.data-row .custom-cell {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Remove bottom border on last row */
+.data-row:last-child .custom-cell {
+  border-bottom: none;
+}
+
+/* ===================== BUG DETAILS ===================== */
+
+.bug-details {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.bug-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bug-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.custom-header.bug-details-header{
+  text-align: left;
+  justify-content: flex-start;
+}
+
+
+/* ===================== STATUS CHIP ===================== */
+
+.status-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px; /* smaller radius per spec */
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-chip.open {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-chip.in\ progress {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-chip.closed {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* ===================== DUE DATE ===================== */
+
+.calendar-icon {
+  font-size: 20px;
+  color: #6b7280;
+  vertical-align: middle;
+}
+
+/* ===================== ASSIGNED TO (AVATARS) ===================== */
+
+.avatar-stack {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-stack .avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  object-fit: cover;
+  margin-left: -8px;
+  transition: transform 0.2s ease;
+}
+
+.avatar-stack .avatar:first-child {
+  margin-left: 0;
+}
+
+.avatar-stack .avatar:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* ===================== ACTION COLUMN ===================== */
+
+.action-cell {
+  text-align: center;
+}
+
+.action-cell button {
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.action-cell button:hover {
+  color: #111827;
+}
+
+/* ===================== RESPONSIVE ===================== */
+
+@media (max-width: 640px) {
+  .custom-header,
+  .custom-cell {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }

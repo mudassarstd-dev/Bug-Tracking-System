@@ -96,7 +96,7 @@ public class DynamoProjectService
                 id: project.Id,
                 name: project.Name,
                 description: project.Description,
-                logoUrl: string.IsNullOrWhiteSpace(project.ImagePath) ? null : $"http://localhost:5153//uploads/{Path.GetFileName(project.ImagePath)}"
+                logoUrl: string.IsNullOrWhiteSpace(project.ImagePath) ? null : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}"
             );
 
             projectDtos.Add(dto);
@@ -111,13 +111,73 @@ public class DynamoProjectService
             return ApiResponse<Project>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
 
         var project = await _context.LoadAsync<Project>(projectId);
-        if (project == null) return ApiResponse<Project>.Fail("Project not found", ErrorCode.NotFound);
+        if (project == null)
+            return ApiResponse<Project>.Fail("Project not found", ErrorCode.NotFound);
 
-        if (!string.IsNullOrWhiteSpace(dto.Name)) project.Name = dto.Name;
-        if (dto.Description != null) project.Description = dto.Description;
+        if (!string.IsNullOrWhiteSpace(dto.Name))
+            project.Name = dto.Name;
+        if (dto.Description != null)
+            project.Description = dto.Description;
+        if (!string.IsNullOrWhiteSpace(dto.logoPath))
+            project.ImagePath = dto.logoPath;
+
+        if (dto.assigneeIds != null)
+        {
+            var query = _context.QueryAsync<ProjectAssignment>(
+                projectId,
+                new QueryConfig
+                {
+                    IndexName = "ProjectIdIndex" 
+                });
+
+            var currentAssignments = await query.GetRemainingAsync();
+            var currentUserIds = currentAssignments.Select(a => a.UserId).ToList();
+            var newUserIds = dto.assigneeIds.Distinct().ToList();
+
+            var toRemove = currentAssignments
+                .Where(a => !newUserIds.Contains(a.UserId))
+                .ToList();
+
+            var toAddIds = newUserIds
+                .Where(id => !currentUserIds.Contains(id))
+                .ToList();
+
+            if (toRemove.Any())
+            {
+                var deleteBatch = _context.CreateBatchWrite<ProjectAssignment>();
+                deleteBatch.AddDeleteItems(toRemove);
+                await deleteBatch.ExecuteAsync();
+            }
+
+            if (toAddIds.Any())
+            {
+                var newAssignments = new List<ProjectAssignment>();
+
+                foreach (var userId in toAddIds)
+                {
+                    var user = await _context.LoadAsync<User>(userId);
+                    if (user is not null)
+                    {
+                        newAssignments.Add(new ProjectAssignment
+                        {
+                            UserId = user.Id,
+                            Role = user.Role.ToString(),
+                            ProjectId = project.Id
+                        });
+                    }
+                }
+
+                if (newAssignments.Any())
+                {
+                    var addBatch = _context.CreateBatchWrite<ProjectAssignment>();
+                    addBatch.AddPutItems(newAssignments);
+                    await addBatch.ExecuteAsync();
+                }
+            }
+        }
 
         await _context.SaveAsync(project);
-        return ApiResponse<Project>.Ok(project, "Project updated");
+        return ApiResponse<Project>.Ok(project, "Project updated successfully");
     }
 
     // ONLY MANAGER

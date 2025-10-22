@@ -15,7 +15,13 @@ public static class UsersEndpoints
 
         group.MapGet("/not-managers", async (DynamoUserService userService) =>
          (await userService.GetNotManagers()).ToHttpResult());
-        
+
+        group.MapGet("/devs", async (DynamoUserService userService) =>
+         (await userService.GetDevelopers()).ToHttpResult());
+
+        group.MapGet("/assignees/{projectId}", async (string projectId, DynamoUserService userService) =>
+        (await userService.GetProjectAssignees(projectId)).ToHttpResult());
+
         return app;
     }
 }

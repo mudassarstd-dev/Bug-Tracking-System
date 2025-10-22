@@ -1,32 +1,71 @@
-import { Component, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
+import { UserService } from 'src/app/services/user.service';
+
+
+interface ProjectData {
+  project?: any
+}
 
 @Component({
   selector: 'app-project-dialog',
   templateUrl: './project-dialog.component.html',
   styleUrls: ['./project-dialog.component.scss']
 })
-export class ProjectDialogComponent {
+export class ProjectDialogComponent implements OnInit {
   projectForm: FormGroup;
   assignees: ProjectAssigneeDto[];
+  selectedAssignees: ProjectAssigneeDto[];
   logoPreview: string | ArrayBuffer | null = null;
+  isEditMode: boolean = false
+  saveButtonText = "Save"
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ProjectDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { assignees: ProjectAssigneeDto[] }
+    @Inject(MAT_DIALOG_DATA) public data: ProjectData,
+    private userService: UserService
   ) {
 
-    this.assignees = data.assignees || [];
+    // this.assignees = data.assignees || [];
 
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
       details: [''],
-      assignTo: [[] , Validators.required],
+      assignTo: [[], Validators.required],
       logo: [null]
     });
+  }
+
+  ngOnInit(): void {
+    this.isEditMode = !!this.data.project
+
+    if (this.isEditMode && this.data.project) {
+
+      this.saveButtonText = "Update"
+
+      const { name, description, logoUrl, id: id } = this.data.project;
+      this.projectForm.patchValue({ name, details: description })
+      if (logoUrl) this.logoPreview = logoUrl
+
+    }
+    this.userService.getNotManagers().subscribe({
+      next: res => {
+        this.assignees = res.data || []
+      }
+    });
+
+    this.userService.getProjectAssignees(this.data.project.id).subscribe(resp => {
+      const currentAssignees = resp.data || [];
+      this.selectedAssignees = this.assignees.filter(a =>
+        currentAssignees.some(c => c.id === a.id)
+      );
+      this.projectForm.patchValue({ assignTo: this.selectedAssignees });
+    });
+
   }
 
   onFileSelected(event: Event) {
@@ -51,15 +90,19 @@ export class ProjectDialogComponent {
 
       const { name, details, assignTo, logo } = this.projectForm.value;
 
-      // build payload to send to backend
       const payload = new FormData();
       payload.append('name', name);
       payload.append('description', details || '');
-      payload.append('assigneeIds', JSON.stringify(assignTo.map((u: ProjectAssigneeDto) => u.Id)));
+      payload.append('assigneeIds', JSON.stringify(assignTo.map((u: ProjectAssigneeDto) => u.id)));
       if (logo) payload.append('logo', logo);
 
-      console.log(`payload: ${payload.get('logo')}`)
-      this.dialogRef.close(payload); 
+      console.log(`payload: ${payload.get('assigneeIds')}`)
+
+      if (this.isEditMode && this.data.project) {
+        // payload.append('projectId', this.data.project.id);
+      }
+
+      this.dialogRef.close(payload);
     }
   }
 
@@ -68,7 +111,7 @@ export class ProjectDialogComponent {
   }
 
   removeUser(user: any) {
-  const updated = this.projectForm.value.assignTo.filter((u: any) => u !== user);
-  this.projectForm.patchValue({ assignTo: updated });
-}
+    const updated = this.projectForm.value.assignTo.filter((u: any) => u !== user);
+    this.projectForm.patchValue({ assignTo: updated });
+  }
 }

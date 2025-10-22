@@ -1,0 +1,150 @@
+<!-- <div class="bug-dialog">
+
+  <div class="dialog-topbar">
+    <button mat-icon-button class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+
+  <div class="dialog-title">Add New Bug</div>
+  <hr class="divider" />
+
+  <div class="assign-due-row">
+    <div class="assignees-section">
+      <span class="label">Assign To</span>
+      <div class="avatars">
+        <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
+        <button mat-mini-fab color="primary" class="add-avatar">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="due-date-section">
+      <span class="label">Add Due Date</span>
+      <button mat-icon-button color="primary">
+        <mat-icon>calendar_today</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="bug-title-input">
+    <input matInput placeholder="Enter bug title..." />
+  </div>
+
+  <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
+    <mat-label>Bug Details</mat-label>
+    <textarea matInput rows="4" placeholder="Describe the issue..."></textarea>
+  </mat-form-field>
+
+  <div class="drop-zone">
+    <mat-icon>cloud_upload</mat-icon>
+    <p>Drag & drop image here or <span class="browse">browse</span></p>
+  </div>
+
+  <div class="dialog-footer">
+    <button mat-flat-button color="primary">Add Bug</button>
+  </div>
+</div>  -->
+
+
+<form [formGroup]="bugForm" (ngSubmit)="save()" class="bug-dialog">
+
+    <!-- Top Bar -->
+    <div class="dialog-topbar">
+        <button mat-icon-button class="close-btn" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <!-- Title -->
+    <div class="dialog-title">Add New Bug</div>
+    <hr class="divider" />
+
+    <!-- Assignees + Due Date Row -->
+    <div class="assign-due-row">
+        <!-- Assignees -->
+        <div class="assignees-section">
+            <span class="label">Assign To</span>
+
+
+            <!-- <div class="avatars">
+        <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
+        <button mat-mini-fab color="primary" class="add-avatar">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div> -->
+
+
+            <div class="avatars">
+                <img *ngFor="let user of bugForm.get('assignees')?.value" [src]="user.avatar" class="avatar" />
+
+                <!-- Add button opens dev menu -->
+                <button mat-mini-fab color="primary" [matMenuTriggerFor]="devMenu" class="add-avatar">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <!-- Developer dropdown menu -->
+            <mat-menu #devMenu="matMenu" class="dev-menu">
+                <div class="menu-title">Assign Developers</div>
+                <!-- <mat-divider></mat-divider> -->
+
+                <button mat-menu-item *ngFor="let dev of assignees" (click)="toggleAssignee(dev)">
+                    <img [src]="dev.avatar" class="avatar-small" />
+                    <span class="dev-name">{{ dev.name }}</span>
+                    <mat-checkbox [checked]="isSelected(dev)" (click)="$event.stopPropagation()"></mat-checkbox>
+                </button>
+            </mat-menu>
+
+
+
+        </div>
+
+        <!-- Due Date -->
+        <div class="due-date-section">
+            <span class="label">Add Due Date</span>
+
+            <!-- Calendar icon to open picker -->
+            <button mat-icon-button color="primary" (click)="openDatePicker()">
+                <mat-icon>calendar_today</mat-icon>
+            </button>
+
+            <!-- Selected date text -->
+            <span class="selected-date" *ngIf="bugForm.get('dueDate')?.value">
+                {{ bugForm.get('dueDate')?.value | date: 'mediumDate' }}
+            </span>
+
+            <!-- Hidden input linked to datepicker -->
+            <input matInput [matDatepicker]="picker" formControlName="dueDate" hidden />
+
+            <!-- Actual datepicker -->
+            <mat-datepicker #picker (closed)="onDatePicked(picker._selected)"></mat-datepicker>
+        </div>
+    </div>
+
+    <!-- Bug Title Input -->
+    <div class="bug-title-input">
+        <input matInput formControlName="title" placeholder="Enter bug title..." />
+    </div>
+
+    <!-- Bug Details -->
+    <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
+        <mat-label>Bug Details</mat-label>
+        <textarea matInput formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
+    </mat-form-field>
+
+    <!-- Drop Image Section -->
+    <div class="drop-zone" (click)="fileInput.click()">
+        <mat-icon>cloud_upload</mat-icon>
+        <p *ngIf="!selectedFile">Drag & drop image here or <span class="browse">browse</span></p>
+        <p *ngIf="selectedFile"><strong>{{ selectedFile.name }}</strong></p>
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*" />
+    </div>
+
+    <!-- Footer -->
+    <div class="dialog-footer">
+        <button mat-flat-button color="primary" type="submit">Add Bug</button>
+    </div>
+</form>

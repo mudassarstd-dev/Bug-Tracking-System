@@ -10,9 +10,9 @@
 
     <div class="subnav-right">
 
-        <button mat-flat-button color="primary">
-            <!-- <mat-icon >add</mat-icon> -->
-            Button
+        <button mat-flat-button color="primary" *ngIf="isQa" (click)="openBugDialog()">
+            <mat-icon>add</mat-icon>
+            Add New Bug
         </button>
     </div>
 </div>
@@ -35,12 +35,118 @@
             <mat-icon>arrow-down</mat-icon>
         </button>
 
-      <img src="assets/icons/visnext_logo.png"  width="32" height="32" />
-
-
+        <img src="assets/icons/visnext_logo.png" width="32" height="32" />
     </div>
-
-
 </div>
 
 <hr class="navbar-divider" />
+
+<!-- 
+<div class="table-wrap">
+    <table mat-table [dataSource]="dataSource" class="custom-material-table">
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="custom-header">Product name</th>
+            <td mat-cell *matCellDef="let element" class="custom-cell">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef class="custom-header">Color</th>
+            <td mat-cell *matCellDef="let element" class="custom-cell">{{ element.color }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef class="custom-header">Category</th>
+            <td mat-cell *matCellDef="let element" class="custom-cell">{{ element.category }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef class="custom-header">Price</th>
+            <td mat-cell *matCellDef="let element" class="custom-cell">{{ element.price }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="custom-header">Status</th>
+            <td mat-cell *matCellDef="let element" class="custom-cell">
+                <span class="status-chip" [ngClass]="element.status | lowercase">
+                    {{ element.status }}
+                </span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="custom-header">Actions</th>
+            <td mat-cell *matCellDef="let element" class="custom-cell action-cell">
+                <button mat-icon-button (click)="onActionClick(element)">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+
+    </table>
+</div> -->
+
+<div class="table-wrap">
+    <table mat-table [dataSource]="dataSource" class="custom-material-table">
+
+        <!-- BUG DETAILS -->
+        <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef class="custom-header bug-details-header">Bug Details</th>
+            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                <div class="bug-details">
+                    <span class="bug-icon" [ngStyle]="{ 'background-color': getColor(bug.status) }"></span>
+                    <span class="bug-title">{{ bug.title }}</span>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- STATUS -->
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Status</th>
+            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                <span class="status-chip" [ngClass]="bug.status | lowercase">{{ bug.status }}</span>
+            </td>
+        </ng-container>
+
+        <!-- DUE DATE -->
+        <ng-container matColumnDef="dueDate">
+            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Due Date</th>
+            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                <mat-icon class="calendar-icon">calendar_today</mat-icon>
+            </td>
+        </ng-container>
+
+        <!-- ASSIGNED TO -->
+        <ng-container matColumnDef="assignedTo">
+            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Assigned To</th>
+            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                <div class="avatar-stack">
+                    <ng-container *ngFor="let avatar of bug.assignees; let i = index">
+                        <img [src]="avatar" [alt]="'user ' + i" class="avatar"
+                            [style.zIndex]="bug.assignees.length - i" />
+                    </ng-container>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- ACTIONS -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Actions</th>
+            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                <button mat-icon-button (click)="onActionClick(bug)">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+
+
+        <!-- <thead mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></thead>
+        <tbody mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tbody> -->
+    </table>
+</div>

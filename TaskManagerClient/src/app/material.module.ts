@@ -8,6 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
+
 
 @NgModule({
 exports: [
@@ -19,7 +26,12 @@ exports: [
     MatFormFieldModule,
     MatDialogModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMenuModule,
+    MatCheckboxModule
 ]
 })
 export class MaterialModule {}
