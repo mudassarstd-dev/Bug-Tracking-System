@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
@@ -114,4 +114,35 @@ export class ProjectDialogComponent implements OnInit {
     const updated = this.projectForm.value.assignTo.filter((u: any) => u !== user);
     this.projectForm.patchValue({ assignTo: updated });
   }
+
+  dropdownOpen = false;
+  dropdownPosition = { top: 0, left: 0 };
+
+  toggleDropdown(event: MouseEvent) {
+    event.stopPropagation();
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    this.dropdownOpen = !this.dropdownOpen;
+
+    this.dropdownPosition = {
+      top: rect.bottom + window.scrollY + 4,
+      left: rect.left + window.scrollX
+    };
+  }
+
+  toggleAssignee(user: ProjectAssigneeDto) {
+    const selected = this.projectForm.value.assignTo || [];
+    const exists = selected.includes(user);
+
+    const updated = exists
+      ? selected.filter((u: any) => u !== user)
+      : [...selected, user];
+
+    this.projectForm.patchValue({ assignTo: updated });
+  }
+
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.dropdownOpen = false;
+  }
+
 }

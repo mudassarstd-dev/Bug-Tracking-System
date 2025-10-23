@@ -14,6 +14,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip'; 
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -33,7 +34,8 @@ exports: [
     MatNativeDateModule,
     MatMenuModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
 ]
 })
 export class MaterialModule {}
