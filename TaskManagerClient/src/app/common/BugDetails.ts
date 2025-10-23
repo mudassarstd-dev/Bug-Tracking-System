@@ -5,5 +5,7 @@ export interface BugDetails {
     details: string
     status: string
     dueDate: string
-    assignees: AvatarUser[];
+    assignees: AvatarUser[],
+    canDelete: boolean,
+    canUpdate: boolean
 }

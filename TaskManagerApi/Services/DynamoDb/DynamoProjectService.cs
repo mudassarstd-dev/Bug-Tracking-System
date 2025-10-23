@@ -156,7 +156,6 @@ public class DynamoProjectService
                 completedTasks = bugs.Count(b => b.Status == BugStatus.Resolved);
             }
 
-            // 3️⃣ Map to DTO
             var dto = new ProjectDto(
                 id: project.Id,
                 name: project.Name,

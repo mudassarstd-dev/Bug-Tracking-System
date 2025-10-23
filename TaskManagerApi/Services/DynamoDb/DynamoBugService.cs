@@ -76,14 +76,17 @@ public class DynamoBugService
             {
                 foreach (var userId in bug.Assignees)
                 {
-                    var user = await _userService.GetByIdAsync(userId); 
+                    var user = await _userService.GetByIdAsync(userId);
                     string? avatarUrl = null;
 
-                    // if (!string.IsNullOrWhiteSpace(user.Data?.ProfileImageUrl))
-                    // {
-                        // avatarUrl = $"http://localhost:5153/uploads/{Path.GetFileName(user.Data.ProfileImageUrl)}";
-                        avatarUrl = "https://avatar.iran.liara.run/public/29";
-                    // }
+                    if (!string.IsNullOrWhiteSpace(user.Data?.ProfileImageUrl))
+                    {
+                        avatarUrl = $"http://localhost:5153/uploads/{Path.GetFileName(user.Data.ProfileImageUrl)}";
+                    }
+                    else
+                    {
+                        avatarUrl = "https://avatar.iran.liara.run/public/24";
+                    }
 
                     assigneeDtos.Add(new UserAvatarDto(userId, avatarUrl));
                 }
@@ -94,7 +97,9 @@ public class DynamoBugService
                 details: bug.Details ?? "NA",
                 status: bug.Status.ToString(),
                 dueDate: bug.Deadline.ToString("yyyy-MM-dd"),
-                assignees: assigneeDtos
+                assignees: assigneeDtos,
+                canDelete: bug.CreatedBy == _user.Id ? true : false,
+                canUpdate: assigneeDtos.Any(a => a.id == _user.Id) ? true : false
             ));
         }
 
@@ -176,25 +181,22 @@ public class DynamoBugService
         return ApiResponse<string>.Ok("Bug deleted");
     }
 
-    // public async Task<ApiResponse<Bug>> UpdateStatusAsync(string bugId, string status, string requesterRole)
-    // {
-    //     // // requesterRole can be used by endpoints to guard who can update; method still validates
-    //     // var bug = await _context.LoadAsync<Bug>(bugId);
-    //     // if (bug == null) return ApiResponse<Bug>.Fail("Bug not found", ErrorCode.NotFound);
+    public async Task<ApiResponse<string>> UpdateStatusAsync(string bugId, UpdateBugStatusDto dto)
+    {
+        if (_user.Id == null || _user.Role != Role.Developer.ToString()) return ApiResponse<string>.Fail("Not allowed", ErrorCode.InvalidRole);
 
-    //     // var t = bug.Type.ToLowerInvariant();
-    //     // var allowed = t == "feature"
-    //     //     ? new[] { "new", "started", "completed" }
-    //     //     : new[] { "new", "started", "resolved" };
+        if (!Enum.TryParse<BugStatus>(dto.status, true, out var parsedStatus))
+            return ApiResponse<string>.Fail($"Invalid status '{dto.status}'", ErrorCode.NotFound);
 
-    //     // if (!allowed.Contains(status.ToLowerInvariant()))
-    //     //     return ApiResponse<Bug>.Fail("Invalid status for bug type", ErrorCode.ValidationError);
+        var bug = await _context.LoadAsync<Bug>(bugId);
+        if (bug == null) return ApiResponse<string>.Fail("Bug not found", ErrorCode.NotFound);
 
-    //     // bug.Status = status;
-    //     // await _context.SaveAsync(bug);
+        bug.Status = parsedStatus;
+        bug.StatusLastUpdatedBy = _user.Id;
+        await _context.SaveAsync(bug);
 
-    //     // return ApiResponse<Bug>.Ok(bug, "Status updated");
-    // }
+        return ApiResponse<string>.Ok("Status updated");
+    }
 
     private bool isQa()
     {

@@ -2,10 +2,11 @@ public record CreateProjectDto(string Name, string? Description, List<string>? a
 public record UpdateProjectDto(string? Name, string? Description, List<string>? assigneeIds, string? logoPath);
 public record AssignUserDto(string ProjectId, string UserId, string Role);
 public record ProjectDto(string id, string name, string? description, string? logoUrl, int totalTasks = 0, int completedTasks = 0);
-public record BugDetailsDto(string id, string details, string status, string dueDate, List<UserAvatarDto> assignees);
+public record BugDetailsDto(string id, string details, string status, string dueDate, List<UserAvatarDto> assignees,bool canDelete, bool canUpdate);
 public record UserAvatarDto(string id, string? avatar);
 public record UserProfileDto(string name, string email, string phone, string? imageUrl);
 public record UpdateUserDto(string? name, string? phone, string? imageUrl);
+public record UpdateBugStatusDto(string status);
 
 public record CreateBugDto(
     string ProjectId,

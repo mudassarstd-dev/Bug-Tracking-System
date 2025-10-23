@@ -24,4 +24,8 @@ export class BugService {
   delete(bugId: string) {
     return this.http.delete<ApiResponse<any>>(`${this.api_url}/${bugId}`)
   }
+
+  updateStatus(bugId: string, status: string) {
+    return this.http.put<ApiResponse<any>>(`${this.api_url}/${bugId}`, { status })
+  }
 }

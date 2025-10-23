@@ -42,8 +42,6 @@ public class DynamoUserService
     {
         if (!isManager()) return ApiResponse<List<ProjectAssigneeDto>>.Fail("Manager Only", ErrorCode.InvalidRole);
 
-        // only get those users to whom project is not already assigned
-
         var scanConditions = new List<ScanCondition>
             {
                 new ScanCondition("Role", ScanOperator.In, new[] { Role.Developer.ToString(), Role.QA.ToString() })
@@ -76,7 +74,12 @@ public class DynamoUserService
         var scan = _context.ScanAsync<User>(scanConditions);
         var users = await scan.GetRemainingAsync();
 
-        var result = users.Select(u => new UserAvatarDto(id: u.Id, avatar: u.ProfileImageUrl)).ToList();
+        var result = users.Select(u => new UserAvatarDto(
+            id: u.Id,
+            avatar: string.IsNullOrWhiteSpace(u.ProfileImageUrl)
+                ? null
+                : $"http://localhost:5153/uploads/{Path.GetFileName(u.ProfileImageUrl)}"
+                    )).ToList();
 
         return ApiResponse<List<UserAvatarDto>>.Ok(result);
     }

@@ -338,3 +338,119 @@ button[mat-flat-button] {
         font-size: 13px;
     }
 }
+
+/* ===================== GLOBAL DROPDOWN ===================== */
+.global-dropdown {
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    padding: 8px 0;
+    width: 180px;
+    z-index: 9999;
+    animation: fadeIn 0.15s ease-in-out;
+
+    .dropdown-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        padding: 6px 12px 8px;
+    }
+
+    /* --- Regular Dropdown Options --- */
+    .dropdown-option {
+        font-size: 13px;
+        color: #374151;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+            background: #f3f4f6;
+        }
+
+        &.delete {
+            color: #b91c1c;
+            align-items: center;
+
+            mat-icon {
+                font-size: 18px;
+            }
+
+            &:hover {
+                background: #fee2e2;
+            }
+        }
+    }
+
+    /* --- CHIP STYLE OPTIONS --- */
+    .chip-option {
+        padding: 6px 12px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+            background: #f3f4f6;
+        }
+
+        .status-chip {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+            color: white;
+            transition: transform 0.15s ease;
+
+            &.new {
+                background-color: #e3f2fd;
+                color: #1565c0;
+            }
+
+            &.started {
+                background-color: #fff3e0;
+                color: #ef6c00;
+            }
+
+            &.resolved {
+                background-color: #e8f5e9;
+                color: #2e7d32;
+            }
+        }
+
+        &:hover .status-chip {
+            transform: scale(1.05);
+        }
+    }
+
+    .dropdown-divider {
+        border: none;
+        border-top: 1px solid #e5e7eb;
+        margin: 6px 0;
+    }
+
+    .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

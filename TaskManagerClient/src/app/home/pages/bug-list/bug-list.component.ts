@@ -5,6 +5,8 @@ import { BugDialogComponent } from '../../dialogs/bug-dialog/bug-dialog.componen
 import { MatDialog } from '@angular/material/dialog';
 import { BugService } from 'src/app/services/bug.service';
 import { BugDetails } from 'src/app/common/BugDetails';
+import { HostListener } from '@angular/core';
+
 
 @Component({
   selector: 'app-bug-list',
@@ -18,8 +20,10 @@ export class BugListComponent implements OnInit {
   isQa = false
   projectId: string
   projectTitle: string = 'Default';
-
   bugDetails: BugDetails[]
+  activeBug: BugDetails | null = null;
+  dropdownPosition = { top: 0, left: 0 };
+  statusOptions = ['New', 'Started', 'Resolved'];
 
   constructor(private route: ActivatedRoute, private dialog: MatDialog, private bugService: BugService) { }
 
@@ -44,11 +48,11 @@ export class BugListComponent implements OnInit {
     }
   }
 
-  onActionClick(bug: BugDetails) {
-    console.log('Clicked actions for', bug.details);
-    alert(`deleting bug for id: ${bug.id}`)
-    this.bugService.delete(bug.id).subscribe()
-  }
+  // onActionClick(bug: BugDetails) {
+  //   console.log('Clicked actions for', bug.details);
+  //   alert(`deleting bug for id: ${bug.id}`)
+  //   this.bugService.delete(bug.id).subscribe()
+  // }
 
   openBugDialog() {
     const dialogRef = this.dialog.open(BugDialogComponent, {
@@ -82,5 +86,40 @@ export class BugListComponent implements OnInit {
       this.dataSource.data = this.bugDetails
     })
   }
+
+
+
+  toggleDropdown(bug: BugDetails, event: MouseEvent) {
+    event.stopPropagation();
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+
+    // Toggle if same bug clicked again
+    if (this.activeBug && this.activeBug.id === bug.id) {
+      this.activeBug = null;
+      return;
+    }
+
+    this.activeBug = bug;
+
+    // Calculate global position
+    this.dropdownPosition = {
+      top: rect.bottom + window.scrollY + 0, // below button
+      left: rect.left + window.scrollX + 40 // slightly left of button
+    };
+  }
+
+
+  // Click outside closes dropdown
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.activeBug = null;
+  }
+
+  updateStatus(bugId: string, status: string) {
+    this.activeBug = null;
+    this.bugService.updateStatus(bugId, status).subscribe(() => this.getBugDetails());
+  }
+
 
 }

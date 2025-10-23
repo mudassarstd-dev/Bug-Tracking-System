@@ -13,7 +13,7 @@ public static class UsersEndpoints
 {
     public static IEndpointRouteBuilder MapUsersEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/users");
+        var group = app.MapGroup("/api/users").RequireAuthorization();
 
         group.MapGet("/not-managers", async (DynamoUserService userService) =>
          (await userService.GetNotManagers()).ToHttpResult());

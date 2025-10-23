@@ -6,7 +6,7 @@ public static class BugEndpoints
 {
     public static IEndpointRouteBuilder MapBugEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/bugs");
+        var group = app.MapGroup("/api/bugs").RequireAuthorization();
 
         group.MapPost("/", async (
             [FromForm] string projectId,
@@ -72,12 +72,10 @@ public static class BugEndpoints
         //     return (await service.UpdateBugAsync(bugId, updateDto)).ToHttpResult();
         // });
 
-        // group.MapPut("/{bugId}/status/{status}", async (string bugId, string status, DynamoBugService service, IHttpContextAccessor ctx) =>
-        // {
-        //     // optionally enforce that only assigned developer or manager/QA can change status
-        //     var role = ctx.HttpContext.User.FindFirst("role")?.Value ?? "Unknown";
-        //     return (await service.UpdateStatusAsync(bugId, status, role)).ToHttpResult();
-        // });
+        group.MapPut("/{bugId}", async (string bugId, UpdateBugStatusDto dto, DynamoBugService service) =>
+        {
+            return (await service.UpdateStatusAsync(bugId, dto)).ToHttpResult();
+        });
 
         group.MapDelete("/{bugId}", async (string bugId, DynamoBugService service) =>
             (await service.DeleteBugAsync(bugId)).ToHttpResult());

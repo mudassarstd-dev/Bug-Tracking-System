@@ -7,7 +7,7 @@ public static class ProjectEndpoints
 {
     public static IEndpointRouteBuilder MapProjectEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/projects");
+        var group = app.MapGroup("/api/projects").RequireAuthorization();
 
         group.MapPost("/", async ([FromForm] string name, [FromForm] string? description, [FromForm] string assigneeIds, [FromForm] IFormFile? logo, DynamoProjectService service) =>
         {

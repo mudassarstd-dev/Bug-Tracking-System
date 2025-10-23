@@ -4,7 +4,7 @@ public static class AssignmentEndpoints
 {
     public static IEndpointRouteBuilder MapAssignmentEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/assignments");
+        var group = app.MapGroup("/api/assignments").RequireAuthorization();
 
         group.MapPost("/", async (AssignUserDto dto, DynamoAssignmentService service) =>
         {
