@@ -19,13 +19,12 @@ public class DynamoAuthService
     {
         try
         {
-            // var existingUser = await GetUserByEmailAsync(registerDto.email);
-            // if (existingUser != null)
-            //     return ApiResponse<AuthResponseDto>.Fail("User with this email already exists.", ErrorCode.UserExists);
+            var existingUser = await GetUserByEmailAsync(registerDto.email);
+            if (existingUser != null)
+                return ApiResponse<AuthResponseDto>.Fail("User with this email already exists.", ErrorCode.UserExists);
 
             if (!Enum.TryParse<Role>(registerDto.role, true, out var role))
                 return ApiResponse<AuthResponseDto>.Fail("Invalid role", ErrorCode.InvalidRole);
-            
 
             var user = new User
             {
@@ -41,7 +40,7 @@ public class DynamoAuthService
 
             var token = _jwtService.GenerateToken(user);
 
-            var authResponse = new AuthResponseDto(user.Name, token, user.Role);
+            var authResponse = new AuthResponseDto(user.Name, token, user.Role, null);
             return ApiResponse<AuthResponseDto>.Ok(authResponse, "User registered successfully");
         }
         catch (Exception ex)
@@ -54,16 +53,21 @@ public class DynamoAuthService
     {
         try
         {
-            if (String.IsNullOrWhiteSpace(loginDto.email) || String.IsNullOrWhiteSpace(loginDto.password)) 
+            if (String.IsNullOrWhiteSpace(loginDto.email) || String.IsNullOrWhiteSpace(loginDto.password))
                 return ApiResponse<AuthResponseDto>.Fail("Email or password cannot be null or empty", ErrorCode.ValidationError);
-            
+
             var user = await GetUserByEmailAsync(loginDto.email);
             if (user == null || !PasswordHasher.VerifyPassword(loginDto.password, user.Password))
                 return ApiResponse<AuthResponseDto>.Fail("Invalid email or password", ErrorCode.InvalidCredentials);
 
             var token = _jwtService.GenerateToken(user);
 
-            var authResponse = new AuthResponseDto(user.Name, token, user.Role);
+
+            var imageUrl = string.IsNullOrWhiteSpace(user.ProfileImageUrl)
+                        ? null
+                        : $"http://localhost:5153/uploads/{Path.GetFileName(user.ProfileImageUrl)}";
+
+            var authResponse = new AuthResponseDto(user.Name, token, user.Role, imageUrl);
             return ApiResponse<AuthResponseDto>.Ok(authResponse, "Login successful");
         }
         catch (Exception ex)

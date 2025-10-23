@@ -51,17 +51,17 @@ public static class BugEndpoints
         })
         .DisableAntiforgery();
 
-        group.MapGet("/", async (DynamoBugService service) =>
-            (await service.GetByProjectAsync(null!)).ToHttpResult()); // optional admin endpoint - implement in service if needed
+        // group.MapGet("/", async (DynamoBugService service) =>
+        //     (await service.GetByProjectAsync(null!)).ToHttpResult()); // optional admin endpoint - implement in service if needed
 
-        group.MapGet("/project/{projectId}", async (string projectId, DynamoBugService service) =>
-            (await service.GetByProjectAsync(projectId)).ToHttpResult());
+        group.MapGet("/{projectId}", async (string projectId, DynamoBugService service) =>
+            (await service.GetBugDetailsByProjectAsync(projectId)).ToHttpResult());
 
         group.MapGet("/developer/{developerId}", async (string developerId, DynamoBugService service) =>
             (await service.GetByDeveloperAsync(developerId)).ToHttpResult());
 
-        group.MapGet("/{bugId}", async (string bugId, DynamoBugService service) =>
-            (await service.GetByIdAsync(bugId)).ToHttpResult());
+        // group.MapGet("/{bugId}", async (string bugId, DynamoBugService service) =>
+        //     (await service.GetByIdAsync(bugId)).ToHttpResult());
 
         // group.MapPut("/{bugId}", async (string bugId, UpdateBugDto dto, DynamoBugService service) =>
         //     (await service.UpdateBugAsync(bugId, dto)).ToHttpResult());
@@ -79,8 +79,8 @@ public static class BugEndpoints
         //     return (await service.UpdateStatusAsync(bugId, status, role)).ToHttpResult();
         // });
 
-        // group.MapDelete("/{bugId}", async (string bugId, DynamoBugService service) =>
-        //     (await service.DeleteBugAsync(bugId)).ToHttpResult());
+        group.MapDelete("/{bugId}", async (string bugId, DynamoBugService service) =>
+            (await service.DeleteBugAsync(bugId)).ToHttpResult());
 
         return app;
     }

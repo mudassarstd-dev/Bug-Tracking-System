@@ -39,8 +39,8 @@
     </button>
 
     <!-- User card -->
-    <div class="user-info" >
-      <img src="assets/icons/visnext_logo.png" alt="User Avatar" class="user-avatar" />
+    <div class="user-info" (click)="navToProfile()" >
+      <img [src]="userImage" alt="User Avatar" class="user-avatar" />
       <span class="username">{{ username }}</span>
     </div>
 

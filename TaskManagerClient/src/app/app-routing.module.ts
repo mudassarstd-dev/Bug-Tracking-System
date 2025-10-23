@@ -10,6 +10,7 @@ import { WithRoleGuard } from './auth/register/with-role.guard';
 import { ProjectDashboardComponent } from './home/pages/project-dashboard/project-dashboard.component';
 import { BugListComponent } from './home/pages/bug-list/bug-list.component';
 import { audit } from 'rxjs/operators';
+import { ProfileComponent } from './home/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: ProjectDashboardComponent },
-      { path: 'projects/:projectId/bugs', component: BugListComponent }
+      { path: 'projects/:projectId/bugs', component: BugListComponent },
+      { path: 'profile', component: ProfileComponent }
     ]
   },
   { path: 'register', component: RegisterComponent, canActivate: [ WithRoleGuard ] },
@@ -28,7 +30,7 @@ const routes: Routes = [
   // { path: 'home', component: HomeComponent },
   // { path: 'e-dash', component: EmpDashboardComponent, canActivate: [ AuthGuard, RoleGuard ], data: {role: "Employee"} },
   // { path: 'm-dash', component: ManagerDashboardComponent, canActivate: [ AuthGuard, RoleGuard ], data: {role: "Manager"} },
-  // { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

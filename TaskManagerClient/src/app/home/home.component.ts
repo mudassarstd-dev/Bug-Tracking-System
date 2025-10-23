@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 
   isManager: boolean = false
   username: string = "NA"
+  userImage: string | null = null
   navbarOptions: any
 
   constructor(private router: Router, private authService: AuthService) { }
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.isManager = this.authService.isManager()
     this.username = this.authService.getUsername().split(' ')[0] || "NA"
+    this.userImage = this.authService.getUserImage()
 
     this.navbarOptions = [
       {
@@ -32,16 +34,16 @@ export class HomeComponent implements OnInit {
         icon: "assets/icons/bugs.svg",
         show: true
       },
-      {
-        title: "Manage",
-        icon: "bar_chart",
-        show: this.isManager
-      },
-      {
-        title: "Users",
-        icon: "bar_chart",
-        show: this.isManager
-      },
+      // {
+      //   title: "Manage",
+      //   icon: "bar_chart",
+      //   show: this.isManager
+      // },
+      // {
+      //   title: "Users",
+      //   icon: "bar_chart",
+      //   show: this.isManager
+      // },
     ];
 
     this.renderDashboard()
@@ -49,10 +51,14 @@ export class HomeComponent implements OnInit {
   }
 
   renderView() {
-    this.router.navigate(['/bugs'])
+    // this.router.navigate(['/bugs'])
   }
 
   private renderDashboard() {
     this.router.navigate(['/dashboard'])
+  }
+
+  navToProfile() {
+    this.router.navigate(['/profile'])
   }
 }

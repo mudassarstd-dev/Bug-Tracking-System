@@ -18,6 +18,7 @@ namespace TaskManagerApi.Data.Models.Dynamo;
         public BugType Type { get; set; } 
         public BugStatus Status { get; set; }
         public string CreatedBy { get; set; } 
-        public List<string> Assignees { get; set; } 
+        public List<string> Assignees { get; set; }
+        public string? StatusLastUpdatedBy { get; set; } 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

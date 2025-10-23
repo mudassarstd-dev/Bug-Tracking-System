@@ -16,7 +16,6 @@ public class DynamoProjectService
         _context = context;
         _user = user;
     }
-    // ONLY MANAGER
     public async Task<ApiResponse<Project>> CreateProjectAsync(CreateProjectDto dto)
     {
         if (!isManager())
@@ -49,7 +48,6 @@ public class DynamoProjectService
 
                 foreach (var user in users)
                 {
-                    // check if not already assigned
                     assignments.Add(new ProjectAssignment
                     {
                         UserId = user.Id,
@@ -58,7 +56,6 @@ public class DynamoProjectService
                     });
                 }
 
-                // writing assignment batch to db
                 var batch = _context.CreateBatchWrite<ProjectAssignment>();
                 batch.AddPutItems(assignments);
                 await batch.ExecuteAsync();
@@ -75,7 +72,6 @@ public class DynamoProjectService
         return project != null ? ApiResponse<Project>.Ok(project) : ApiResponse<Project>.Fail("Project not found", ErrorCode.NotFound);
     }
 
-    // get only projects created by manager
     public async Task<ApiResponse<List<Project>>> GetByManagerAsync()
     {
         // verify manager here.
@@ -84,23 +80,97 @@ public class DynamoProjectService
         return ApiResponse<List<Project>>.Ok(projects);
     }
 
+    // public async Task<ApiResponse<List<ProjectDto>>> GetAllAsync()
+    // {
+    //     var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
+    //     var projects = await scan.GetRemainingAsync();
+    //     var projectDtos = new List<ProjectDto>();
+    //     foreach (var project in projects)
+    //     {
+    //         var dto = new ProjectDto(
+    //             id: project.Id,
+    //             name: project.Name,
+    //             description: project.Description,
+    //             logoUrl: string.IsNullOrWhiteSpace(project.ImagePath) ? null : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}"
+    //         );
+
+    //         projectDtos.Add(dto);
+    //     }
+    //     return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
+    // }
+
     public async Task<ApiResponse<List<ProjectDto>>> GetAllAsync()
     {
-        var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
-        var projects = await scan.GetRemainingAsync();
         var projectDtos = new List<ProjectDto>();
+
+        List<Project> projects = new();
+
+        if (isManager())
+        {
+            var query = _context.QueryAsync<Project>(
+                _user.Id,
+                new QueryConfig { IndexName = "ManagerIdIndex" }
+            );
+            projects = await query.GetRemainingAsync();
+        }
+        else if (IsQaOrDev())
+        {
+            var assignedQuery = _context.QueryAsync<ProjectAssignment>(
+                _user.Id,
+                new QueryConfig { IndexName = "UserIdIndex" }
+            );
+            var assignments = await assignedQuery.GetRemainingAsync();
+            var assignedProjectIds = assignments.Select(a => a.ProjectId).ToList();
+
+            if (assignedProjectIds.Count > 0)
+            {
+                var batch = _context.CreateBatchGet<Project>();
+                foreach (var pid in assignedProjectIds)
+                    batch.AddKey(pid);
+
+                await batch.ExecuteAsync();
+                projects = batch.Results;
+            }
+        }
+        else
+        {
+            var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
+            projects = await scan.GetRemainingAsync();
+        }
 
         foreach (var project in projects)
         {
+            int totalTasks = 0;
+            int completedTasks = 0;
+
+            var bugQuery = _context.QueryAsync<Bug>(
+                project.Id,
+                new QueryConfig { IndexName = "ProjectId-index" }
+            );
+
+            var bugs = await bugQuery.GetRemainingAsync();
+
+            if (bugs.Any())
+            {
+                totalTasks = bugs.Count;
+                completedTasks = bugs.Count(b => b.Status == BugStatus.Resolved);
+            }
+
+            // 3️⃣ Map to DTO
             var dto = new ProjectDto(
                 id: project.Id,
                 name: project.Name,
                 description: project.Description,
-                logoUrl: string.IsNullOrWhiteSpace(project.ImagePath) ? null : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}"
+                logoUrl: string.IsNullOrWhiteSpace(project.ImagePath)
+                    ? null
+                    : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}",
+                totalTasks: totalTasks,
+                completedTasks: completedTasks
             );
 
             projectDtos.Add(dto);
         }
+
         return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
     }
 
@@ -127,7 +197,7 @@ public class DynamoProjectService
                 projectId,
                 new QueryConfig
                 {
-                    IndexName = "ProjectIdIndex" 
+                    IndexName = "ProjectIdIndex"
                 });
 
             var currentAssignments = await query.GetRemainingAsync();
@@ -200,4 +270,11 @@ public class DynamoProjectService
         if (_user.Id == null || _user.Role != Role.Manager.ToString()) return false;
         return true;
     }
+
+    private bool IsQaOrDev()
+    {
+        return _user?.Id != null &&
+               (_user.Role == Role.QA.ToString() || _user.Role == Role.Developer.ToString());
+    }
+
 }

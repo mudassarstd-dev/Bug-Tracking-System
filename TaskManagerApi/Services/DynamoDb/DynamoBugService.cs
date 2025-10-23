@@ -8,11 +8,13 @@ public class DynamoBugService
 {
     private readonly IDynamoDBContext _context;
     private readonly IUser _user;
+    private readonly DynamoUserService _userService;
 
-    public DynamoBugService(IDynamoDBContext context, IUser user)
+    public DynamoBugService(IDynamoDBContext context, IUser user, DynamoUserService userService)
     {
         _context = context;
         _user = user;
+        _userService = userService;
     }
 
     public async Task<ApiResponse<string>> CreateBugAsync(CreateBugDto dto)
@@ -32,7 +34,7 @@ public class DynamoBugService
             ProjectId = dto.ProjectId,
             Title = dto.Title,
             Details = dto.Details,
-            Deadline = dto.Deadline ?? DateTime.UtcNow.AddDays(7), 
+            Deadline = dto.Deadline ?? DateTime.UtcNow.AddDays(7),
             ScreenshotUrl = dto.ScreenshotUrl,
             Type = Enum.TryParse<BugType>(dto.Type, true, out var type) ? type : BugType.Bug,
             Status = BugStatus.New,
@@ -53,12 +55,52 @@ public class DynamoBugService
         return bug != null ? ApiResponse<Bug>.Ok(bug) : ApiResponse<Bug>.Fail("Bug not found", ErrorCode.NotFound);
     }
 
-    public async Task<ApiResponse<List<Bug>>> GetByProjectAsync(string projectId)
+    public async Task<ApiResponse<List<BugDetailsDto>>> GetBugDetailsByProjectAsync(string projectId)
     {
-        var scan = _context.ScanAsync<Bug>(new[] { new ScanCondition("ProjectId", ScanOperator.Equal, projectId) });
-        var bugs = await scan.GetRemainingAsync();
-        return ApiResponse<List<Bug>>.Ok(bugs);
+        var query = _context.QueryAsync<Bug>(
+            projectId,
+            new QueryConfig
+            {
+                IndexName = "ProjectId-index"
+            });
+
+        var bugs = await query.GetRemainingAsync();
+
+        var result = new List<BugDetailsDto>();
+
+        foreach (var bug in bugs)
+        {
+            var assigneeDtos = new List<UserAvatarDto>();
+
+            if (bug.Assignees != null && bug.Assignees.Any())
+            {
+                foreach (var userId in bug.Assignees)
+                {
+                    var user = await _userService.GetByIdAsync(userId); 
+                    string? avatarUrl = null;
+
+                    // if (!string.IsNullOrWhiteSpace(user.Data?.ProfileImageUrl))
+                    // {
+                        // avatarUrl = $"http://localhost:5153/uploads/{Path.GetFileName(user.Data.ProfileImageUrl)}";
+                        avatarUrl = "https://avatar.iran.liara.run/public/29";
+                    // }
+
+                    assigneeDtos.Add(new UserAvatarDto(userId, avatarUrl));
+                }
+            }
+
+            result.Add(new BugDetailsDto(
+                id: bug.Id,
+                details: bug.Details ?? "NA",
+                status: bug.Status.ToString(),
+                dueDate: bug.Deadline.ToString("yyyy-MM-dd"),
+                assignees: assigneeDtos
+            ));
+        }
+
+        return ApiResponse<List<BugDetailsDto>>.Ok(result);
     }
+
 
     public async Task<ApiResponse<List<Bug>>> GetByDeveloperAsync(string developerId)
     {
@@ -125,14 +167,14 @@ public class DynamoBugService
     //     return ApiResponse<Bug>.Ok(bug, "Bug updated");
     // }
 
-    // public async Task<ApiResponse<bool>> DeleteBugAsync(string bugId)
-    // {
-    //     var bug = await _context.LoadAsync<Bug>(bugId);
-    //     if (bug == null) return ApiResponse<bool>.Fail("Bug not found", ErrorCode.NotFound);
+    public async Task<ApiResponse<string>> DeleteBugAsync(string Id)
+    {
+        var bug = await _context.LoadAsync<Bug>(Id);
+        if (bug == null) return ApiResponse<string>.Fail("Bug not found", ErrorCode.NotFound);
 
-    //     await _context.DeleteAsync<Bug>(bugId);
-    //     return ApiResponse<bool>.Ok(true, "Bug deleted");
-    // }
+        await _context.DeleteAsync<Bug>(Id);
+        return ApiResponse<string>.Ok("Bug deleted");
+    }
 
     // public async Task<ApiResponse<Bug>> UpdateStatusAsync(string bugId, string status, string requesterRole)
     // {

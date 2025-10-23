@@ -16,5 +16,3 @@ public class ProjectAssignment
     public string UserId { get; set; }
     public string Role { get; set; }
 }
-
-// there could a list of assignments under each project (List<string>(user_ids)) 

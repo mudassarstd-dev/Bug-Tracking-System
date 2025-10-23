@@ -25,22 +25,20 @@ export class UserService {
         })
       )
   }
-  
+
   getProjectAssignees(projectId: string) {
     return this.http.get<ApiResponse<ProjectAssigneeDto[]>>(`${this.api_url}/assignees/${projectId}`)
-      .pipe(
-        tap(response => {
-          console.log('Project assignees from backend:', response);
-        })
-      )
   }
-  
+
   getDevelopers() {
     return this.http.get<ApiResponse<AvatarUser[]>>(`${this.api_url}/devs`)
-      .pipe(
-        tap(response => {
-          console.log('Project assignees from backend:', response);
-        })
-      )
+  }
+
+  getUserProfile() {
+    return this.http.get<ApiResponse<any>>(`${this.api_url}/profile`)
+  }
+
+  updateUserProfile(formData: FormData) {
+    return this.http.put<ApiResponse<any>>(`${this.api_url}/profile`, formData)
   }
 }

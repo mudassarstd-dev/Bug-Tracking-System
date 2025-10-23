@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';  // 👈 import here
+import { environment } from '../../environments/environment';  
 import { ApiResponse } from '../common/ApiResponse';
 import { AuthResponse } from '../common/AuthResponse';
 import { Router } from '@angular/router';
@@ -26,6 +26,7 @@ export class AuthService {
     localStorage.removeItem("auth-token")
     localStorage.removeItem("user-role")
     localStorage.removeItem('user-name');
+    localStorage.removeItem('user-image');
     this.router.navigate(['/login'])
   }
 
@@ -39,6 +40,10 @@ export class AuthService {
 
   getUsername(): string | null {
     return localStorage.getItem('user-name');
+  }
+  
+  getUserImage(): string | null {
+    return localStorage.getItem('user-image');
   }
 
   isManager(): boolean {

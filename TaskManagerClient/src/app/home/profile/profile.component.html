@@ -1,0 +1,40 @@
+<div class="profile-container">
+  
+  <div class="profile-image-container" (click)="onFileClick()">
+    <img
+      [src]="previewUrl || 'assets/images/default-avatar.png'"
+      alt="Profile Image"
+      class="profile-image"
+    />
+    <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)" hidden />
+  </div>
+
+  <h2 class="username">{{ profileForm.get('username')?.value || 'User' }}</h2>
+
+  <form [formGroup]="profileForm" class="profile-form">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-flat-button color="primary" (click)="onConfirm()">Confirm</button>
+      <button mat-stroked-button color="warn" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+</div>

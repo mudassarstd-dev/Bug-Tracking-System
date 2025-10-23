@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem("auth-token", res.data.token)
             localStorage.setItem("user-role", res.data.role)
             localStorage.setItem("user-name", res.data.username)
+            localStorage.setItem("user-image", res.data.profileImageUrl)
             this.successMessage = res.message || "Logged in"
             this.errorMessage = ""
             this.navToDash(res.data.role)

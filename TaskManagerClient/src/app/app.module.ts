@@ -16,6 +16,7 @@ import { ProjectDashboardComponent } from './home/pages/project-dashboard/projec
 import { ProjectDialogComponent } from './home/dialogs/project-dialog/project-dialog.component';
 import { BugListComponent } from './home/pages/bug-list/bug-list.component';
 import { BugDialogComponent } from './home/dialogs/bug-dialog/bug-dialog.component';
+import { ProfileComponent } from './home/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { BugDialogComponent } from './home/dialogs/bug-dialog/bug-dialog.compone
     ProjectDashboardComponent,
     ProjectDialogComponent,
     BugListComponent,
-    BugDialogComponent
+    BugDialogComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
