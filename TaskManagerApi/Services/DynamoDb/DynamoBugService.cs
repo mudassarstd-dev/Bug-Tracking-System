@@ -49,10 +49,40 @@ public class DynamoBugService
     }
 
 
-    public async Task<ApiResponse<Bug>> GetByIdAsync(string bugId)
+    public async Task<ApiResponse<BugDetailsForUpdateDto>> GetByIdAsync(string bugId)
     {
         var bug = await _context.LoadAsync<Bug>(bugId);
-        return bug != null ? ApiResponse<Bug>.Ok(bug) : ApiResponse<Bug>.Fail("Bug not found", ErrorCode.NotFound);
+
+        var assignees = new List<UserAvatarDto>();
+
+        foreach (var userId in bug.Assignees)
+        {
+            var user = await _userService.GetByIdAsync(userId);
+            string? avatarUrl = null;
+
+            if (!string.IsNullOrWhiteSpace(user.Data?.ProfileImageUrl))
+            {
+                avatarUrl = $"http://localhost:5153/uploads/{Path.GetFileName(user.Data.ProfileImageUrl)}";
+            }
+            else
+            {
+                avatarUrl = "https://avatar.iran.liara.run/public/boy";
+            }
+
+            assignees.Add(new UserAvatarDto(userId, avatarUrl));
+        }
+
+        var bugDetail = new BugDetailsForUpdateDto(
+                id: bug.Id,
+                details: bug.Details,
+                title: bug.Title,
+                status: bug.Status.ToString(),
+                dueDate: bug.Deadline.ToString("yyyy-MM-dd"),
+                assignees: assignees,
+                screenshotUrl: bug.ScreenshotUrl == null ? null : $"http://localhost:5153/uploads/{Path.GetFileName(bug.ScreenshotUrl)}"
+            );
+
+        return bug != null ? ApiResponse<BugDetailsForUpdateDto>.Ok(bugDetail) : ApiResponse<BugDetailsForUpdateDto>.Fail("Bug detail not found", ErrorCode.NotFound);
     }
 
     public async Task<ApiResponse<List<BugDetailsDto>>> GetBugDetailsByProjectAsync(string projectId)
@@ -85,7 +115,7 @@ public class DynamoBugService
                     }
                     else
                     {
-                        avatarUrl = "https://avatar.iran.liara.run/public/24";
+                        avatarUrl = "https://avatar.iran.liara.run/public/boy";
                     }
 
                     assigneeDtos.Add(new UserAvatarDto(userId, avatarUrl));

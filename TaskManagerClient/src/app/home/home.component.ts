@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   userImage: string | null = null
   navbarOptions: any
 
-  totalItems = 100;  
+  totalItems = 100;
   pageSize = 10;
   pageIndex = 0;
 
@@ -67,10 +67,20 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/profile'])
   }
 
-   onPageChange(event: PageEvent) {
+  onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     console.log('Current page:', this.pageIndex + 1, 'Page size:', this.pageSize);
     // You can now trigger a data fetch for this page
   }
+
+  showNotifications = false;
+  anchorRect?: DOMRect;
+
+  toggleNotifications(event: MouseEvent) {
+    const target = event.currentTarget as HTMLElement;
+    this.anchorRect = target.getBoundingClientRect();
+    this.showNotifications = !this.showNotifications;
+  }
+
 }

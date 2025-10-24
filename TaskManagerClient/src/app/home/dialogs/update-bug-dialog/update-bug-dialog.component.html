@@ -1,0 +1,65 @@
+<form [formGroup]="bugForm"  class="bug-dialog">
+
+    <!-- Top Bar -->
+    <div class="dialog-topbar">
+        <button mat-icon-button class="close-btn" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="bug-status-section">
+
+
+                <h1>In progress</h1>
+                <h2>Arrow</h2>
+
+          <div class="avatars">
+                <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
+                <button mat-mini-fab color="primary" class="add-avatar">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+
+
+        <h4>vertical divider</h4>
+
+        <div class="creation-date">
+            <h3>created</h3>
+            <h3>Date</h3>
+        </div>
+
+        <p>vertical divider</p>
+
+        <h4>Calendar Icon</h4>
+
+    </div>
+
+    <hr class="divider" />
+
+
+    <!-- Title -->
+    <div class="dialog-title">Add New Bug</div>
+
+ 
+        <!-- Drop Image Section -->
+    <div class="drop-zone">
+        <mat-icon>cloud_upload</mat-icon>
+        <p *ngIf="!selectedFile">Drag & drop image here or <span class="browse">browse</span></p>
+        <p *ngIf="selectedFile"><strong>selectedFile.name</strong></p>
+        <input type="file" #fileInput hidden accept="image/*" />
+    </div>
+           
+      
+    <!-- Bug Details -->
+    <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
+        <mat-label>Bug Details</mat-label>
+        <textarea matInput formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
+    </mat-form-field>
+
+    <div class="space"></div>
+    <!-- Footer -->
+    <div class="dialog-footer">
+        <p>Drag & drop image here or <span class="browse">browse</span></p>
+    </div>
+</form>

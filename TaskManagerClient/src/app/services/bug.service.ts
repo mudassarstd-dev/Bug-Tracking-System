@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from '../common/ApiResponse';
-import { BugDetails } from '../common/BugDetails';
+import { BugDetails, BugDetailsForUpdate } from '../common/BugDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +27,9 @@ export class BugService {
 
   updateStatus(bugId: string, status: string) {
     return this.http.put<ApiResponse<any>>(`${this.api_url}/${bugId}`, { status })
+  }
+
+  getById(bugId: string) {
+    return this.http.get<ApiResponse<any>>(`${this.api_url}/bug/${bugId}`)
   }
 }

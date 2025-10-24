@@ -27,7 +27,6 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* centers title+subtitle vertically */
             height: 100%;
 
             .title {
@@ -49,7 +48,6 @@
     .subnav-right {
         display: flex;
         align-items: center;
-        /* vertically center search + button */
         gap: 16px;
         height: 100%;
 

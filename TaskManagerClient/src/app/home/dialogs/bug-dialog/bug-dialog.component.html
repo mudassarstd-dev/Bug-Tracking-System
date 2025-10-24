@@ -94,7 +94,7 @@
                 <button mat-menu-item *ngFor="let dev of assignees" (click)="toggleAssignee(dev)">
                     <img [src]="dev.avatar" class="avatar-small" />
                     <span class="dev-name">{{ dev.name }}</span>
-                    <mat-checkbox [checked]="isSelected(dev)" (click)="$event.stopPropagation()"></mat-checkbox>
+                    <mat-checkbox [checked]="isSelected(dev)" (click)="$event.stopPropagation()" color="primary"></mat-checkbox>
                 </button>
             </mat-menu>
 

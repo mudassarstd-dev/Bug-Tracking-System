@@ -84,21 +84,19 @@ export class BugDialogComponent implements OnInit {
   }
 
   toggleAssignee(dev: AvatarUser) {
-  const currentAssignees: AvatarUser[] = this.bugForm.get('assignees')?.value || [];
+    const currentAssignees: AvatarUser[] = this.bugForm.get('assignees')?.value || [];
 
-  if (this.isSelected(dev)) {
-    // Remove
-    const updated = currentAssignees.filter(a => a.id !== dev.id);
-    this.bugForm.get('assignees')?.setValue(updated);
-  } else {
-    // Add
-    this.bugForm.get('assignees')?.setValue([...currentAssignees, dev]);
+    if (this.isSelected(dev)) {
+      const updated = currentAssignees.filter(a => a.id !== dev.id);
+      this.bugForm.get('assignees')?.setValue(updated);
+    } else {
+      this.bugForm.get('assignees')?.setValue([...currentAssignees, dev]);
+    }
   }
-}
 
-isSelected(dev: AvatarUser): boolean {
-  const currentAssignees: AvatarUser[] = this.bugForm.get('assignees')?.value || [];
-  return currentAssignees.some(a => a.id === dev.id);
-}
+  isSelected(dev: AvatarUser): boolean {
+    const currentAssignees: AvatarUser[] = this.bugForm.get('assignees')?.value || [];
+    return currentAssignees.some(a => a.id === dev.id);
+  }
 
 }

@@ -1,3 +1,4 @@
+using Amazon.DynamoDBv2;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagerApi.helper;
@@ -60,8 +61,8 @@ public static class BugEndpoints
         group.MapGet("/developer/{developerId}", async (string developerId, DynamoBugService service) =>
             (await service.GetByDeveloperAsync(developerId)).ToHttpResult());
 
-        // group.MapGet("/{bugId}", async (string bugId, DynamoBugService service) =>
-        //     (await service.GetByIdAsync(bugId)).ToHttpResult());
+        group.MapGet("bug/{bugId}", async (string bugId, DynamoBugService service) =>
+            (await service.GetByIdAsync(bugId)).ToHttpResult());
 
         // group.MapPut("/{bugId}", async (string bugId, UpdateBugDto dto, DynamoBugService service) =>
         //     (await service.UpdateBugAsync(bugId, dto)).ToHttpResult());

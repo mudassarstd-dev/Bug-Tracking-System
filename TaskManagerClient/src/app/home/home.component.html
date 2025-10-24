@@ -9,21 +9,16 @@
   <!-- Center: Menu Items -->
   <div class="navbar-center">
 
-   <ng-container *ngFor="let option of navbarOptions">
+    <ng-container *ngFor="let option of navbarOptions">
 
-    <img [src]="option.icon" class="custom-icon" alt="Custom Logo" width="20" height="20">
+      <img [src]="option.icon" class="custom-icon" alt="Custom Logo" width="20" height="20">
 
-  <button
-    mat-button
-    (click)="renderView()"
-    *ngIf="option.show"
-    [routerLink]="option.route">
-    <!-- <mat-icon>{{ option.icon }}</mat-icon> -->
+      <button mat-button (click)="renderView()" *ngIf="option.show" [routerLink]="option.route">
+        <!-- <mat-icon>{{ option.icon }}</mat-icon> -->
 
-    <span>{{ option.title }}</span>
-  </button>
-</ng-container>
-
+        <span>{{ option.title }}</span>
+      </button>
+    </ng-container>
 
   </div>
 
@@ -34,12 +29,21 @@
   <div class="navbar-right">
 
     <!-- Notification icon with badge -->
-    <button mat-icon-button matBadge=" " matBadgeColor="accent" matBadgeOverlap="false">
+    <!-- <button mat-icon-button matBadge=" " matBadgeColor="accent" matBadgeOverlap="false">
+      <mat-icon>notifications</mat-icon>
+    </button> -->
+
+    <button mat-icon-button matBadge=" " matBadgeColor="accent" matBadgeOverlap="false"
+      (click)="toggleNotifications($event)">
       <mat-icon>notifications</mat-icon>
     </button>
 
+    <app-notification-panel [visible]="showNotifications" [anchorRect]="anchorRect">
+    </app-notification-panel>
+
+
     <!-- User card -->
-    <div class="user-info" (click)="navToProfile()" >
+    <div class="user-info" (click)="navToProfile()">
       <img [src]="userImage" alt="User Avatar" class="user-avatar" />
       <span class="username">{{ username }}</span>
     </div>
@@ -52,11 +56,11 @@
 <div class="content-container">
   <router-outlet></router-outlet>
 
-    <mat-paginator
+  <!-- <mat-paginator
     [length]="totalItems"
     [pageSize]="pageSize"
     [pageSizeOptions]="[5, 10, 25, 50]"
     (page)="onPageChange($event)">
-  </mat-paginator>
-  
+  </mat-paginator> -->
+
 </div>

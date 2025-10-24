@@ -19,6 +19,40 @@
         }
     }
 
+    .bug-status-section {
+        display: flex;
+        padding: 12px 12px;
+        align-items: center;
+        gap: 12px;
+
+
+            .avatars {
+                display: flex;
+                align-items: center;
+
+                .avatar {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    border: 2px solid #fff;
+                    margin-right: -10px;
+                    box-shadow: 0 0 0 1px #ddd;
+                    background: #eee;
+                    object-fit: cover;
+
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+
+                .add-avatar {
+                    width: 36px;
+                    height: 36px;
+                    margin-right: -10px;
+                }
+            }
+    }
+
     .dialog-title {
         font-size: 1.5rem;
         font-weight: 600;
@@ -115,13 +149,13 @@
     }
 
     .drop-zone {
-        margin: 0 24px 16px;
+        margin: 24px 24px 16px;
         border: 2px dashed #cfd8dc;
         border-radius: 8px;
-        // height: 120px;
+        height: 140px;
         display: flex;
         gap: 20px;
-        flex: 1;
+        
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -132,6 +166,18 @@
             margin-bottom: 8px;
         }
 
+        
+    }
+
+    .dialog-footer {
+        background-color: #fafafa;
+        height: 56px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // padding: 12px 12px;
+        // border-top: 1px solid #e0e0e0;
+
         .browse {
             color: #1976d2;
             font-weight: 500;
@@ -139,19 +185,8 @@
         }
     }
 
-    .dialog-footer {
-        background-color: #fafafa;
-        height: 56px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 0 24px;
-        border-top: 1px solid #e0e0e0;
-
-        button {
-            border-radius: 8px;
-            font-weight: 500;
-        }
+    .space {
+        flex: 1;
     }
 }
 
@@ -178,3 +213,4 @@
     color: red;
   }
 }
+

@@ -32,22 +32,25 @@
 
     <div class="space"></div>
 
-    <button mat-button>
+    <!-- <button mat-button>
         Click Me
         <mat-icon>arrow-down</mat-icon>
-    </button>
+    </button> -->
 
     <div class="icon-section">
         <img src="assets/icons/filter.png" width="32" height="32" />
         <img src="assets/icons/sort.png" width="32" height="32" />
-        <img src="assets/icons/grid-view.png" width="32" height="32" />
-        <img src="assets/icons/list-view.png" width="32" height="32" />
+        <img src="assets/icons/disabled-grid-view.png" width="32" height="32" [class.active]="isGridView"
+            (click)="toggleView('grid')" />
+        <img src="assets/icons/list-view.png" width="32" height="32" [class.active]="!isGridView"
+            (click)="toggleView('list')" />
     </div>
+
 </div>
 
 <hr class="navbar-divider" />
 
-<div class="table-wrap">
+<div class="table-wrap" *ngIf="!isGridView">
     <table mat-table [dataSource]="dataSource" class="custom-material-table">
 
         <!-- BUG DETAILS -->
@@ -117,7 +120,7 @@
 
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" (click)="onRowClick(row)"></tr>
 
 
         <!-- <thead mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></thead>
@@ -131,7 +134,7 @@
     <div class="dropdown-title">Change Status</div>
 
     <div class="dropdown-option chip-option" *ngFor="let status of statusOptions"
-        (click)="updateStatus(activeBug.id, status)" [class.disabled]="!activeBug?.canUpdate" >
+        (click)="updateStatus(activeBug.id, status)" [class.disabled]="!activeBug?.canUpdate">
         <span class="status-chip" [ngClass]="status.toLowerCase()">{{ status }}</span>
     </div>
 
@@ -148,6 +151,45 @@
         Delete
         <mat-icon>delete_outline</mat-icon>
     </div>
+</div>
 
 
+<!-- GRID VIEW -->
+<div class="grid-view" *ngIf="isGridView">
+  <mat-card class="bug-card" *ngFor="let bug of bugDetails">
+    <mat-card-header>
+      <mat-card-title>{{ bug.details }}</mat-card-title>
+      <button mat-icon-button (click)="toggleDropdown(bug, $event)" class="more-btn">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <span class="status-chip" [ngClass]="bug.status | lowercase">{{ bug.status }}</span>
+
+    <div class="divider"></div>
+
+    <mat-card-content>
+      <div class="info-row">
+        <div class="label">Due Date</div>
+        <div class="value">{{ bug.dueDate | date: 'mediumDate' }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="label">Assigned To</div>
+        <div class="avatar-stack">
+          <ng-container *ngFor="let assignee of bug.assignees; let i = index">
+            <img [src]="assignee.avatar" [alt]="'user ' + i" class="avatar" [style.zIndex]="bug.assignees.length - i" />
+          </ng-container>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <div class="divider"></div>
+
+    <mat-card-actions>
+      <button mat-flat-button class="details-btn" (click)="openUpdateBugDialog(bug.id)">
+        View Details
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

@@ -7,7 +7,7 @@ public record UserAvatarDto(string id, string? avatar);
 public record UserProfileDto(string name, string email, string phone, string? imageUrl);
 public record UpdateUserDto(string? name, string? phone, string? imageUrl);
 public record UpdateBugStatusDto(string status);
-
+public record BugDetailsForUpdateDto(string id, string details, string title, string status, string dueDate, List<UserAvatarDto> assignees, string? screenshotUrl);
 public record CreateBugDto(
     string ProjectId,
     string Title,

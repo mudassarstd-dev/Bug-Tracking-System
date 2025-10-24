@@ -1,0 +1,28 @@
+<div class="notification-panel" *ngIf="visible" [ngStyle]="getPosition()">
+  <div class="panel-header">Notifications</div>
+
+  <ng-container *ngIf="notifications.length; else emptyState">
+    <div class="notification-item" *ngFor="let note of notifications; let i = index">
+      <div class="content-row">
+        <img [src]="staticLogo" alt="App Logo" class="notif-logo" />
+
+        <div class="text-section">
+          <div class="notif-text">{{ note.text }}</div>
+
+          <div class="action-row" *ngIf="note.actionable">
+            <button mat-stroked-button color="primary" (click)="onView(note)">View</button>
+            <button mat-button color="warn" (click)="onDismiss(note)">Dismiss</button>
+          </div>
+
+          <div class="timestamp">{{ formatTimestamp(note.timestamp) }}</div>
+        </div>
+      </div>
+
+      <mat-divider *ngIf="i < notifications.length - 1"></mat-divider>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">No new notifications</div>
+  </ng-template>
+</div>

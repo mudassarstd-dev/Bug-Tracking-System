@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BugService } from 'src/app/services/bug.service';
 import { BugDetails } from 'src/app/common/BugDetails';
 import { HostListener } from '@angular/core';
+import { UpdateBugDialogComponent } from '../../dialogs/update-bug-dialog/update-bug-dialog.component';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class BugListComponent implements OnInit {
   activeBug: BugDetails | null = null;
   dropdownPosition = { top: 0, left: 0 };
   statusOptions = ['New', 'Started', 'Resolved'];
+  isGridView = false
 
   constructor(private route: ActivatedRoute, private dialog: MatDialog, private bugService: BugService) { }
 
@@ -48,11 +50,13 @@ export class BugListComponent implements OnInit {
     }
   }
 
-  // onActionClick(bug: BugDetails) {
-  //   console.log('Clicked actions for', bug.details);
-  //   alert(`deleting bug for id: ${bug.id}`)
-  //   this.bugService.delete(bug.id).subscribe()
-  // }
+  onActionClick(bug: BugDetails) {
+    console.log('Clicked actions for', bug.details);
+    alert(`deleting bug for id: ${bug.id}`)
+    this.bugService.delete(bug.id).subscribe(() => {
+      this.getBugDetails()
+    })
+  }
 
   openBugDialog() {
     const dialogRef = this.dialog.open(BugDialogComponent, {
@@ -74,9 +78,21 @@ export class BugListComponent implements OnInit {
     });
   }
 
+  openUpdateBugDialog(bugId: string) {
+    const dialogRef = this.dialog.open(UpdateBugDialogComponent, {
+      width: '780px',
+      height: '880px',
+      data: bugId 
+    })
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
+  }
+
+  toggleView(view: 'list' | 'grid') {
+    this.isGridView = view === 'grid';
   }
 
 
@@ -87,14 +103,11 @@ export class BugListComponent implements OnInit {
     })
   }
 
-
-
   toggleDropdown(bug: BugDetails, event: MouseEvent) {
     event.stopPropagation();
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
 
-    // Toggle if same bug clicked again
     if (this.activeBug && this.activeBug.id === bug.id) {
       this.activeBug = null;
       return;
@@ -102,10 +115,9 @@ export class BugListComponent implements OnInit {
 
     this.activeBug = bug;
 
-    // Calculate global position
     this.dropdownPosition = {
-      top: rect.bottom + window.scrollY + 0, // below button
-      left: rect.left + window.scrollX + 40 // slightly left of button
+      top: rect.bottom + window.scrollY + 0, 
+      left: rect.left + window.scrollX + 40 
     };
   }
 
@@ -120,6 +132,8 @@ export class BugListComponent implements OnInit {
     this.activeBug = null;
     this.bugService.updateStatus(bugId, status).subscribe(() => this.getBugDetails());
   }
-
-
+ 
+  onRowClick(bug: any) {
+      this.openUpdateBugDialog(bug.id)
+  }
 }

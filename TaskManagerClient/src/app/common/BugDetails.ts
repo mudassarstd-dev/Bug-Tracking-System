@@ -9,3 +9,13 @@ export interface BugDetails {
     canDelete: boolean,
     canUpdate: boolean
 }
+
+export interface BugDetailsForUpdate {
+    id: string,
+    details: string
+    status: string
+    dueDate: string
+    assignees: AvatarUser[],
+    screenshortUrl?: string
+}
+

@@ -5,8 +5,8 @@
         <div class="green-bar"></div>
 
         <div class="titles">
-            <div class="title">Projects</div>
-            <div class="subtitle">Overview of active projects</div>
+            <div class="title">Visnext Software Solutions</div>
+            <div class="subtitle">Hi Username, Welcome to ManageBug</div>
         </div>
     </div>
 
@@ -50,6 +50,11 @@
 </div> -->
 
 <div class="projects-section">
+
+    <h5 *ngIf="projects.length == 0">
+        No projects assigned yet
+    </h5>
+
     <mat-card class="project-card" *ngFor="let item of projects" (mouseenter)="item.hover = true"
         (mouseleave)="item.hover = false" [class.hovered]="item.hover" (click)="navToDetails(item)">
         <!-- Logo -->
