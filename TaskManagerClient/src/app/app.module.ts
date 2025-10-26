@@ -19,6 +19,7 @@ import { BugDialogComponent } from './home/dialogs/bug-dialog/bug-dialog.compone
 import { ProfileComponent } from './home/profile/profile.component';
 import { UpdateBugDialogComponent } from './home/dialogs/update-bug-dialog/update-bug-dialog.component';
 import { NotificationPanelComponent } from './shared/notification-panel/notification-panel.component';
+import { CustomDropdownComponent } from './home/shared/custom-dropdown/custom-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { NotificationPanelComponent } from './shared/notification-panel/notifica
     BugDialogComponent,
     ProfileComponent,
     UpdateBugDialogComponent,
-    NotificationPanelComponent
+    NotificationPanelComponent,
+    CustomDropdownComponent
   ],
   imports: [
     BrowserModule,

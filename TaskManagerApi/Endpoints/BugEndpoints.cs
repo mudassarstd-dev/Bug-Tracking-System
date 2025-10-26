@@ -13,8 +13,8 @@ public static class BugEndpoints
             [FromForm] string projectId,
             [FromForm] string title,
             [FromForm] string? details,
-            [FromForm] string assigneeIds, 
-            [FromForm] string? dueDate,    
+            [FromForm] string assigneeIds,
+            [FromForm] string? dueDate,
             [FromForm] IFormFile? attachment,
             DynamoBugService service
         ) =>
@@ -46,7 +46,7 @@ public static class BugEndpoints
                 ScreenshotUrl: screenshotUrl,
                 AssignedTo: assigneeIdList
             );
-            
+
             var result = await service.CreateBugAsync(dto);
             return result.ToHttpResult();
         })
@@ -64,19 +64,47 @@ public static class BugEndpoints
         group.MapGet("bug/{bugId}", async (string bugId, DynamoBugService service) =>
             (await service.GetByIdAsync(bugId)).ToHttpResult());
 
-        // group.MapPut("/{bugId}", async (string bugId, UpdateBugDto dto, DynamoBugService service) =>
-        //     (await service.UpdateBugAsync(bugId, dto)).ToHttpResult());
+        group.MapPut("/{bugId}", async (
+                    string bugId,
+                    [FromForm] string title,
+                    [FromForm] string? details,
+                    [FromForm] string assigneeIds,
+                    [FromForm] string? dueDate,
+                    [FromForm] IFormFile? attachment,
+                    DynamoBugService service
+) =>
+{
+    var assigneeIdList = string.IsNullOrWhiteSpace(assigneeIds)
+        ? new List<string>()
+        : System.Text.Json.JsonSerializer.Deserialize<List<string>>(assigneeIds)!;
 
-        // group.MapPut("/{bugId}/assign/{developerId}", async (string bugId, string developerId, DynamoBugService service) =>
-        // {
-        //     var updateDto = new UpdateBugDto(null, null, null, null, null, null, developerId);
-        //     return (await service.UpdateBugAsync(bugId, updateDto)).ToHttpResult();
-        // });
+    string? screenshotUrl = null;
+    if (attachment is not null)
+    {
+        screenshotUrl = await FileHandler.SaveFileAsync(attachment);
+    }
 
-        group.MapPut("/{bugId}", async (string bugId, UpdateBugStatusDto dto, DynamoBugService service) =>
-        {
-            return (await service.UpdateStatusAsync(bugId, dto)).ToHttpResult();
-        });
+    DateTime? deadline = null;
+    if (!string.IsNullOrEmpty(dueDate) && DateTime.TryParse(dueDate, out var parsedDate))
+    {
+        deadline = parsedDate;
+    }
+
+    var dto = new UpdateBugDto(
+        Title: title,
+        Details: details,
+        Type: "Bug",
+        Deadline: deadline,
+        ScreenshotUrl: screenshotUrl,
+        AssignedTo: assigneeIdList
+    );
+
+    var result = await service.UpdateBugAsync(bugId, dto);
+    return result.ToHttpResult();
+})
+.DisableAntiforgery();
+
+
 
         group.MapDelete("/{bugId}", async (string bugId, DynamoBugService service) =>
             (await service.DeleteBugAsync(bugId)).ToHttpResult());

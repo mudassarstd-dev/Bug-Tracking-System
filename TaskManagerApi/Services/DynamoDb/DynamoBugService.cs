@@ -118,7 +118,7 @@ public class DynamoBugService
                         avatarUrl = "https://avatar.iran.liara.run/public/boy";
                     }
 
-                    assigneeDtos.Add(new UserAvatarDto(userId, avatarUrl));
+                    assigneeDtos.Add(new UserAvatarDto(userId, avatarUrl, name: null));
                 }
             }
 
@@ -145,62 +145,34 @@ public class DynamoBugService
     }
 
 
-    // public async Task<ApiResponse<Bug>> UpdateBugAsync(string bugId, UpdateBugDto dto)
-    // {
-    //     var bug = await _context.LoadAsync<Bug>(bugId);
-    //     if (bug == null) return ApiResponse<Bug>.Fail("Bug not found", ErrorCode.NotFound);
+    public async Task<ApiResponse<string>> UpdateBugAsync(string bugId, UpdateBugDto dto)
+    {
+        var bug = await _context.LoadAsync<Bug>(bugId);
+        if (bug == null)
+            return ApiResponse<string>.Fail("Bug not found", ErrorCode.NotFound);
 
-    //     if (!string.IsNullOrWhiteSpace(dto.Title) && dto.Title != bug.Title)
-    //     {
-    //         // enforce title unique within project when changing
-    //         var scan = _context.ScanAsync<Bug>(new[]
-    //         {
-    //             new ScanCondition("ProjectId", ScanOperator.Equal, bug.ProjectId),
-    //             new ScanCondition("Title", ScanOperator.Equal, dto.Title)
-    //         });
-    //         var existing = await scan.GetRemainingAsync();
-    //         if (existing.Any()) return ApiResponse<Bug>.Fail("Another bug with this title exists in project", ErrorCode.ValidationError);
-    //         bug.Title = dto.Title;
-    //     }
+        if (!isQa() && bug.CreatedBy != _user.Id)
+            return ApiResponse<string>.Fail("Not authorized to update this bug", ErrorCode.InvalidRole);
 
-    //     if (dto.Description != null) bug.Description = dto.Description;
-    //     // if (dto.Deadline.HasValue) bug.Deadline = dto.Deadline;
-    //     if (dto.ScreenshotUrl != null)
-    //     {
-    //         if (!(dto.ScreenshotUrl.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
-    //               dto.ScreenshotUrl.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)))
-    //         {
-    //             return ApiResponse<Bug>.Fail("Screenshot must be .png or .gif", ErrorCode.ValidationError);
-    //         }
-    //         bug.ScreenshotUrl = dto.ScreenshotUrl;
-    //     }
+        if (!string.IsNullOrWhiteSpace(dto.Title))
+            bug.Title = dto.Title;
 
-    //     if (!string.IsNullOrWhiteSpace(dto.Type))
-    //     {
-    //         var t = dto.Type.ToLowerInvariant();
-    //         if (t != "feature" && t != "bug")
-    //             return ApiResponse<Bug>.Fail("Type must be 'feature' or 'bug'", ErrorCode.ValidationError);
-    //         bug.Type = dto.Type;
-    //     }
+        if (!string.IsNullOrWhiteSpace(dto.Details))
+            bug.Details = dto.Details;
 
-    //     if (!string.IsNullOrWhiteSpace(dto.Status))
-    //     {
-    //         // Validate allowed statuses depending on Type
-    //         var allowed = bug.Type.ToLowerInvariant() == "feature"
-    //             ? new[] { "new", "started", "completed" }
-    //             : new[] { "new", "started", "resolved" };
+        if (dto.Deadline.HasValue)
+            bug.Deadline = dto.Deadline.Value;
 
-    //         if (!allowed.Contains(dto.Status.ToLowerInvariant()))
-    //             return ApiResponse<Bug>.Fail($"Invalid status for type {bug.Type}", ErrorCode.ValidationError);
+        if (dto.ScreenshotUrl != null)
+            bug.ScreenshotUrl = dto.ScreenshotUrl;
 
-    //         bug.Status = dto.Status;
-    //     }
+        if (dto.AssignedTo != null && dto.AssignedTo.Any())
+            bug.Assignees = dto.AssignedTo;
 
-    //     if (!string.IsNullOrWhiteSpace(dto.AssignedTo)) bug.AssignedTo = dto.AssignedTo;
+        await _context.SaveAsync(bug);
 
-    //     await _context.SaveAsync(bug);
-    //     return ApiResponse<Bug>.Ok(bug, "Bug updated");
-    // }
+        return ApiResponse<string>.Ok("Bug updated successfully");
+    }
 
     public async Task<ApiResponse<string>> DeleteBugAsync(string Id)
     {

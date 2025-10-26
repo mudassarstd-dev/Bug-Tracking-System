@@ -76,6 +76,7 @@ public class DynamoUserService
 
         var result = users.Select(u => new UserAvatarDto(
             id: u.Id,
+            name: u.Name,
             avatar: string.IsNullOrWhiteSpace(u.ProfileImageUrl)
                 ? null
                 : $"http://localhost:5153/uploads/{Path.GetFileName(u.ProfileImageUrl)}"

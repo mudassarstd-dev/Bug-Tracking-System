@@ -16,6 +16,10 @@ export class BugService {
   create(data: FormData) {
       return this.http.post<ApiResponse<any>>(this.api_url, data)
   }
+  
+  update(bugId:string, data: FormData) {
+      return this.http.put<ApiResponse<any>>(`${this.api_url}/${bugId}`, data)
+  }
 
   getBugDetails(projectId: string) {
     return this.http.get<ApiResponse<BugDetails[]>>(`${this.api_url}/${projectId}`)

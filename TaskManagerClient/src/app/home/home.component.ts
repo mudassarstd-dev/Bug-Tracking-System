@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MasterService } from '../services/master.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-home',
@@ -17,9 +16,6 @@ export class HomeComponent implements OnInit {
   userImage: string | null = null
   navbarOptions: any
 
-  totalItems = 100;
-  pageSize = 10;
-  pageIndex = 0;
 
   constructor(private router: Router, private authService: AuthService) { }
 
@@ -67,12 +63,12 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/profile'])
   }
 
-  onPageChange(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.pageIndex = event.pageIndex;
-    console.log('Current page:', this.pageIndex + 1, 'Page size:', this.pageSize);
-    // You can now trigger a data fetch for this page
-  }
+  // onPageChange(event: PageEvent) {
+  //   this.pageSize = event.pageSize;
+  //   this.pageIndex = event.pageIndex;
+  //   console.log('Current page:', this.pageIndex + 1, 'Page size:', this.pageSize);
+  //   // You can now trigger a data fetch for this page
+  // }
 
   showNotifications = false;
   anchorRect?: DOMRect;
@@ -83,4 +79,9 @@ export class HomeComponent implements OnInit {
     this.showNotifications = !this.showNotifications;
   }
 
+    // @HostListener('document:click')
+    // closeNotificationPanel(): void {
+    //   this.showNotifications = false;
+    // }
+  
 }

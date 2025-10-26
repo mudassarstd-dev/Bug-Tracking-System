@@ -22,32 +22,6 @@ export class ProjectDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkRole()
-    // this.userService.getNotManagers()
-
-    // this.projects = [
-    //   {
-    //     id: 'p1',
-    //     name: 'Website Redesign',
-    //     description: 'Improve UI and add new components.',
-    //     logoUrl: 'http://localhost:5153/uploads/project-logo.png',
-    //     hover: false
-    //   },
-    //   {
-    //     id: 'p2',
-    //     name: 'API Migration',
-    //     description: 'Migrate backend from legacy system.',
-    //     logoUrl: 'http://localhost:5153/uploads/project-logo.png',
-    //     hover: false
-    //   },
-    //   {
-    //     id: 'p3',
-    //     name: 'Mobile App',
-    //     description: 'Build cross-platform Flutter app.',
-    //     logoUrl: 'http://localhost:5153/uploads/project-logo.png',
-    //     hover: false
-    //   }
-    // ];
-
     this.getProjects()
 
   }

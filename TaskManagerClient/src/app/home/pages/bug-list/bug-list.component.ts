@@ -84,6 +84,10 @@ export class BugListComponent implements OnInit {
       height: '880px',
       data: bugId 
     })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.getBugDetails()
+    })
   }
 
   applyFilter(event: Event) {
@@ -121,8 +125,6 @@ export class BugListComponent implements OnInit {
     };
   }
 
-
-  // Click outside closes dropdown
   @HostListener('document:click')
   onDocumentClick() {
     this.activeBug = null;
