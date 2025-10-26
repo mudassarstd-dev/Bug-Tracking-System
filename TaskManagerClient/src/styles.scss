@@ -1,4 +1,5 @@
 @import '~@angular/material/theming';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 
 
@@ -9,6 +10,7 @@
 $primary-palette: mat-palette($mat-blue);
 $accent-palette:  mat-palette($mat-yellow, A200, A100, A400);
 
+
 // $primary: map-merge($primary-palette, (500: #007DFA));
 // $accent: map-merge($accent-palette, (500: #F8C51B));
 
@@ -16,6 +18,15 @@ $theme: mat-light-theme(
   $primary-palette,
   $accent-palette,  
 );
+
+html, body {
+  font-family: 'Poppins', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* optional: ensures no vertical scroll */
+}
+
 
 // Include theme styles for Angular Material components and each component used in your app.
 @include angular-material-theme($theme);
@@ -56,8 +67,8 @@ $theme: mat-light-theme(
 .mat-button[disabled],
 .mat-raised-button[disabled],
 .mat-flat-button[disabled] {
-  background-color: #e0e0e0 !important;  // light grey background
-  color: #616161 !important;            // darker grey text
-  opacity: 1 !important;                 // remove default opacity
-  cursor: not-allowed !important;        // show not-allowed cursor
+  background-color: #e0e0e0 !important;  
+  color: #616161 !important;            
+  opacity: 1 !important;                 
+  cursor: not-allowed !important;        
 }

@@ -42,11 +42,11 @@
   <div class="register-left">
     <div class="branding">
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
+        src="/assets/icons/branding-title.png"
         alt="App Logo"
         class="logo"
       />
-      <h2 class="app-title">ManageBug</h2>
+      <!-- <h2 class="app-title">ManageBug</h2> -->
     </div>
   </div>
 
@@ -150,9 +150,12 @@
         <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
       </form>
 
+      <div class="divider"></div>
+
+
       <div class="signup-text">
         <span>Already have an account?</span>
-        <button mat-button color="primary" routerLink="/login">Login</button>
+        <button mat-button color="primary" routerLink="/login">Login to your account</button>
       </div>
     </div>
   </div>

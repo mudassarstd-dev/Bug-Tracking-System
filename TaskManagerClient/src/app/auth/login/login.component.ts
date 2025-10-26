@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
     loading = false
     successMessage = ""
     errorMessage = ""
-    hide: boolean = false
+    hide: boolean = true
   
 
    constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { 

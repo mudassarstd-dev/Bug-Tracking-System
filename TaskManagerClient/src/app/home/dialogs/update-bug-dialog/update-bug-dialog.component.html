@@ -1,6 +1,5 @@
-<form [formGroup]="bugForm"  class="bug-dialog">
-
-    <!-- Top Bar -->
+<!-- <form [formGroup]="bugForm" class="bug-dialog">
+    
     <div class="dialog-topbar">
         <button mat-icon-button class="close-btn" (click)="close()">
             <mat-icon>close</mat-icon>
@@ -10,15 +9,15 @@
     <div class="bug-status-section">
 
 
-                <h1>In progress</h1>
-                <h2>Arrow</h2>
+        <h1>In progress</h1>
+        <h2>Arrow</h2>
 
-          <div class="avatars">
-                <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
-                <button mat-mini-fab color="primary" class="add-avatar">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </div>
+        <div class="avatars">
+            <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
+            <button mat-mini-fab color="primary" class="add-avatar">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
 
 
 
@@ -35,31 +34,157 @@
 
     </div>
 
+    <div class="dialog-topbar">
+        <button mat-icon-button class="close-btn" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="bug-status-section">
+        <div class="status-group">
+            <div class="status-chip started">In Progress</div>
+            <div class="status-chip arrow">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </div>
+        </div>
+
+        <div class="avatars">
+            <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
+            <button mat-mini-fab color="primary" class="add-avatar">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+
+        <div class="divider-vertical"></div>
+
+        <div class="creation-date">
+            <mat-icon class="calendar-icon">calendar_today</mat-icon>
+            <div class="date-text">
+                <h3>Created</h3>
+                <p>{{ due | date: 'MMM d, yyyy' }}</p>
+            </div>
+        </div>
+    </div>
+
     <hr class="divider" />
 
 
-    <!-- Title -->
+
     <div class="dialog-title">Add New Bug</div>
 
- 
-        <!-- Drop Image Section -->
+
     <div class="drop-zone">
         <mat-icon>cloud_upload</mat-icon>
         <p *ngIf="!selectedFile">Drag & drop image here or <span class="browse">browse</span></p>
         <p *ngIf="selectedFile"><strong>selectedFile.name</strong></p>
         <input type="file" #fileInput hidden accept="image/*" />
     </div>
-           
-      
-    <!-- Bug Details -->
+
+
     <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
         <mat-label>Bug Details</mat-label>
         <textarea matInput formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
     </mat-form-field>
 
     <div class="space"></div>
-    <!-- Footer -->
     <div class="dialog-footer">
         <p>Drag & drop image here or <span class="browse">browse</span></p>
+    </div>
+</form> -->
+
+
+<form [formGroup]="bugForm" class="bug-dialog">
+    <!-- TOP BAR -->
+    <div class="dialog-topbar">
+        <button mat-icon-button class="close-btn" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <!-- STATUS + AVATARS + DATE -->
+    <div class="bug-status-section">
+        <div class="status-group">
+            <div class="status-chip started">{{ bugForm.value.status }}</div>
+            <div class="status-chip arrow">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </div>
+        </div>
+
+        <div class="avatars">
+            <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
+            <button mat-mini-fab color="primary" class="add-avatar">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <div class="divider-vertical"></div>
+
+        <div class="creation-date">
+            <mat-icon class="calendar-icon">calendar_today</mat-icon>
+            <div class="date-text">
+                <h3>Due</h3>
+                <p>{{ bugForm.value.dueDate | date: 'MMM d, yyyy' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- TITLE -->
+    <div class="dialog-title">{{ bugForm.value.title }}</div>
+
+    <!-- IMAGE PREVIEW SECTION -->
+    <div class="image-preview" *ngIf="imagePreview || screenshotUrl">
+        <img [src]="imagePreview || screenshotUrl" alt="Bug Screenshot" />
+    </div>
+
+    <!-- DROP ZONE -->
+    <!-- <div class="drop-zone" (click)="fileInput.click()">
+    <mat-icon>cloud_upload</mat-icon>
+    <p *ngIf="!selectedFile">Drag & drop image here or <span class="browse">browse</span></p>
+    <p *ngIf="selectedFile"><strong>{{ selectedFile.name }}</strong></p>
+    <input
+      type="file"
+      #fileInput
+      hidden
+      accept="image/*"
+      (change)="onFileSelected($event)"
+    />
+  </div> -->
+
+
+    <!-- DROP ZONE -->
+    <div class="drop-zone">
+        <!-- Show existing or previewed image -->
+        <img *ngIf="imagePreview || screenshotUrl" [src]="imagePreview || screenshotUrl" alt="Screenshot"
+            class="preview-image" />
+
+        <!-- Placeholder (only if no image) -->
+        <div *ngIf="!imagePreview && !screenshotUrl" class="placeholder">
+            <img src="assets/icons/gallery.png" alt="Add image" class="placeholder-icon" />
+            <p class="placeholder-text">Add image here</p>
+        </div>
+    </div>
+
+
+
+    <!-- BUG DETAILS -->
+    <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
+        <mat-label>Bug Details</mat-label>
+        <textarea matInput formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
+    </mat-form-field>
+
+    <div class="space"></div>
+
+    <!-- FOOTER -->
+    <!-- <div class="dialog-footer">
+        <p>Want to replace the image? <span class="browse" (click)="fileInput.click()">Browse</span></p>
+    </div> -->
+
+    <!-- FOOTER -->
+    <div class="dialog-footer">
+        <p>Want to replace the image? <span class="browse" (click)="fileInput.click()">Browse</span></p>
+        <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)" />
     </div>
 </form>

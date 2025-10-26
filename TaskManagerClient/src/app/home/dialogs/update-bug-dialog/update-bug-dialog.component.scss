@@ -21,37 +21,127 @@
 
     .bug-status-section {
         display: flex;
-        padding: 12px 12px;
         align-items: center;
-        gap: 12px;
+        padding: 16px 24px;
+        gap: 16px;
+        width: 100%;
 
+        .status-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
 
-            .avatars {
-                display: flex;
+            .status-chip {
+                display: inline-flex;
                 align-items: center;
+                justify-content: center;
+                padding: 6px 12px;
+                border-radius: 6px;
+                height: 42px;
+                width: 100px;
+                font-size: 13px;
+                font-weight: 500;
+                text-transform: capitalize;
+                line-height: 1.2;
+                cursor: default;
 
-                .avatar {
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 50%;
-                    border: 2px solid #fff;
-                    margin-right: -10px;
-                    box-shadow: 0 0 0 1px #ddd;
-                    background: #eee;
-                    object-fit: cover;
+                &.started {
+                    background-color: #fff3e0;
+                    color: #ef6c00;
+                }
 
-                    &:first-child {
-                        margin-left: 0;
+                &.arrow {
+                    display: flex;
+                    align-items: center;
+                    background-color: #f5f5f7;
+                    color: #616161;
+                    width: 42px;
+                    height: 42px;
+                    padding: 0;
+                    cursor: pointer;
+                    transition: background-color 0.2s ease;
+
+                    &:hover {
+                        background-color: #e0e0e0;
+                    }
+
+                    mat-icon {
+                        font-size: 20px;
                     }
                 }
+            }
+        }
 
-                .add-avatar {
-                    width: 36px;
-                    height: 36px;
-                    margin-right: -10px;
+        /* Avatar Stack */
+        .avatars {
+            display: flex;
+            margin-right: 280px;
+            align-items: center;
+
+            .avatar {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                border: 2px solid #fff;
+                margin-left: -10px;
+                box-shadow: 0 0 0 1px #ddd;
+                object-fit: cover;
+
+                &:first-child {
+                    margin-left: 0;
                 }
             }
+
+            .add-avatar {
+                width: 36px;
+                height: 36px;
+                margin-left: -10px;
+            }
+        }
+
+        /* Pushes divider + date to far right */
+        // .spacer {
+        //     flex: 1;
+        // }
+
+        .divider-vertical {
+            width: 1px;
+            height: 36px;
+            background-color: #e0e0e0;
+            margin: 0 8px;
+        }
+
+        .creation-date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .calendar-icon {
+                font-size: 20px;
+                color: #757575;
+            }
+
+            .date-text {
+                display: flex;
+                flex-direction: column;
+                line-height: 1.2;
+
+                h3 {
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #424242;
+                    margin: 0;
+                }
+
+                p {
+                    font-size: 13px;
+                    color: #757575;
+                    margin: 0;
+                }
+            }
+        }
     }
+
 
     .dialog-title {
         font-size: 1.5rem;
@@ -148,26 +238,69 @@
         }
     }
 
+    // .drop-zone {
+    //     margin: 24px 24px 16px;
+    //     border: 2px dashed #cfd8dc;
+    //     border-radius: 8px;
+    //     height: 140px;
+    //     display: flex;
+    //     gap: 20px;
+
+    //     flex-direction: row;
+    //     align-items: center;
+    //     justify-content: center;
+    //     color: #607d8b;
+
+    //     .mat-icon {
+    //         font-size: 40px;
+    //         margin-bottom: 8px;
+    //     }
+
+
+    // }
     .drop-zone {
         margin: 24px 24px 16px;
         border: 2px dashed #cfd8dc;
         border-radius: 8px;
         height: 140px;
         display: flex;
-        gap: 20px;
-        
-        flex-direction: row;
         align-items: center;
         justify-content: center;
+        background: #fafafa;
         color: #607d8b;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
 
-        .mat-icon {
-            font-size: 40px;
-            margin-bottom: 8px;
+        .preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
-        
+        .placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+
+            .placeholder-icon {
+                width: 42px;
+                height: 42px;
+                opacity: 0.6;
+            }
+
+            .placeholder-text {
+                font-size: 14px;
+                color: #757575;
+                font-weight: 500;
+            }
+        }
     }
+
+
 
     .dialog-footer {
         background-color: #fafafa;
@@ -192,25 +325,25 @@
 
 
 .dev-menu {
-  padding: 16px;
+    padding: 16px;
 
-  .menu-title {
-    font-weight: 600;
-    padding: 12px 16px;
-    font-size: 14px;
-  }
+    .menu-title {
+        font-weight: 600;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
 
-  .avatar-small {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 12px;
-    object-fit: cover;
-  }
+    .avatar-small {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 12px;
+        object-fit: cover;
+    }
 
-  .dev-name {
-    flex: 1;
-    color: red;
-  }
+    .dev-name {
+        flex: 1;
+        color: red;
+    }
 }
 
