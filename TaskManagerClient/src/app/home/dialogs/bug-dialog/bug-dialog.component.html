@@ -84,6 +84,23 @@
                 <button mat-mini-fab color="primary" [matMenuTriggerFor]="devMenu" class="add-avatar">
                     <mat-icon>add</mat-icon>
                 </button>
+
+                <!-- Dropdown -->
+                <!-- <div class="custom-dropdown-card" *ngIf="dropdownOpen"
+                    [ngStyle]="{ top: dropdownPosition.top + 'px', left: dropdownPosition.left + 'px' }">
+                    <div class="dropdown-title">Assign To</div>
+                    <hr class="dropdown-divider" />
+
+                    <div class="dropdown-list">
+                        <div class="dropdown-item" *ngFor="let user of allUsers" (click)="toggleAssignee(user)">
+                            <img [src]="user.avatar" alt="avatar" class="avatar" />
+                            <span class="name">{{ user.name }}</span>
+                            <mat-checkbox [checked]="isAssigned(user)" color="primary"
+                                (click)="$event.stopPropagation(); toggleAssignee(user)"></mat-checkbox>
+                        </div>
+                    </div>
+                </div> -->
+
             </div>
 
             <!-- Developer dropdown menu -->
@@ -94,12 +111,10 @@
                 <button mat-menu-item *ngFor="let dev of assignees" (click)="toggleAssignee(dev)">
                     <img [src]="dev.avatar" class="avatar-small" />
                     <span class="dev-name">{{ dev.name }}</span>
-                    <mat-checkbox [checked]="isSelected(dev)" (click)="$event.stopPropagation()" color="primary"></mat-checkbox>
+                    <mat-checkbox [checked]="isSelected(dev)" (click)="$event.stopPropagation()"
+                        color="primary"></mat-checkbox>
                 </button>
             </mat-menu>
-
-
-
         </div>
 
         <!-- Due Date -->
@@ -126,14 +141,22 @@
 
     <!-- Bug Title Input -->
     <div class="bug-title-input">
-        <input matInput formControlName="title" placeholder="Enter bug title..." />
+        <input matInput formControlName="title" placeholder="Add title..." />
+        <mat-error *ngIf="bugForm.get('title')?.touched && bugForm.get('title')?.invalid">
+            Bug title is required
+        </mat-error>
     </div>
-
     <!-- Bug Details -->
-    <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
+    <!-- <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
         <mat-label>Bug Details</mat-label>
         <textarea matInput formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
-    </mat-form-field>
+    </mat-form-field> -->
+
+    <div class="form-field">
+        <label class="field-label">Bug Details</label>
+        <input matInput formControlName="details" placeholder="Enter short details" />
+    </div>
+
 
     <!-- Drop Image Section -->
     <div class="drop-zone" (click)="fileInput.click()">
@@ -145,6 +168,6 @@
 
     <!-- Footer -->
     <div class="dialog-footer">
-        <button mat-flat-button color="primary" type="submit">Add Bug</button>
+        <button mat-flat-button color="primary" type="submit">Add</button>
     </div>
 </form>

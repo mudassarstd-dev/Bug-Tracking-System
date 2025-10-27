@@ -14,6 +14,8 @@ export class BugDialogComponent implements OnInit {
   bugForm!: FormGroup;
   selectedFile?: File;
   assignees: AvatarUser[]
+  allUsers: any = [];
+
 
   @ViewChild('picker') picker!: MatDatepicker<Date>;
 

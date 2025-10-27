@@ -30,7 +30,7 @@ export class BugService {
   }
 
   updateStatus(bugId: string, status: string) {
-    return this.http.put<ApiResponse<any>>(`${this.api_url}/${bugId}`, { status })
+    return this.http.put<ApiResponse<any>>(`${this.api_url}/status/${bugId}`, { status })
   }
 
   getById(bugId: string) {

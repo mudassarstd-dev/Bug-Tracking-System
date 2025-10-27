@@ -152,7 +152,7 @@ public class DynamoBugService
             return ApiResponse<string>.Fail("Bug not found", ErrorCode.NotFound);
 
         if (!isQa() && bug.CreatedBy != _user.Id)
-            return ApiResponse<string>.Fail("Not authorized to update this bug", ErrorCode.InvalidRole);
+            return ApiResponse<string>.Fail("Only QA is authorized to update this bug", ErrorCode.InvalidRole);
 
         if (!string.IsNullOrWhiteSpace(dto.Title))
             bug.Title = dto.Title;

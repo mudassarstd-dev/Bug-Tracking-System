@@ -18,6 +18,7 @@
         .green-bar {
             width: 4px;
             height: 100%;
+            margin-bottom: -15px;
             /* same as parent height = 86px */
             background-color: #2E7D32; // Material green 800
             border-radius: 2px;
@@ -63,10 +64,14 @@
             }
 
             .mat-mdc-form-field-flex {
-                height: 40px;
+                height: 48px;
                 /* matches button height visually */
                 align-items: center;
             }
+        }
+
+        .sorting-section {
+            margin-bottom: 16px;
         }
 
         button[mat-flat-button] {
@@ -83,11 +88,11 @@
 
 /* Divider line beneath sub-navbar */
 .navbar-divider {
-    margin-inline: auto;
+    // margin-inline: auto;
     max-width: calc(100vw - 442px);
     border: none;
     border-top: 1px solid #ECECEE;
-    overflow-x: hidden;
+    // overflow-x: hidden;
 }
 
 button[mat-flat-button] {
@@ -167,23 +172,83 @@ button[mat-flat-button] {
     margin-top: 34px;
 }
 
-// .project-card {
-//     transition: all 0.3s ease;
-//     border: 1px solid transparent;
-//     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-//     cursor: pointer;
-//     background: #fff;
-//     color: rgba(0, 0, 0, 0.87); // text color on nav-bar
-//     padding: 32px, 32px, 32px, 32px;
+.pagination-footer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100vw - 742px); 
+  max-width: 1200px; 
+  height: 64px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;    
+  z-index: 100;
 
+  .left-info {
+    font-size: 14px;
+    color: #666;
+  }
 
-//     &.hovered {
-//       border-color: var(--mat-primary);
-//       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-//     }
-// }
+  .right-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 
-// .card-icon {
-//     font-size: 56px;
-//     margin-bottom: 50px;
-// }
+    .page-size-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+
+      span {
+        font-size: 14px;
+        color: #555;
+      }
+
+      mat-select {
+        width: 70px;
+      }
+
+      mat-icon {
+        font-size: 18px;
+        color: #888;
+      }
+    }
+
+    .pagination-buttons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      button {
+        min-width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        font-size: 14px;
+        border-color: #ccc;
+        color: #333;
+        transition: all 0.2s ease;
+
+        &:hover:not([disabled]) {
+          border-color: var(--mat-primary, #1976d2);
+          color: var(--mat-primary, #1976d2);
+        }
+
+        /* Active page button matches arrow buttons */
+        &.active {
+          background-color: var(--mat-primary, #1976d2);
+          color: #fff;
+          border-color: var(--mat-primary, #1976d2);
+        }
+
+        &[disabled] {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+

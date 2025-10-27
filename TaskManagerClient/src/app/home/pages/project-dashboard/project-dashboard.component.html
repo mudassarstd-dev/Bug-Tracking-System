@@ -1,21 +1,17 @@
 <div class="sub-navbar mat-elevation-z0">
-
-    <!-- Left: Green line + titles -->
     <div class="subnav-left">
         <div class="green-bar"></div>
-
         <div class="titles">
             <div class="title">Visnext Software Solutions</div>
-            <div class="subtitle">Hi U, Welcome to ManageBug</div>
+            <div class="subtitle">Hi Username, Welcome to ManageBug</div>
         </div>
     </div>
 
-    <!-- Right: Search + Add button -->
-    <div class="subnav-right">
+    <form [formGroup]="searchForm" class="subnav-right">
         <mat-form-field appearance="outline" class="search-field">
             <mat-label>Search projects</mat-label>
-            <input matInput placeholder="Search..." />
-            <button mat-icon-button matPrefix>
+            <input matInput formControlName="search" placeholder="Search..." />
+            <button mat-icon-button matSuffix>
                 <mat-icon>search</mat-icon>
             </button>
         </mat-form-field>
@@ -24,53 +20,42 @@
             <mat-icon>add</mat-icon>
             {{ AddButtonText }}
         </button>
-    </div>
+
+        <div class="sorting-section" *ngIf="isManager">
+        <!-- Sort by dropdown -->
+        <button mat-button [matMenuTriggerFor]="sortMenu">
+            {{ sortBy === 'latest' ? 'Latest' : 'Most Tasks' }}
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #sortMenu="matMenu">
+            <button mat-menu-item (click)="onSortChange('latest')">Latest</button>
+            <button mat-menu-item (click)="onSortChange('mostTasks')">Most Tasks</button>
+        </mat-menu>
+
+        <!-- My/All Projects dropdown -->
+        <button mat-button [matMenuTriggerFor]="filterMenu">
+            {{ projectFilter === 'my' ? 'My Projects' : 'All Projects' }}
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu">
+            <button mat-menu-item (click)="onProjectFilterChange('all')">All Projects</button>
+            <button mat-menu-item (click)="onProjectFilterChange('my')">My Projects</button>
+        </mat-menu>
+        </div>
+    </form>
+
 </div>
 
-<!-- Bottom divider line -->
 <hr class="navbar-divider" />
 
-<!-- <div class="projects-section">
-        <mat-card
-          class="project-card"
-          *ngFor="let item of projects"
-          (mouseenter)="item.hover = true"
-          (mouseleave)="item.hover = false"
-          [class.hovered]="item.hover"
-          (click)="navToRegister(item.title)"
-        >
-            <mat-icon color="primary" class="card-icon">  {{ item.icon }}</mat-icon>
-            <mat-card-title>{{ item.Name }}</mat-card-title>
-            <mat-card-content>
-                <p>{{ item.Description }}</p>
-                <p>Tasks Done</p>
-            </mat-card-content>
-
-        </mat-card>
-</div> -->
-
 <div class="projects-section">
+    <h5 *ngIf="filteredProjects.length == 0">No projects found</h5>
 
-    <h5 *ngIf="projects.length == 0">
-        No projects assigned yet
-    </h5>
-
-    <mat-card class="project-card" *ngFor="let item of projects" (mouseenter)="item.hover = true"
+    <mat-card class="project-card" *ngFor="let item of pagedProjects" (mouseenter)="item.hover = true"
         (mouseleave)="item.hover = false" [class.hovered]="item.hover" (click)="navToDetails(item)">
-        <!-- Logo -->
         <img *ngIf="item.logoUrl" [src]="item.logoUrl" alt="{{ item.name }}" class="project-logo" />
 
-        <!-- Hover controls (visible only for manager + hover) -->
-        <!-- <div class="hover-actions" *ngIf="isManager && item.hover">
-      <button mat-icon-button (click)="editProject(item)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button (click)="deleteProject(item)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div> -->
-
-        <div class="hover-actions" *ngIf="isManager && item.hover">
+        <div class="hover-actions" *ngIf="isManager && item.hover && item.canEdit">
             <button mat-icon-button (click)="openProjectDialog(item); $event.stopPropagation()">
                 <mat-icon>edit</mat-icon>
             </button>
@@ -79,13 +64,42 @@
             </button>
         </div>
 
-
-        <!-- Content -->
         <mat-card-title>{{ item.name }}</mat-card-title>
         <mat-card-content>
             <p>{{ item.description }}</p>
             <p>Tasks Done: {{ item.completedTasks || 0 }} / {{ item.totalTasks || 0 }}</p>
         </mat-card-content>
     </mat-card>
+</div>
 
+<div class="pagination-footer">
+    <div class="left-info">
+        Showing {{ startItem }} - {{ endItem }} of {{ totalItems }} items
+    </div>
+
+    <div class="right-controls">
+        <div class="page-size-selector">
+            <span>Display</span>
+            <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event.value)">
+                <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                    {{ size }}
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="pagination-buttons">
+            <button mat-stroked-button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <button *ngFor="let p of [].constructor(totalPages); let i = index" mat-stroked-button
+                (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">
+                {{ i + 1 }}
+            </button>
+
+            <button mat-stroked-button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+    </div>
 </div>

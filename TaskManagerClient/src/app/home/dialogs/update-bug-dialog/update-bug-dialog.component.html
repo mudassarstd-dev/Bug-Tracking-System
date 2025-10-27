@@ -15,7 +15,6 @@
             </div>
         </div>
 
-
         <!-- Avatars -->
         <div class="avatars">
             <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
@@ -58,9 +57,9 @@
     <div class="dialog-title">{{ bugForm.value.title }}</div>
 
     <!-- IMAGE PREVIEW SECTION -->
-    <div class="image-preview" *ngIf="imagePreview || screenshotUrl">
+    <!-- <div class="image-preview" *ngIf="imagePreview || screenshotUrl">
         <img [src]="imagePreview || screenshotUrl" alt="Bug Screenshot" />
-    </div>
+    </div> -->
 
     <!-- DROP ZONE -->
     <!-- <div class="drop-zone" (click)="fileInput.click()">

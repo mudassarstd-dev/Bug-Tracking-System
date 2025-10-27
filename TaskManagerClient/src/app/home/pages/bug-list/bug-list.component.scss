@@ -505,6 +505,8 @@ button[mat-flat-button] {
     .status-chip {
         margin-left: 16px;
         margin-bottom: 8px;
+        width: 80px;
+        text-align: center;
     }
 
     mat-card-content {
@@ -537,7 +539,7 @@ button[mat-flat-button] {
         padding: 0 16px 12px;
 
         button.details-btn {
-            width: 100%;
+            width: 200px !important;
             height: 40px;
             background: #E8EDF2;
             font-size: 0.9rem;
