@@ -11,6 +11,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.FileProviders;
+using TaskManagerApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUser, CurrentUser>();
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddCors();
 
 builder.Services.AddDbContext<AppDbContext>(options =>

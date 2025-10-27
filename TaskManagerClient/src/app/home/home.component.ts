@@ -27,13 +27,11 @@ export class HomeComponent implements OnInit {
       {
         title: "Projects",
         icon: "assets/icons/projects.png",
-        route: "/projects",
         show: true,
       },
       {
         title: "Bugs",
         icon: "assets/icons/bugs.svg",
-        route: "/bugs",
         show: true,
       },
     ];

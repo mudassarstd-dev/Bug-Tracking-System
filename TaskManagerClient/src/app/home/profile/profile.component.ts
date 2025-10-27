@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class ProfileComponent implements OnInit {
   selectedFile?: File;
   previewUrl?: string;
 
-  constructor(private fb: FormBuilder, private userService: UserService) { }
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.profileForm = this.fb.group({
@@ -89,5 +90,9 @@ export class ProfileComponent implements OnInit {
 
   onCancel(): void {
     this.loadUserProfile();
+  }
+
+  logout() {
+    this.router.navigate(['/login'])
   }
 }

@@ -3,18 +3,21 @@ using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Runtime;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
+using TaskManagerApi.Services;
 
 public class DynamoBugService
 {
     private readonly IDynamoDBContext _context;
     private readonly IUser _user;
     private readonly DynamoUserService _userService;
+    private readonly EmailService _emailService;
 
-    public DynamoBugService(IDynamoDBContext context, IUser user, DynamoUserService userService)
+    public DynamoBugService(IDynamoDBContext context, IUser user, DynamoUserService userService, EmailService emailService)
     {
         _context = context;
         _user = user;
         _userService = userService;
+        _emailService = emailService;
     }
 
     public async Task<ApiResponse<string>> CreateBugAsync(CreateBugDto dto)
@@ -27,6 +30,36 @@ public class DynamoBugService
 
         if (string.IsNullOrWhiteSpace(dto.Title))
             return ApiResponse<string>.Fail("Title is required");
+
+        var query = _context.QueryAsync<Bug>(dto.ProjectId, new QueryConfig { IndexName = "ProjectId-index" });
+
+        var existingBugs = await query.GetRemainingAsync();
+
+        if (existingBugs.Any(bug =>
+        string.Equals(bug.Title.Trim(), dto.Title.Trim(), StringComparison.OrdinalIgnoreCase)
+        )) return ApiResponse<string>.Fail("Title already exists in scope of current project");
+
+
+        foreach (var userId in dto.AssignedTo)
+        {
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var user = await _userService.GetByIdAsync(userId);
+                    if (user?.Data?.Email is not null)
+                    {
+                        await _emailService.SendEmailAsync(user.Data.Email,
+                            subject: "A new Bug is created",
+                            body: "You're assigned a new bug");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to send bug assignment email for user");
+                }
+            });
+        }
 
         var bug = new Bug
         {

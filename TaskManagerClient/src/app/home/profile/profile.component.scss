@@ -4,6 +4,24 @@
   align-items: center;
   justify-content: center;
   padding-top: 5vh;
+
+  .top-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    h1 {
+      font-weight: 700;
+      font-size: 36px;
+    }
+
+  }
+
+  mat-icon {
+    margin-right: 6px;
+    color: #6b7280;
+  }
 }
 
 .profile-image-container {
@@ -38,8 +56,10 @@
   width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 4px;
 }
+
+
 
 // .button-row {
 //   display: flex;
@@ -56,5 +76,19 @@
 
   button {
     flex: 1;
+    border-radius: 8px;
+    height: 56px;
   }
 }
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    background-color: #F5F5F7 !important;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex,
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-flex {
+    background-color: #ffffff !important;
+}
+

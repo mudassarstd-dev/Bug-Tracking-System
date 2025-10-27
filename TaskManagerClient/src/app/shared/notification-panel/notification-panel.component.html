@@ -1,5 +1,18 @@
 <div class="notification-panel" *ngIf="visible" [ngStyle]="getPosition()">
-  <div class="panel-header">Notifications</div>
+  <div class="panel-header">
+    <span>Notifications</span>
+
+    <button
+      mat-icon-button
+      class="mark-read-btn"
+      (click)="markAllAsRead()"
+      matTooltip="Mark all as read"
+    >
+      <span class="label">Mark all as read</span>
+      <mat-icon>done_all</mat-icon>
+
+    </button>
+  </div>
 
   <ng-container *ngIf="notifications.length; else emptyState">
     <div class="notification-item" *ngFor="let note of notifications; let i = index">
@@ -8,13 +21,16 @@
 
         <div class="text-section">
           <div class="notif-text">{{ note.text }}</div>
+          <div class="timestamp">{{ formatTimestamp(note.timestamp) }}</div>
 
           <div class="action-row" *ngIf="note.actionable">
-            <button mat-stroked-button color="primary" (click)="onView(note)">View</button>
-            <button mat-button color="warn" (click)="onDismiss(note)">Dismiss</button>
+            <button mat-flat-button color="primary" (click)="onView(note)">
+              View
+            </button>
+            <button mat-stroked-button (click)="onDismiss(note)">
+              Dismiss
+            </button>
           </div>
-
-          <div class="timestamp">{{ formatTimestamp(note.timestamp) }}</div>
         </div>
       </div>
 
