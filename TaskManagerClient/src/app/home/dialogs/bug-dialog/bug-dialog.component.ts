@@ -1,29 +1,48 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { UserService } from 'src/app/services/user.service';
 import { AvatarUser } from 'src/app/common/AvatarUser';
 
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+function futureDateValidator(control: AbstractControl): ValidationErrors | null {
+  const selectedDate = control.value ? new Date(control.value) : null;
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate && selectedDate < today) {
+    return { pastDate: true };
+  }
+  return null;
+}
+
+
+
 @Component({
   selector: 'app-bug-dialog',
   templateUrl: './bug-dialog.component.html',
-  styleUrls: ['./bug-dialog.component.scss']
+  styleUrls: ['./bug-dialog.component.scss'],
 })
-export class BugDialogComponent implements OnInit {
+export class BugDialogComponent implements OnInit, OnDestroy {
   bugForm!: FormGroup;
   selectedFile?: File;
-  assignees: AvatarUser[]
-  allUsers: any = [];
-
+  assignees: AvatarUser[] = [];
+  allUsers: AvatarUser[] = [];
+  previewUrl: string | null = null;
+  dropdownOpen = false;
+  dropdownPosition = { top: 0, left: 0 };
+  minDate: Date = new Date();
 
   @ViewChild('picker') picker!: MatDatepicker<Date>;
-
-  // assignees = [
-  //   { avatar: 'https://i.pravatar.cc/40?img=3', id: 'u1' },
-  //   { avatar: 'https://i.pravatar.cc/40?img=5', id: 'u2' },
-  //   { avatar: 'https://i.pravatar.cc/40?img=7', id: 'u3' },
-  // ];
 
   constructor(
     private fb: FormBuilder,
@@ -34,17 +53,47 @@ export class BugDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.bugForm = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(200)]],
-      details: [''],
+      title: ['', [Validators.required, Validators.maxLength(60)]],
+      details: ['', Validators.required],
       assignees: [[]],
-      dueDate: [null],
-      attachment: [null]
+      dueDate: [null, [futureDateValidator]],
+      attachment: [null],
     });
 
-    // get devs here
-    this.userService.getDevelopers().subscribe(resp => {
-      this.assignees = resp.data || []
-    })
+    this.minDate = new Date()
+    
+    this.userService.getDevelopers().subscribe((resp) => {
+      this.assignees = resp.data || [];
+      this.allUsers = this.assignees;
+    });
+
+    document.addEventListener('click', this.handleOutsideClick);
+  }
+
+  ngOnDestroy(): void {
+    document.removeEventListener('click', this.handleOutsideClick);
+  }
+
+  private handleOutsideClick = (event: MouseEvent): void => {
+    const target = event.target as HTMLElement;
+    if (
+      !target.closest('.custom-dropdown-card') &&
+      !target.closest('.add-avatar')
+    ) {
+      this.dropdownOpen = false;
+    }
+  };
+
+  openDropdown(event: MouseEvent): void {
+    const button = event.currentTarget as HTMLElement;
+    const rect = button.getBoundingClientRect();
+
+    this.dropdownPosition = {
+      top: rect.bottom + window.scrollY + 8,
+      left: rect.left + window.scrollX,
+    };
+
+    this.dropdownOpen = !this.dropdownOpen;
   }
 
   onFileSelected(event: any): void {
@@ -52,6 +101,12 @@ export class BugDialogComponent implements OnInit {
     if (file) {
       this.selectedFile = file;
       this.bugForm.patchValue({ attachment: file });
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -65,17 +120,30 @@ export class BugDialogComponent implements OnInit {
     }
   }
 
+  toggleAssignee(dev: AvatarUser) {
+    const current = this.bugForm.get('assignees')?.value || [];
+    const updated = this.isSelected(dev)
+      ? current.filter((a) => a.id !== dev.id)
+      : [...current, dev];
+    this.bugForm.get('assignees')?.setValue(updated);
+  }
+
+  isSelected(dev: AvatarUser): boolean {
+    const current = this.bugForm.get('assignees')?.value || [];
+    return current.some((a) => a.id === dev.id);
+  }
+
   save(): void {
     if (this.bugForm.invalid) return;
 
-    const { title, details, assignees, dueDate, attachment } = this.bugForm.value;
+    const { title, details, assignees, dueDate, attachment } =
+      this.bugForm.value;
     const formData = new FormData();
 
     formData.append('title', title);
     formData.append('details', details || '');
     formData.append('dueDate', dueDate ? new Date(dueDate).toISOString() : '');
-    // assignees.forEach((a: any) => formData.append('assignees[]', a));
-    formData.append('assigneeIds', JSON.stringify(assignees.map(u => u.id)));
+    formData.append('assigneeIds', JSON.stringify(assignees.map((u) => u.id)));
     if (attachment) formData.append('attachment', attachment, attachment.name);
 
     this.dialogRef.close(formData);
@@ -84,21 +152,4 @@ export class BugDialogComponent implements OnInit {
   close(): void {
     this.dialogRef.close();
   }
-
-  toggleAssignee(dev: AvatarUser) {
-    const currentAssignees: AvatarUser[] = this.bugForm.get('assignees')?.value || [];
-
-    if (this.isSelected(dev)) {
-      const updated = currentAssignees.filter(a => a.id !== dev.id);
-      this.bugForm.get('assignees')?.setValue(updated);
-    } else {
-      this.bugForm.get('assignees')?.setValue([...currentAssignees, dev]);
-    }
-  }
-
-  isSelected(dev: AvatarUser): boolean {
-    const currentAssignees: AvatarUser[] = this.bugForm.get('assignees')?.value || [];
-    return currentAssignees.some(a => a.id === dev.id);
-  }
-
 }

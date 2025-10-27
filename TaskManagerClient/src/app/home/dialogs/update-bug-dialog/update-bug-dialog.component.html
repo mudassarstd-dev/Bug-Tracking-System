@@ -19,8 +19,11 @@
         <div class="avatars">
             <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
 
-            <button mat-mini-fab color="primary" class="add-avatar" (click)="toggleDropdown($event)">
-                <mat-icon>add</mat-icon>
+            <button type="button" class="add-avatar hollow-add"
+                (click)="toggleDropdown($event); $event.stopPropagation()">
+                <div class="plus-badge">
+                    <mat-icon>add</mat-icon>
+                </div>
             </button>
 
             <!-- Dropdown Card -->
@@ -40,15 +43,20 @@
             </div>
         </div>
 
-        <div class="divider-vertical"></div>
+        <div class="spacer"></div>
+
+        <div class="full-divider-vertical"></div>
+
 
         <div class="creation-date">
-            <mat-icon class="calendar-icon">calendar_today</mat-icon>
             <div class="date-text">
-                <h3>Due</h3>
+                <h3>Due Date</h3>
                 <p>{{ bugForm.value.dueDate | date: 'MMM d, yyyy' }}</p>
             </div>
+            <div class="half-divider-vertical"></div>
+            <img src="assets/icons/calendar.png" alt="calendar" width="32" height="32" class="calendar-icon" (click)="$event.stopPropagation(); openDatePicker()" >
         </div>
+
     </div>
 
     <hr class="divider" />
@@ -56,24 +64,6 @@
     <!-- TITLE -->
     <div class="dialog-title">{{ bugForm.value.title }}</div>
 
-    <!-- IMAGE PREVIEW SECTION -->
-    <!-- <div class="image-preview" *ngIf="imagePreview || screenshotUrl">
-        <img [src]="imagePreview || screenshotUrl" alt="Bug Screenshot" />
-    </div> -->
-
-    <!-- DROP ZONE -->
-    <!-- <div class="drop-zone" (click)="fileInput.click()">
-    <mat-icon>cloud_upload</mat-icon>
-    <p *ngIf="!selectedFile">Drag & drop image here or <span class="browse">browse</span></p>
-    <p *ngIf="selectedFile"><strong>{{ selectedFile.name }}</strong></p>
-    <input
-      type="file"
-      #fileInput
-      hidden
-      accept="image/*"
-      (change)="onFileSelected($event)"
-    />
-  </div> -->
 
 
     <!-- DROP ZONE -->
@@ -104,7 +94,7 @@
 
     <!-- FOOTER -->
     <div class="dialog-footer">
-        <p>Want to replace the image? <span class="browse" (click)="fileInput.click()">Browse</span></p>
+        <p>Drop any image here or <span class="browse" (click)="fileInput.click()">Browse</span></p>
         <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)" />
     </div>
 </form>

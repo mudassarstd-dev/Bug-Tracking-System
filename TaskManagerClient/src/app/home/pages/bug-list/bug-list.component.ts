@@ -79,6 +79,9 @@ export class BugListComponent implements OnInit {
   }
 
   openUpdateBugDialog(bugId: string) {
+
+    if (!this.isQa) return
+
     const dialogRef = this.dialog.open(UpdateBugDialogComponent, {
       width: '780px',
       height: '880px',

@@ -1,5 +1,6 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AvatarUser } from 'src/app/common/AvatarUser';
 import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
@@ -125,5 +126,10 @@ export class UpdateBugDialogComponent implements OnInit {
   close(): void {
     this.save()
     this.dialogRef.close();
+  }
+   @ViewChild('picker') picker!: MatDatepicker<Date>;
+
+  openDatePicker(): void {
+    this.picker.open();
   }
 }

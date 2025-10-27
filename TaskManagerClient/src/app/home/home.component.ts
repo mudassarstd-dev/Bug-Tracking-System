@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit {
   userImage: string | null = null
   navbarOptions: any
 
-
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -28,23 +27,15 @@ export class HomeComponent implements OnInit {
       {
         title: "Projects",
         icon: "assets/icons/projects.png",
-        show: true
+        route: "/projects",
+        show: true,
       },
       {
         title: "Bugs",
         icon: "assets/icons/bugs.svg",
-        show: true
+        route: "/bugs",
+        show: true,
       },
-      // {
-      //   title: "Manage",
-      //   icon: "bar_chart",
-      //   show: this.isManager
-      // },
-      // {
-      //   title: "Users",
-      //   icon: "bar_chart",
-      //   show: this.isManager
-      // },
     ];
 
     this.renderDashboard()
@@ -63,13 +54,6 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/profile'])
   }
 
-  // onPageChange(event: PageEvent) {
-  //   this.pageSize = event.pageSize;
-  //   this.pageIndex = event.pageIndex;
-  //   console.log('Current page:', this.pageIndex + 1, 'Page size:', this.pageSize);
-  //   // You can now trigger a data fetch for this page
-  // }
-
   showNotifications = false;
   anchorRect?: DOMRect;
 
@@ -79,9 +63,9 @@ export class HomeComponent implements OnInit {
     this.showNotifications = !this.showNotifications;
   }
 
-    // @HostListener('document:click')
-    // closeNotificationPanel(): void {
-    //   this.showNotifications = false;
-    // }
-  
+  // @HostListener('document:click')
+  // closeNotificationPanel(): void {
+  //   this.showNotifications = false;
+  // }
+
 }
