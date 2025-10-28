@@ -8,23 +8,24 @@
 
 // Define your application's custom theme.
 $primary-palette: mat-palette($mat-blue);
-$accent-palette:  mat-palette($mat-yellow, A200, A100, A400);
+$accent-palette: mat-palette($mat-yellow, A200, A100, A400);
 
 
 // $primary: map-merge($primary-palette, (500: #007DFA));
 // $accent: map-merge($accent-palette, (500: #F8C51B));
 
-$theme: mat-light-theme(  
-  $primary-palette,
-  $accent-palette,  
-);
+$theme: mat-light-theme($primary-palette,
+    $accent-palette,
+  );
 
-html, body {
+html,
+body {
   font-family: 'Poppins', sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* optional: ensures no vertical scroll */
+  overflow: hidden;
+  /* optional: ensures no vertical scroll */
 }
 
 
@@ -63,12 +64,17 @@ html, body {
   color: #9e9e9e !important;
 }
 
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 0 !important;
+}
+
 /* Override disabled button color */
 .mat-button[disabled],
 .mat-raised-button[disabled],
 .mat-flat-button[disabled] {
-  background-color: #e0e0e0 !important;  
-  color: #616161 !important;            
-  opacity: 1 !important;                 
-  cursor: not-allowed !important;        
+  background-color: #e0e0e0 !important;
+  color: #616161 !important;
+  opacity: 1 !important;
+  cursor: not-allowed !important;
 }
+

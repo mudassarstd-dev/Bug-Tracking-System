@@ -19,21 +19,29 @@
     gap: 8px;
 
     .field-label {
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.87);
-      font-size: 0.95rem;
+      font-weight: 400;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
     }
 
     input[matInput] {
-      border: 1px solid #ccc;
+      border: 1px solid #F4F4F5;
       border-radius: 6px;
-      height: 45px;
+      height: 52px;
       padding: 0 12px;
       font-size: 0.9rem;
       outline: none;
 
       &:focus {
         border-color: #1976d2;
+      }
+
+      &::placeholder {
+        color: #A1A1AA;
+        font-weight: 400;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+
       }
     }
   }
@@ -88,7 +96,7 @@
     height: 160px;
     position: relative;
     overflow: hidden;
-    border: 2px dashed #ccc;
+    border: 3px dashed #4C535F;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -141,11 +149,11 @@
   flex-direction: column;
   gap: 8px;
 
-  .field-label {
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.87);
-    font-size: 0.95rem;
-  }
+  // .field-label {
+  //   font-weight: 500;
+  //   color: rgba(0, 0, 0, 0.87);
+  //   font-size: 0.95rem;
+  // }
 
   // Dropdown options
   .user-option {
@@ -233,6 +241,13 @@
   .dropdown-icon {
     font-size: 22px;
     color: #666;
+  }
+
+  &::placeholder {
+    color: #A1A1AA;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
   }
 }
 
