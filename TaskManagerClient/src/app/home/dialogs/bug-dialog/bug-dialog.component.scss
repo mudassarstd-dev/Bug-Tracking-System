@@ -140,25 +140,25 @@
             outline: none;
             background: transparent;
             width: 100%;
-            font-weight: 500;
+            font-weight: 700;
             font-size: 34px;
             font-family: 'Poppins', sans-serif;
             color: #111;
         }
     }
 
-    .bug-details-field {
-        margin: 12px 24px 16px;
+    // .bug-details-field {
+    //     margin: 12px 24px 16px;
 
-        ::ng-deep .mat-mdc-form-field-flex {
-            background-color: #fafafa;
-            border-radius: 8px;
-        }
+    //     ::ng-deep .mat-mdc-form-field-flex {
+    //         background-color: #fafafa;
+    //         border-radius: 8px;
+    //     }
 
-        ::ng-deep textarea {
-            min-height: 120px;
-        }
-    }
+    //     ::ng-deep textarea {
+    //         min-height: 120px;
+    //     }
+    // }
 
     .drop-zone {
         margin: 0 24px 16px;
@@ -173,19 +173,21 @@
         justify-content: center;
         color: #607d8b;
 
-        // .mat-icon {
-        //     font-size: 40px;
-        //     margin-bottom: 32px;
-        //     margin-right: 8px;
-        // }
-
         img {
             margin-bottom: 8px;
         }
 
-          .preview-image {
+        .drop-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 24px;
+            opacity: 0.7;
+        }
+
+        .preview-image {
             max-width: 100%;
-            max-height: 80%;;
+            max-height: 80%;
+            ;
             object-fit: contain;
             border-radius: 8px;
         }

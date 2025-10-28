@@ -110,6 +110,11 @@
     flex-direction: column;
     gap: 0.5rem;
 
+    mat-icon {
+      margin-right: 6px;
+      color: #6b7280;
+    }
+
     .submit-btn {
       margin-top: 1rem;
       display: flex;
@@ -121,6 +126,11 @@
       height: 70px;
       font-weight: 600;
       text-transform: none;
+
+      mat-icon {
+        color: #fff;
+      }
+
     }
 
     .error {

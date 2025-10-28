@@ -103,7 +103,7 @@
                 (click)="fileInput.click()">Browse</span></p>
         <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)" />
 
-        <button mat-raised-button color="primary" (click)="save()">
+        <button mat-raised-button color="primary" (click)="save()" *ngIf="canUpdate">
             Update
         </button>
     </div>

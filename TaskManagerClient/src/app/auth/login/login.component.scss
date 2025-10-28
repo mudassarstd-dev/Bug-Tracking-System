@@ -92,7 +92,7 @@
     // }
 
     .logo {
-        width:190px;
+        width: 190px;
         height: 40px;
     }
 
@@ -152,7 +152,14 @@
             border-radius: 8px;
             height: 70px;
             font-weight: 600;
+            // font-size: 20px;
+            // font-family: 'Poppins', sans-serif;
             text-transform: none;
+
+            mat-icon {
+                // margin-left: 55px;
+                color: #fff;
+            }
         }
 
         .error {
@@ -165,6 +172,11 @@
             color: #43a047;
             margin-top: 0.5rem;
             font-size: 0.9rem;
+        }
+
+        mat-icon {
+            margin-right: 6px;
+            color: #6b7280;
         }
     }
 

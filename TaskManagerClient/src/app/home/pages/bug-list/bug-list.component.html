@@ -3,7 +3,7 @@
     <div class="subnav-left">
 
         <div class="titles">
-            <p>Projects > {{ projectTitle }} </p>
+            <p> <span style="color: #5B6871;"> Projects > </span> {{ projectTitle }} </p>
             <div class="hor-section">
                 <div class="title">All Bug Listings</div>
                 <span class="top-chip">Bugs</span>
@@ -38,67 +38,92 @@
     </button> -->
 
     <div class="icon-section">
-        <img src="assets/icons/filter.png" width="32" height="32" />
-        <img src="assets/icons/sort.png" width="32" height="32" />
+
+        <img src="assets/icons/filter.png" width="32" height="32" [class.active]="isFilterActive"
+            [matMenuTriggerFor]="filterMenu" />
+
+        <img src="assets/icons/sort.png" width="32" height="32" [class.active]="isSortActive"
+            [matMenuTriggerFor]="sortMenu" />
+
         <img src="assets/icons/disabled-grid-view.png" width="32" height="32" [class.active]="isGridView"
             (click)="toggleView('grid')" />
         <img src="assets/icons/list-view.png" width="32" height="32" [class.active]="!isGridView"
             (click)="toggleView('list')" />
     </div>
 
+    <!-- FILTER MENU -->
+    <mat-menu #filterMenu="matMenu" id="filter-menu">
+        <button mat-menu-item (click)="filterBugs('assignedToMe')" *ngIf="!isQa">Assigned to Me</button>
+        <button mat-menu-item (click)="filterBugs('createdByMe')" *ngIf="isQa">Created by Me</button>
+        <!-- <button mat-menu-item (click)="filterByStatus('New')">Status: New</button>
+        <button mat-menu-item (click)="filterByStatus('Started')">Status: Started</button>
+        <button mat-menu-item (click)="filterByStatus('Resolved')">Status: Resolved</button> -->
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="clearFilters(1)">Clear Filters</button>
+    </mat-menu>
+
+    <!-- SORT MENU -->
+    <mat-menu #sortMenu="matMenu" id="sort-menu">
+        <button mat-menu-item (click)="sortBugs('latest')">Sort by Latest Due Date</button>
+        <button mat-menu-item (click)="sortBugs('nearest')">Sort by Nearest Due Date</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="clearFilters(2)">Clear Filters</button>
+    </mat-menu>
+
 </div>
 
 <hr class="navbar-divider" />
 
-<div class="table-wrap" *ngIf="!isGridView">
-    <table mat-table [dataSource]="dataSource" class="custom-material-table">
+<div class="scroll-container">
+    <div class="table-wrap" *ngIf="!isGridView">
+        <table mat-table [dataSource]="dataSource" class="custom-material-table">
 
-        <!-- BUG DETAILS -->
-        <ng-container matColumnDef="details">
-            <th mat-header-cell *matHeaderCellDef class="custom-header bug-details-header">Bug Details</th>
-            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
-                <div class="bug-details">
-                    <span class="bug-icon" [ngStyle]="{ 'background-color': getColor(bug.status) }"></span>
-                    <span class="bug-title">{{ bug.details }}</span>
-                </div>
-            </td>
-        </ng-container>
+            <!-- BUG DETAILS -->
+            <ng-container matColumnDef="details">
+                <th mat-header-cell *matHeaderCellDef class="custom-header bug-details-header">Bug Details</th>
+                <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                    <div class="bug-details">
+                        <span class="bug-icon" [ngStyle]="{ 'background-color': getColor(bug.status) }"></span>
+                        <span class="bug-title">{{ bug.details }}</span>
+                    </div>
+                </td>
+            </ng-container>
 
-        <!-- STATUS -->
-        <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Status</th>
-            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
-                <span class="status-chip" [ngClass]="bug.status | lowercase">{{ bug.status }}</span>
-            </td>
-        </ng-container>
+            <!-- STATUS -->
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Status</th>
+                <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                    <span class="status-chip" [ngClass]="bug.status | lowercase">{{ bug.status }}</span>
+                </td>
+            </ng-container>
 
-        <!-- DUE DATE -->
-        <ng-container matColumnDef="dueDate">
-            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Due Date</th>
-            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
-                <mat-icon class="calendar-icon" [matTooltip]="bug.dueDate | date: 'mediumDate'"
-                    matTooltipPosition="above">
-                    calendar_today
-                </mat-icon>
-            </td>
-        </ng-container>
+            <!-- DUE DATE -->
+            <ng-container matColumnDef="dueDate">
+                <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Due Date</th>
+                <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                    <mat-icon class="calendar-icon" [matTooltip]="bug.dueDate | date: 'mediumDate'"
+                        matTooltipPosition="above">
+                        calendar_today
+                    </mat-icon>
+                </td>
+            </ng-container>
 
 
-        <!-- ASSIGNED TO -->
-        <ng-container matColumnDef="assignedTo">
-            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Assigned To</th>
-            <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
-                <div class="avatar-stack">
-                    <ng-container *ngFor="let assignee of bug.assignees; let i = index">
-                        <img [src]="assignee.avatar" [alt]="'user ' + i" class="avatar"
-                            [style.zIndex]="bug.assignees.length - i" />
-                    </ng-container>
-                </div>
-            </td>
-        </ng-container>
+            <!-- ASSIGNED TO -->
+            <ng-container matColumnDef="assignedTo">
+                <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Assigned To</th>
+                <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
+                    <div class="avatar-stack">
+                        <ng-container *ngFor="let assignee of bug.assignees; let i = index">
+                            <img [src]="assignee.avatar" [alt]="'user ' + i" class="avatar"
+                                [style.zIndex]="bug.assignees.length - i" />
+                        </ng-container>
+                    </div>
+                </td>
+            </ng-container>
 
-        <!-- ACTIONS -->
-        <!-- <ng-container matColumnDef="actions">
+            <!-- ACTIONS -->
+            <!-- <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Actions</th>
             <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
                 <button mat-icon-button (click)="onActionClick(bug)">
@@ -107,25 +132,27 @@
             </td>
         </ng-container> -->
 
-        <!-- ACTIONS -->
+            <!-- ACTIONS -->
 
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Actions</th>
-            <td mat-cell *matCellDef="let bug" class="custom-cell text-center action-cell">
-                <button mat-icon-button (click)="toggleDropdown(bug, $event)">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" (click)="onRowClick(row)"></tr>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Actions</th>
+                <td mat-cell *matCellDef="let bug" class="custom-cell text-center action-cell">
+                    <button mat-icon-button (click)="toggleDropdown(bug, $event)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
 
 
-        <!-- <thead mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></thead>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row" (click)="onRowClick(row)">
+            </tr>
+
+
+            <!-- <thead mat-header-row *matHeaderRowDef="displayedColumns" class="header-row"></thead>
         <tbody mat-row *matRowDef="let row; columns: displayedColumns;" class="data-row"></tbody> -->
-    </table>
+        </table>
+    </div>
 </div>
 
 <!-- GLOBAL DROPDOWN (floats over everything) -->
@@ -155,41 +182,45 @@
 
 
 <!-- GRID VIEW -->
-<div class="grid-view" *ngIf="isGridView">
-  <mat-card class="bug-card" *ngFor="let bug of bugDetails">
-    <mat-card-header>
-      <mat-card-title>{{ bug.details }}</mat-card-title>
-      <button mat-icon-button (click)="toggleDropdown(bug, $event)" class="more-btn">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-    </mat-card-header>
+<div class="scroll-container">
 
-    <span class="status-chip" [ngClass]="bug.status | lowercase">{{ bug.status }}</span>
+    <div class="grid-view" *ngIf="isGridView">
+        <mat-card class="bug-card" *ngFor="let bug of bugDetails">
+            <mat-card-header>
+                <mat-card-title>{{ bug.details }}</mat-card-title>
+                <button mat-icon-button (click)="toggleDropdown(bug, $event)" class="more-btn">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </mat-card-header>
 
-    <div class="divider"></div>
+            <span class="status-chip" [ngClass]="bug.status | lowercase">{{ bug.status }}</span>
 
-    <mat-card-content>
-      <div class="info-row">
-        <div class="label">Due Date</div>
-        <div class="value">{{ bug.dueDate | date: 'mediumDate' }}</div>
-      </div>
+            <div class="divider"></div>
 
-      <div class="info-row">
-        <div class="label">Assigned To</div>
-        <div class="avatar-stack">
-          <ng-container *ngFor="let assignee of bug.assignees; let i = index">
-            <img [src]="assignee.avatar" [alt]="'user ' + i" class="avatar" [style.zIndex]="bug.assignees.length - i" />
-          </ng-container>
-        </div>
-      </div>
-    </mat-card-content>
+            <mat-card-content>
+                <div class="info-row">
+                    <div class="label">Due Date</div>
+                    <div class="value">{{ bug.dueDate | date: 'mediumDate' }}</div>
+                </div>
 
-    <div class="divider"></div>
+                <div class="info-row">
+                    <div class="label">Assigned To</div>
+                    <div class="avatar-stack">
+                        <ng-container *ngFor="let assignee of bug.assignees; let i = index">
+                            <img [src]="assignee.avatar" [alt]="'user ' + i" class="avatar"
+                                [style.zIndex]="bug.assignees.length - i" />
+                        </ng-container>
+                    </div>
+                </div>
+            </mat-card-content>
 
-    <mat-card-actions>
-      <button mat-flat-button class="details-btn" (click)="openUpdateBugDialog(bug.id)">
-        View Details
-      </button>
-    </mat-card-actions>
-  </mat-card>
+            <div class="divider"></div>
+
+            <mat-card-actions>
+                <button mat-flat-button class="details-btn" (click)="openUpdateBugDialog(bug.id)">
+                    View Details
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 </div>

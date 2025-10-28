@@ -1,66 +1,3 @@
-// .dialog-content {
-//   display: flex;
-//   gap: 40px;
-//   align-items: center;
-//   min-width: 800px;
-//   min-height: 550px;
-// }
-
-// .form-section {
-//   display: flex;
-//   flex-direction: column;
-//   flex: 1;
-//   gap: 16px;
-
-//   .full-width {
-//     width: 100%;
-//   }
-// }
-
-// .form-actions {
-//   display: flex;
-//   gap: 12px;
-//   margin-top: 12px;
-
-//   button.mat-stroked-button,
-//   button.mat-flat-button {
-//     width: 216px !important;
-//     height: 56px !important;
-//     border-radius: 5px !important;
-//   }
-// }
-
-// .upload-section {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   flex: 0 0 200px; // fixed width for upload placeholder
-
-//   .upload-placeholder {
-//     width: 160px;
-//     height: 160px;
-//     border: 2px dashed #ccc;
-//     border-radius: 12px;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center;
-//     color: rgba(0, 0, 0, 0.6);
-//     cursor: pointer;
-//     transition: 0.3s ease;
-
-//     mat-icon {
-//       font-size: 48px;
-//       margin-bottom: 16px;
-//     }
-
-//     &:hover {
-//       border-color: #1976d2;
-//       color: #1976d2;
-//     }
-//   }
-// }
-
 .dialog-content {
     display: flex;
     gap: 40px;
@@ -111,7 +48,7 @@
     align-items: flex-start;
     justify-content: center;
     flex: 0 0 200px;
-    margin-top: 15px; // aligns vertically with first two input fields
+    margin-top: 15px; 
 
     .upload-placeholder {
         width: 160px;
@@ -238,7 +175,6 @@
 
 
 /* ===== Custom Dropdown ===== */
-
 .custom-dropdown-trigger {
   display: flex;
   align-items: center;

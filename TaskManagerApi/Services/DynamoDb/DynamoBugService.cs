@@ -1,6 +1,7 @@
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Runtime;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
 using TaskManagerApi.Services;
@@ -39,6 +40,7 @@ public class DynamoBugService
         string.Equals(bug.Title.Trim(), dto.Title.Trim(), StringComparison.OrdinalIgnoreCase)
         )) return ApiResponse<string>.Fail("Title already exists in scope of current project");
 
+        var project = await _context.LoadAsync<Project>(dto.ProjectId);
 
         foreach (var userId in dto.AssignedTo)
         {
@@ -50,8 +52,8 @@ public class DynamoBugService
                     if (user?.Data?.Email is not null)
                     {
                         await _emailService.SendEmailAsync(user.Data.Email,
-                            subject: "A new Bug is created",
-                            body: "You're assigned a new bug");
+                            subject: "Bug Alert",
+                            body: $"A new bug has been created in project {project.Name}. You're assigned to this bug as {user.Data.Role}. \n\n Due date: {dto.Deadline}");
                     }
                 }
                 catch (Exception ex)
@@ -112,7 +114,8 @@ public class DynamoBugService
                 status: bug.Status.ToString(),
                 dueDate: bug.Deadline.ToString("yyyy-MM-dd"),
                 assignees: assignees,
-                screenshotUrl: bug.ScreenshotUrl == null ? null : $"http://localhost:5153/uploads/{Path.GetFileName(bug.ScreenshotUrl)}"
+                screenshotUrl: bug.ScreenshotUrl == null ? null : $"http://localhost:5153/uploads/{Path.GetFileName(bug.ScreenshotUrl)}",
+                canUpdate: _user.Id == bug.CreatedBy ? true : false
             );
 
         return bug != null ? ApiResponse<BugDetailsForUpdateDto>.Ok(bugDetail) : ApiResponse<BugDetailsForUpdateDto>.Fail("Bug detail not found", ErrorCode.NotFound);

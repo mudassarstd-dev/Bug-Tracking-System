@@ -2,9 +2,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AuthService } from 'src/app/auth/auth.service';
 import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
 import { UserService } from 'src/app/services/user.service';
-
 
 interface ProjectData {
   project?: any

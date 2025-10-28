@@ -3,15 +3,15 @@
         <div class="green-bar"></div>
         <div class="titles">
             <div class="title">Visnext Software Solutions</div>
-            <div class="subtitle">Hi Username, Welcome to ManageBug</div>
+            <div class="subtitle">Hi {{username}}, Welcome to ManageBug</div>
         </div>
     </div>
 
     <form [formGroup]="searchForm" class="subnav-right">
         <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search projects</mat-label>
+            <mat-label>Search for projects here</mat-label>
             <input matInput formControlName="search" placeholder="Search..." />
-            <button mat-icon-button matSuffix>
+            <button mat-icon-button matPrefix>
                 <mat-icon>search</mat-icon>
             </button>
         </mat-form-field>
@@ -67,7 +67,7 @@
         <mat-card-title>{{ item.name }}</mat-card-title>
         <mat-card-content>
             <p>{{ item.description }}</p>
-            <p>Tasks Done: {{ item.completedTasks || 0 }} / {{ item.totalTasks || 0 }}</p>
+            <span>Tasks Done: <span class="task-count"> {{ item.completedTasks || 0 }}/{{ item.totalTasks || 0 }}</span></span>
         </mat-card-content>
     </mat-card>
 </div>

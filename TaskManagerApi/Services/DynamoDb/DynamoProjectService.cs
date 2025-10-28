@@ -5,16 +5,21 @@ using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
 using TaskManagerApi.helper;
+using TaskManagerApi.Services;
 
 public class DynamoProjectService
 {
     private readonly IDynamoDBContext _context;
     private readonly IUser _user;
+    private readonly DynamoUserService _userService;
+    private readonly EmailService _emailService;
 
-    public DynamoProjectService(IDynamoDBContext context, IUser user)
+    public DynamoProjectService(IDynamoDBContext context, IUser user, DynamoUserService userService, EmailService emailService)
     {
         _context = context;
         _user = user;
+        _userService = userService;
+        _emailService = emailService;
     }
     public async Task<ApiResponse<Project>> CreateProjectAsync(CreateProjectDto dto)
     {
@@ -63,6 +68,28 @@ public class DynamoProjectService
         }
 
         await _context.SaveAsync(project);
+
+        foreach (var userId in dto.assigneeIds)
+        {
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    var user = await _userService.GetByIdAsync(userId);
+                    if (user?.Data?.Email is not null)
+                    {
+                        await _emailService.SendEmailAsync(user.Data.Email,
+                            subject: "Project Alert",
+                            body: $"A new project {project.Name} has been created. You're assigned to this project as {user.Data.Role}.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to send bug assignment email for user");
+                }
+            });
+        }
+
         return ApiResponse<Project>.Ok(project, "Project created successfully");
     }
 
@@ -243,7 +270,7 @@ public class DynamoProjectService
 
             projectDtos.Add(dto);
         }
-        
+
         return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
     }
 

@@ -11,7 +11,6 @@
     .subnav-left {
         display: flex;
         align-items: center;
-        /* vertically center title/subtitle with green bar */
         gap: 16px;
         height: 100%;
 
@@ -19,8 +18,7 @@
             width: 4px;
             height: 100%;
             margin-bottom: -15px;
-            /* same as parent height = 86px */
-            background-color: #2E7D32; // Material green 800
+            background-color: #2E7D32;
             border-radius: 2px;
         }
 
@@ -31,17 +29,17 @@
             height: 100%;
 
             .title {
-                font-size: 1.25rem;
-                font-weight: 600;
-                color: rgba(0, 0, 0, 0.87);
+                font-size: 16px;
+                font-weight: 700;
                 margin-bottom: 4px;
-                line-height: 1.4;
+                font-family: 'Poppins', sans-serif;
             }
 
             .subtitle {
-                font-size: 0.875rem;
-                color: rgba(0, 0, 0, 0.6);
-                line-height: 1.2;
+                font-size: 14px;
+                color: #AEAEAE;
+                font-weight: 400;
+                font-family: 'Poppins', sans-serif;
             }
         }
     }
@@ -53,10 +51,11 @@
         height: 100%;
 
         .search-field {
-            width: 240px;
+            width: 336px;
+            margin-top: 4px;
 
             ::ng-deep .mat-mdc-form-field-outline {
-                border-radius: 20px;
+                border-radius: 4px;
             }
 
             input {
@@ -81,7 +80,6 @@
             align-items: center;
             gap: 4px;
             height: 40px;
-            /* equal height to search bar */
         }
     }
 }
@@ -114,7 +112,7 @@ button[mat-flat-button] {
     position: relative;
     transition: all 0.3s ease;
     border: 1px solid transparent;
-    box-shadow: 2px  2px 2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     background: #fff;
     padding: 24px;
@@ -153,12 +151,31 @@ button[mat-flat-button] {
 
     mat-card-title {
         font-weight: 600;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
         margin-top: 8px;
     }
 
     mat-card-content {
         p {
-            margin: 4px 0;
+            font-weight: 400;
+            font-size: 14px;
+            color: #87888C;
+            font-family: 'Poppins', sans-serif;
+            margin: 6px 0px;
+        }
+
+        span {
+            margin-top: 8px;
+            color: #87888C;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+
+            .task-count {
+                font-weight: 400;
+                color: black;
+                font-family: 'Poppins', sans-serif;
+            }
         }
     }
 }
@@ -173,82 +190,93 @@ button[mat-flat-button] {
 }
 
 .pagination-footer {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100vw - 742px); 
-  max-width: 1200px; 
-  height: 64px;
-  background: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1.5rem;    
-  z-index: 100;
-
-  .left-info {
-    font-size: 14px;
-    color: #666;
-  }
-
-  .right-controls {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100vw - 742px);
+    max-width: 1200px;
+    height: 64px;
+    background: #fff;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
+    padding: 0 1.5rem;
+    z-index: 100;
 
-    .page-size-selector {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-
-      span {
+    .left-info {
         font-size: 14px;
-        color: #555;
-      }
-
-      mat-select {
-        width: 70px;
-      }
-
-      mat-icon {
-        font-size: 18px;
-        color: #888;
-      }
+        color: #666;
     }
 
-    .pagination-buttons {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .right-controls {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
 
-      button {
-        min-width: 36px;
-        height: 36px;
-        border-radius: 6px;
-        font-size: 14px;
-        border-color: #ccc;
-        color: #333;
-        transition: all 0.2s ease;
+        .page-size-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
 
-        &:hover:not([disabled]) {
-          border-color: var(--mat-primary, #1976d2);
-          color: var(--mat-primary, #1976d2);
+            span {
+                font-size: 14px;
+                color: #555;
+            }
+
+            mat-select {
+                width: 70px;
+            }
+
+            mat-icon {
+                font-size: 18px;
+                color: #888;
+            }
         }
 
-        /* Active page button matches arrow buttons */
-        &.active {
-          background-color: var(--mat-primary, #1976d2);
-          color: #fff;
-          border-color: var(--mat-primary, #1976d2);
-        }
+        .pagination-buttons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
 
-        &[disabled] {
-          opacity: 0.5;
-          cursor: not-allowed;
+            button {
+                min-width: 36px;
+                height: 36px;
+                border-radius: 6px;
+                font-size: 14px;
+                border-color: #ccc;
+                color: #333;
+                transition: all 0.2s ease;
+
+                &:hover:not([disabled]) {
+                    border-color: var(--mat-primary, #1976d2);
+                    color: var(--mat-primary, #1976d2);
+                }
+
+                /* Active page button matches arrow buttons */
+                &.active {
+                    background-color: var(--mat-primary, #1976d2);
+                    color: #fff;
+                    border-color: var(--mat-primary, #1976d2);
+                }
+
+                &[disabled] {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
         }
-      }
     }
-  }
 }
 
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    background-color: #F1F1F1 !important;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex,
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-flex {
+    background-color: #ffffff !important;
+}
