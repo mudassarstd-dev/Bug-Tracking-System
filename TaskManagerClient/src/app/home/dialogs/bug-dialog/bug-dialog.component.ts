@@ -25,8 +25,6 @@ function futureDateValidator(control: AbstractControl): ValidationErrors | null 
   return null;
 }
 
-
-
 @Component({
   selector: 'app-bug-dialog',
   templateUrl: './bug-dialog.component.html',

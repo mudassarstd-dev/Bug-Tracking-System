@@ -4,6 +4,7 @@
     background: #fff;
     border-radius: 12px;
     height: 100%;
+    padding: 0 !important;
     overflow: hidden;
 
     .dialog-topbar {
@@ -14,17 +15,31 @@
         align-items: center;
         padding-right: 8px;
 
-        .close-btn {
-            color: #555;
+        .close-bg {
+            display: flex;
+            align-items: center;
+            background: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+
+            .close-btn {
+                color: #fff;
+
+                mat-icon {
+                    font-size: 24px;
+                }
+            }
         }
     }
 
     .dialog-title {
-        font-size: 1.5rem;
-        font-weight: 600;
+        font-size: 26px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
         margin-top: 16px;
         padding: 16px 24px 0;
-        color: #212121;
+        color: #000
     }
 
     .divider {
@@ -140,25 +155,12 @@
             outline: none;
             background: transparent;
             width: 100%;
-            font-weight: 700;
+            font-weight: 500;
             font-size: 34px;
             font-family: 'Poppins', sans-serif;
             color: #111;
         }
     }
-
-    // .bug-details-field {
-    //     margin: 12px 24px 16px;
-
-    //     ::ng-deep .mat-mdc-form-field-flex {
-    //         background-color: #fafafa;
-    //         border-radius: 8px;
-    //     }
-
-    //     ::ng-deep textarea {
-    //         min-height: 120px;
-    //     }
-    // }
 
     .drop-zone {
         margin: 0 24px 16px;

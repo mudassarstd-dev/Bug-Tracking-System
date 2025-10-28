@@ -1,9 +1,11 @@
 <form [formGroup]="bugForm" class="bug-dialog">
     <!-- TOP BAR -->
     <div class="dialog-topbar">
-        <button mat-icon-button class="close-btn" (click)="close()">
-            <mat-icon>close</mat-icon>
-        </button>
+        <div class="close-bg">
+            <button mat-icon-button class="close-btn" (click)="close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
     </div>
 
     <!-- STATUS + AVATARS + DATE -->
@@ -66,8 +68,10 @@
         </div>
 
         <!-- Hidden datepicker -->
-        <input matInput [matDatepicker]="picker" formControlName="dueDate" hidden>
-        <mat-datepicker #picker></mat-datepicker>
+        <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dueDate" hidden>
+        <!-- <mat-datepicker #picker></mat-datepicker> -->
+        <mat-datepicker #picker (closed)="onDatePicked(picker._selected)"></mat-datepicker>
+
     </div>
 
     <hr class="divider" />
@@ -88,10 +92,16 @@
     </div>
 
     <!-- BUG DETAILS -->
-    <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
+    <!-- <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
         <mat-label>Bug Details</mat-label>
         <textarea matInput formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
     </mat-form-field>
+ -->
+
+    <div class="bug-details-field simple-textarea">
+        <label class="details-label">Bug Details</label>
+        <textarea formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
+    </div>
 
     <div class="space"></div>
 

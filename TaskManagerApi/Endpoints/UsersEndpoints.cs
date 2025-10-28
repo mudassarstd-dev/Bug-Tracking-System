@@ -35,7 +35,6 @@ public static class UsersEndpoints
             DynamoUserService userService
         ) =>
         {
-
             string? profileImageUrl = null;
             if (profileImage is not null)
             {

@@ -4,81 +4,6 @@
     overflow: hidden;
 }
 
-/* LEFT SECTION */
-// .login-left {
-//   flex: 0 0 35%;
-//   background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80')
-//     center/cover no-repeat;
-//   position: relative;
-//   display: flex;
-//   align-items: flex-end; /* logo + title at bottom */
-//   justify-content: center;
-//   color: #fff;
-//   padding: 2rem;
-
-// //   .branding {
-// //     display: flex;
-// //     align-items: center;
-// //     gap: 1rem;
-
-// //     .logo {
-// //       width: 50px;
-// //       height: 50px;
-// //       filter: brightness(0) invert(1);
-// //     }
-
-// //     .app-title {
-// //       font-size: 1.5rem;
-// //       font-weight: 600;
-// //     }
-// //   }
-
-// .branding {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center; /* centers contents inside horizontally */
-//     gap: 1rem;
-//     text-align: center;
-//     flex-direction: row;  /* stack logo above text (optional — remove if you want side by side) */
-//   }
-// }
-
-/* LEFT SECTION (branding) — SAME AS ONBOARDING */
-// .login-left {
-//   flex: 0 0 35%;
-//   background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80')
-//     center/cover no-repeat;
-//   position: relative;
-//   display: flex;
-//   align-items: flex-end; /* logo and title sit at bottom */
-//   justify-content: center;
-//   padding: 2rem;
-//   color: #fff;
-
-//   .branding {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     gap: 1rem;
-//     text-align: center;
-//     flex-direction: row; /* logo + title side by side */
-//   }
-
-//   .logo {
-//     width: 50px;
-//     height: 50px;
-//     filter: brightness(0) invert(1); /* makes logo white if it’s dark */
-//   }
-
-//   .app-title {
-//     font-size: 1.5rem;
-//     font-weight: 600;
-//   }
-// }
-
-
-
-/* Left Section */
 .login-left {
     flex: 0 0 35%;
     background: url('/assets/icons/branding.png') center/cover no-repeat;
@@ -88,8 +13,6 @@
     padding: 2rem;
     color: #fff;
 
-    // .branding {
-    // }
 
     .logo {
         width: 190px;
@@ -102,10 +25,6 @@
     }
 }
 
-
-
-
-/* RIGHT SECTION */
 .login-right {
     flex: 1;
     background: #fff;
@@ -115,22 +34,24 @@
     padding: 3rem;
 }
 
-/* CONTENT */
 .login-content {
     max-width: 448px;
     width: 100%;
     text-align: left;
 
     .headline {
-        font-size: 2rem;
+        font-size: 28px;
         font-weight: 700;
         margin-bottom: 30px;
-        color: #333;
+        font-family: 'Poppins', sans-serif;
     }
 
     .subtext {
         color: #8692A6;
-        margin-bottom: 30px;
+        margin-bottom: 32px;
+        font-size: 16px;
+        font-weight: 400;
+        font-family: 'Poppins', sans-serif;
     }
 
     .login-form {
@@ -139,26 +60,26 @@
         gap: 0.5rem;
 
         .full-width {
-            width: 100%;
+            width: 100%;    
         }
 
         .submit-btn {
             margin-top: 1rem;
-            display: flex;
+            display: flex !important;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 0.5rem;
             width: 170px;
             border-radius: 8px;
             height: 70px;
             font-weight: 600;
-            // font-size: 20px;
-            // font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-family: 'Poppins', sans-serif;
             text-transform: none;
 
             mat-icon {
-                // margin-left: 55px;
                 color: #fff;
+                margin-left: 55px;
             }
         }
 
@@ -182,14 +103,21 @@
 
     .signup-text {
         margin-top: 2rem;
-        font-size: 0.95rem;
+        font-size: 16px;
+        font-weight: 500;
         display: flex;
         color: #8692A6;
         align-items: center;
         gap: 0.3rem;
+        font-family: 'Poppins', sans-serif;
 
         span {
             flex: 1;
+        }
+
+        button {
+            font-family: 'Poppins', sans-serif;
+
         }
     }
 
@@ -199,19 +127,20 @@
         margin-top: 30px;
         margin-bottom: 30px;
     }
-}
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
-    background-color: #F5F5F7 !important;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
-}
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+        background-color: #F5F5F7 !important;
+        border-radius: px;
+        height: 64px;
+        transition: background-color 0.2s ease;
+    }
 
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex,
-::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-flex {
-    background-color: #ffffff !important;
-}
+    ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex,
+    ::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-flex {
+        background-color: #ffffff !important;
+    }
 
+}
 
 
 // ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {

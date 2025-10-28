@@ -2,9 +2,11 @@
 
     <!-- Top Bar -->
     <div class="dialog-topbar">
-        <button mat-icon-button class="close-btn" (click)="close()">
-            <mat-icon>close</mat-icon>
-        </button>
+        <div class="close-bg">
+            <button mat-icon-button class="close-btn" (click)="close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
     </div>
 
     <!-- Title -->
@@ -108,7 +110,8 @@
             </button> -->
 
 
-                <img src="assets/icons/calendar.png" alt="calendar" width="32" height="32" class="calendar-icon" (click)="openDatePicker()">
+            <img src="assets/icons/calendar.png" alt="calendar" width="32" height="32" class="calendar-icon"
+                (click)="openDatePicker()">
 
 
 
@@ -132,7 +135,7 @@
 
     <!-- Bug Title Input -->
     <div class="bug-title-input">
-        <input matInput formControlName="title" placeholder="Add title..." />
+        <input matInput formControlName="title" placeholder="Add title here" />
         <mat-error *ngIf="bugForm.get('title')?.touched && bugForm.get('title')?.invalid">
             Bug title is required
         </mat-error>
@@ -156,8 +159,6 @@
         <p *ngIf="selectedFile"><strong>{{ selectedFile.name }}</strong></p>
         <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*" />
     </div> -->
-
-
 
     <!-- Drop Image Section -->
     <div class="drop-zone" (click)="fileInput.click()">

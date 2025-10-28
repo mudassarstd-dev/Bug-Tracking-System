@@ -7,6 +7,23 @@ import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
 import { BugService } from 'src/app/services/bug.service';
 import { UserService } from 'src/app/services/user.service';
 
+
+
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+function futureDateValidator(control: AbstractControl): ValidationErrors | null {
+  const selectedDate = control.value ? new Date(control.value) : null;
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate && selectedDate < today) {
+    return { pastDate: true };
+  }
+  return null;
+}
+
+
 @Component({
   selector: 'app-update-bug-dialog',
   templateUrl: './update-bug-dialog.component.html',
@@ -22,6 +39,8 @@ export class UpdateBugDialogComponent implements OnInit {
   dropdownOpen = false;
   dropdownPosition = { top: 0, left: 0 };
   canUpdate: boolean = false;
+  minDate: Date = new Date();
+
 
   @ViewChild('picker') picker!: MatDatepicker<Date>;
 
@@ -38,8 +57,10 @@ export class UpdateBugDialogComponent implements OnInit {
       title: [''],
       details: [''],
       status: [''],
-      dueDate: ['']
+      dueDate: ['', [futureDateValidator]]
     });
+
+    this.minDate = new Date()
 
     this.loadBugDetails();
   }
@@ -100,6 +121,12 @@ export class UpdateBugDialogComponent implements OnInit {
     this.picker.open();
   }
 
+   onDatePicked(date: Date | null) {
+    if (date) {
+      this.bugForm.get('dueDate')?.setValue(date);
+    }
+  }
+
   getColor(status: string): string {
     switch (status) {
       case 'New': return '#1565c0';
@@ -130,7 +157,7 @@ export class UpdateBugDialogComponent implements OnInit {
     formData.append('title', formValue.title);
     formData.append('details', formValue.details);
     formData.append('status', formValue.status);
-    formData.append('dueDate', formValue.dueDate);
+    formData.append('dueDate', formValue.dueDate ? new Date(formValue.dueDate).toISOString() : '');
     formData.append('assigneeIds', JSON.stringify(assigneeIds));
 
     if (this.selectedFile) {
@@ -138,10 +165,11 @@ export class UpdateBugDialogComponent implements OnInit {
     }
 
     this.bugService.update(this.bugId, formData).subscribe({
-      next: () =>  { 
-      alert("Updated successfully")
+      next: () => {
+        alert("Updated successfully")
         this.dialogRef.close(true)
-    }});
+      }
+    });
   }
 
   @HostListener('document:click')

@@ -260,6 +260,7 @@ public class DynamoProjectService
                 id: project.Id,
                 name: project.Name,
                 description: project.Description,
+                createdAt: project.CreatedAt,
                 logoUrl: string.IsNullOrWhiteSpace(project.ImagePath)
                     ? null
                     : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}",

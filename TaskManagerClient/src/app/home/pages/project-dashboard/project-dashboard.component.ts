@@ -31,7 +31,7 @@ export class ProjectDashboardComponent implements OnInit {
   sortBy: 'latest' | 'mostTasks' = 'latest';
   projectFilter: 'my' | 'all' = 'all';
 
-  pageSizeOptions: number[] = [6, 12, 24];
+  pageSizeOptions: number[] = [6];
   pageSize = 6;
   currentPage = 1;
   totalItems = 0;
@@ -105,7 +105,9 @@ export class ProjectDashboardComponent implements OnInit {
         ? this.projectService.updateProject(project.id, result)
         : this.projectService.createProject(result);
 
-      action$.subscribe(() => this.getProjects());
+      action$.subscribe(() => { 
+        alert("Completed successfully")
+        this.getProjects() });
     });
   }
 

@@ -18,11 +18,11 @@
 
         <button *ngIf="isManager" mat-flat-button color="primary" (click)="openProjectDialog()">
             <mat-icon>add</mat-icon>
-            {{ AddButtonText }}
+            <!-- {{ AddButtonText }} -->
+            Add Project
         </button>
 
         <div class="sorting-section" *ngIf="isManager">
-        <!-- Sort by dropdown -->
         <button mat-button [matMenuTriggerFor]="sortMenu">
             {{ sortBy === 'latest' ? 'Latest' : 'Most Tasks' }}
             <mat-icon>arrow_drop_down</mat-icon>
@@ -32,7 +32,6 @@
             <button mat-menu-item (click)="onSortChange('mostTasks')">Most Tasks</button>
         </mat-menu>
 
-        <!-- My/All Projects dropdown -->
         <button mat-button [matMenuTriggerFor]="filterMenu">
             {{ projectFilter === 'my' ? 'My Projects' : 'All Projects' }}
             <mat-icon>arrow_drop_down</mat-icon>

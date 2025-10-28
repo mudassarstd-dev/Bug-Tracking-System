@@ -7,16 +7,12 @@
   justify-content: space-between;
   padding: 0 16px;
 
-
-  /* Replace fixed margins with centering layout */
   margin-top: 37px;
   margin-inline: auto;
   max-width: calc(100vw - 442px);
-  /* same visual as 221px sides on large screens */
   width: 100%;
   padding: 0 16px;
   overflow-x: hidden;
-  /* safeguard */
 
   .navbar-left {
     display: flex;

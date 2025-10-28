@@ -36,7 +36,6 @@ public static class BugEndpoints
                     deadline = parsedDate;
             }
 
-            // Create DTO
             var dto = new CreateBugDto(
                 ProjectId: projectId,
                 Title: title,
@@ -87,7 +86,7 @@ public static class BugEndpoints
                         DateTime? deadline = null;
                         if (!string.IsNullOrEmpty(dueDate) && DateTime.TryParse(dueDate, out var parsedDate))
                         {
-                            deadline = parsedDate;
+                            deadline = parsedDate.Date;
                         }
 
                         var dto = new UpdateBugDto(

@@ -548,7 +548,7 @@ button[mat-flat-button] {
         padding: 0 16px 12px;
 
         button.details-btn {
-            width: 200px !important;
+            width: 100% !important;
             height: 40px;
             background: #E8EDF2;
             font-size: 0.9rem;
@@ -569,9 +569,16 @@ button[mat-flat-button] {
     border-top: 1px solid #E5E8EB;
 }
 
-
 .icon-section {
     margin-right: 12px;
+
+    .space-between {
+        margin-right: 8px;
+    }
+
+    img {
+        cursor: pointer;
+    }
 
     img.active {
         filter: drop-shadow(0 0 3px #1976d2);

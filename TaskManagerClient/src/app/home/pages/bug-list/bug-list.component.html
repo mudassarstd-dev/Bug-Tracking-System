@@ -42,8 +42,12 @@
         <img src="assets/icons/filter.png" width="32" height="32" [class.active]="isFilterActive"
             [matMenuTriggerFor]="filterMenu" />
 
+            <div class="space-between"></div>
+
         <img src="assets/icons/sort.png" width="32" height="32" [class.active]="isSortActive"
             [matMenuTriggerFor]="sortMenu" />
+
+            <div class="space-between"></div>
 
         <img src="assets/icons/disabled-grid-view.png" width="32" height="32" [class.active]="isGridView"
             (click)="toggleView('grid')" />
