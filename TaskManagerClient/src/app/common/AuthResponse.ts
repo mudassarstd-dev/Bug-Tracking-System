@@ -1,5 +1,6 @@
 export interface AuthResponse {
-  name: string;
+  username: string;
   token: string;
   role: string;
+  profileImageUrl?: string
 }

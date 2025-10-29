@@ -7,15 +7,18 @@ namespace TaskManagerApi.Data.Models.Dynamo;
     public class Bug
     {
         [DynamoDBHashKey]
-        public string BugId { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        
+        [DynamoDBGlobalSecondaryIndexHashKey("ProjectId-index")] 
         public string ProjectId { get; set; }
         public string Title { get; set; }
-        public string? Description { get; set; }
+        public string? Details { get; set; }
         public DateTime Deadline { get; set; }
         public string? ScreenshotUrl { get; set; }
-        public string Type { get; set; } 
-        public string Status { get; set; }
+        public BugType Type { get; set; } 
+        public BugStatus Status { get; set; }
         public string CreatedBy { get; set; } 
-        public string AssignedTo { get; set; } // in case of single developer assignment
+        public List<string> Assignees { get; set; }
+        public string? StatusLastUpdatedBy { get; set; } 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

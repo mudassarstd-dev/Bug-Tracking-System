@@ -9,11 +9,17 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
-import { EmpDashboardComponent } from './emp-dashboard/emp-dashboard.component';
 import { OnBoardComponent } from './on-board/on-board.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { ProjectDashboardComponent } from './home/pages/project-dashboard/project-dashboard.component';
+import { ProjectDialogComponent } from './home/dialogs/project-dialog/project-dialog.component';
+import { BugListComponent } from './home/pages/bug-list/bug-list.component';
+import { BugDialogComponent } from './home/dialogs/bug-dialog/bug-dialog.component';
+import { ProfileComponent } from './home/profile/profile.component';
+import { UpdateBugDialogComponent } from './home/dialogs/update-bug-dialog/update-bug-dialog.component';
+import { NotificationPanelComponent } from './shared/notification-panel/notification-panel.component';
+import { CustomDropdownComponent } from './home/shared/custom-dropdown/custom-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +27,15 @@ import { MaterialModule } from './material.module';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    ManagerDashboardComponent,
-    EmpDashboardComponent,
-    OnBoardComponent
+    OnBoardComponent,
+    ProjectDashboardComponent,
+    ProjectDialogComponent,
+    BugListComponent,
+    BugDialogComponent,
+    ProfileComponent,
+    UpdateBugDialogComponent,
+    NotificationPanelComponent,
+    CustomDropdownComponent
   ],
   imports: [
     BrowserModule,

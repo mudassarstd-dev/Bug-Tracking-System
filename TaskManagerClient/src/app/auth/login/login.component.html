@@ -1,130 +1,13 @@
-<!-- <h1>Login to nowhere</h1>
-<div class="login-container">
-  <h2>Register</h2>
-
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label>Name</label>
-      <input type="text" formControlName="name" />
-      <small *ngIf="loginForm.get('name')?.touched && loginForm.get('name')?.invalid">
-        Name is required
-      </small>
-    </div>
-
-    <div>
-      <label>Password</label>
-      <input type="password" formControlName="password" />
-      <small *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-        Minimum 6 characters
-      </small>
-    </div>
-
-    <div>
-      <label>Role</label>
-      <select formControlName="role">
-        <option value="Employee">Employee</option>
-        <option value="Manager">Manager</option>
-      </select>a
-    </div>  
-
-    <button type="submit" [disabled]="loginForm.invalid || loading">
-      {{ loading ? 'Please wait...' : 'Login' }}
-    </button>
-  </form>
-
-  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-</div> 
- -->
-
-
-<!-- <div class="onboarding-container">
-  <div class="onboarding-left">
-    <div class="branding">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
-        alt="App Logo"
-        class="logo"
-      />
-      <h2 class="app-title">ManageBug</h2>
-    </div>
-  </div>
-
-  <div class="onboarding-right">
-    <div class="onboarding-content">
-      <h1 class="headline">Login</h1>
-      <p class="subtext">Please enter your login details.</p>
-
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Username</mat-label>
-          <mat-icon matPrefix>person</mat-icon>
-          <input matInput formControlName="name" />
-          <mat-error *ngIf="loginForm.get('name')?.touched && loginForm.get('name')?.invalid">
-            Username is required
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <mat-icon matPrefix>lock</mat-icon>
-          <input
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            formControlName="password"
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
-          >
-            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-            Password must be at least 6 characters
-          </mat-error>
-        </mat-form-field>
-
-        <button
-          mat-raised-button
-          color="secondary"
-          class="submit-btn"
-          type="submit"
-          [disabled]="loginForm.invalid || loading"
-        >
-          {{ loading ? 'Please wait...' : 'Login' }}
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-
-        <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-        <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
-      </form>
-
-      <div class="signup-text">
-        <span>Don’t have an account?</span>
-        <button mat-button color="primary" routerLink="/register">
-          Create one
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-
 <div class="login-container">
   <!-- LEFT SECTION (branding) -->
   <div class="login-left">
     <div class="branding">
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
+        src="/assets/icons/branding-title.png"
         alt="App Logo"
         class="logo"
       />
-      <h2 class="app-title">ManageBug</h2>
+      <!-- <h2 class="app-title">ManageBug</h2> -->
     </div>
   </div>
 
@@ -186,6 +69,9 @@
         <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
         <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
       </form>
+
+
+      <div class="divider"></div>
 
       <div class="signup-text">
         <span>Don’t have an account?</span>

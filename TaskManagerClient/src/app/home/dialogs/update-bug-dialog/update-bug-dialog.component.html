@@ -1,0 +1,123 @@
+<form [formGroup]="bugForm" class="bug-dialog">
+    <!-- TOP BAR -->
+    <div class="dialog-topbar">
+        <div class="close-bg">
+            <button mat-icon-button class="close-btn" (click)="close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- STATUS + AVATARS + DATE -->
+    <div class="bug-status-section">
+        <div class="status-group">
+            <div class="status-chip" [ngStyle]="{
+                    backgroundColor: getBackgroundColor(bugForm.value.status),
+                    color: getColor(bugForm.value.status)
+                }">
+                {{ bugForm.value.status }}
+            </div>
+            <div class="status-chip arrow" [ngStyle]="{
+                    backgroundColor: getBackgroundColor(bugForm.value.status),
+                    color: getColor(bugForm.value.status)
+                }">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </div>
+        </div>
+
+        <!-- Avatars -->
+        <div class="avatars">
+            <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
+            <button type="button" class="add-avatar hollow-add"
+                (click)="toggleDropdown($event); $event.stopPropagation()">
+                <div class="plus-badge">
+                    <mat-icon>add</mat-icon>
+                </div>
+            </button>
+
+            <!-- Dropdown Card -->
+            <div class="custom-dropdown-card" *ngIf="dropdownOpen"
+                [ngStyle]="{ top: dropdownPosition.top + 'px', left: dropdownPosition.left + 'px' }">
+                <div class="dropdown-title">Assign To</div>
+                <hr class="dropdown-divider" />
+
+                <div class="dropdown-list">
+                    <div class="dropdown-item" *ngFor="let user of allUsers" (click)="$event.stopPropagation(); toggleAssignee(user)">
+                        <img [src]="user.avatar" alt="avatar" class="avatar" />
+                        <span class="name">{{ user.name }}</span>
+                        <!-- <mat-checkbox [checked]="isAssigned(user)" color="primary"
+                            (click)="$event.stopPropagation(); toggleAssignee(user)">
+                        </mat-checkbox> -->
+                        <mat-checkbox [checked]="isAssigned(user)" color="primary"
+                            (click)="$event.stopPropagation()" (change)="toggleAssignee(user)">
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="full-divider-vertical"></div>
+
+        <!-- DUE DATE -->
+        <div class="creation-date">
+            <div class="date-text">
+                <h3>Due Date</h3>
+                <p>{{ bugForm.value.dueDate | date: 'MMM d, yyyy' }}</p>
+            </div>
+            <div class="half-divider-vertical"></div>
+            <img src="assets/icons/calendar.png" alt="calendar" width="32" height="32" class="calendar-icon"
+                (click)="openDatePicker()">
+        </div>
+
+        <!-- Hidden datepicker -->
+        <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dueDate" hidden>
+        <!-- <mat-datepicker #picker></mat-datepicker> -->
+        <mat-datepicker #picker (closed)="onDatePicked(picker._selected)"></mat-datepicker>
+
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Editable Title -->
+    <div class="bug-title-input">
+        <input formControlName="title" placeholder="Enter bug title..." />
+    </div>
+
+    <!-- DROP ZONE -->
+    <div class="drop-zone">
+        <img *ngIf="imagePreview || screenshotUrl" [src]="imagePreview || screenshotUrl" alt="Screenshot"
+            class="preview-image" />
+        <div *ngIf="!imagePreview && !screenshotUrl" class="placeholder">
+            <img src="assets/icons/gallery.png" alt="Add image" class="placeholder-icon" />
+            <p class="placeholder-text">Add image here</p>
+        </div>
+    </div>
+
+    <!-- BUG DETAILS -->
+    <!-- <mat-form-field appearance="outline" class="bug-details-field" floatLabel="always">
+        <mat-label>Bug Details</mat-label>
+        <textarea matInput formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
+    </mat-form-field>
+ -->
+
+    <div class="bug-details-field simple-textarea">
+        <label class="details-label">Bug Details</label>
+        <textarea formControlName="details" rows="4" placeholder="Describe the issue..."></textarea>
+    </div>
+
+    <div class="space"></div>
+
+    <!-- FOOTER -->
+    <div class="dialog-footer">
+        <img src="assets/icons/image-drop.png" alt="upload-img" width="32" height="32">
+
+        <p style="margin-left: 16px;">Drop any image here or <span class="browse"
+                (click)="fileInput.click()">Browse</span></p>
+        <input type="file" #fileInput hidden accept="image/png, image/gif" (change)="onFileSelected($event)" />
+
+        <button mat-raised-button color="primary" (click)="save()" *ngIf="canUpdate">
+            Update
+        </button>
+    </div>
+</form>

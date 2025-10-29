@@ -1,0 +1,104 @@
+<div class="sub-navbar mat-elevation-z0">
+    <div class="subnav-left">
+        <div class="green-bar"></div>
+        <div class="titles">
+            <div class="title">Visnext Software Solutions</div>
+            <div class="subtitle">Hi {{username}}, Welcome to ManageBug</div>
+        </div>
+    </div>
+
+    <form [formGroup]="searchForm" class="subnav-right">
+        <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search for projects here</mat-label>
+            <input matInput formControlName="search" placeholder="Search..." />
+            <button mat-icon-button matPrefix>
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <button *ngIf="isManager" mat-flat-button color="primary" (click)="openProjectDialog()">
+            <mat-icon>add</mat-icon>
+            <!-- {{ AddButtonText }} -->
+            Add Project
+        </button>
+
+        <div class="sorting-section" *ngIf="isManager">
+        <button mat-button [matMenuTriggerFor]="sortMenu">
+            {{ sortBy === 'latest' ? 'Latest' : 'Most Tasks' }}
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #sortMenu="matMenu">
+            <button mat-menu-item (click)="onSortChange('latest')">Latest</button>
+            <button mat-menu-item (click)="onSortChange('mostTasks')">Most Tasks</button>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="filterMenu">
+            {{ projectFilter === 'my' ? 'My Projects' : 'All Projects' }}
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu">
+            <button mat-menu-item (click)="onProjectFilterChange('all')">All Projects</button>
+            <button mat-menu-item (click)="onProjectFilterChange('my')">My Projects</button>
+        </mat-menu>
+        </div>
+    </form>
+
+</div>
+
+<hr class="navbar-divider" />
+
+<div class="projects-section">
+    <h5 *ngIf="filteredProjects.length == 0">No projects found</h5>
+
+    <mat-card class="project-card" *ngFor="let item of pagedProjects" (mouseenter)="item.hover = true"
+        (mouseleave)="item.hover = false" [class.hovered]="item.hover" (click)="navToDetails(item)">
+        <img *ngIf="item.logoUrl" [src]="item.logoUrl" alt="{{ item.name }}" class="project-logo" />
+
+        <div class="hover-actions" *ngIf="isManager && item.hover && item.canEdit">
+            <button mat-icon-button (click)="openProjectDialog(item); $event.stopPropagation()">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteProject(item.id); $event.stopPropagation()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+
+        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-content>
+            <p>{{ item.description }}</p>
+            <span>Tasks Done: <span class="task-count"> {{ item.completedTasks || 0 }}/{{ item.totalTasks || 0 }}</span></span>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div class="pagination-footer">
+    <div class="left-info">
+        Showing {{ startItem }} - {{ endItem }} of {{ totalItems }} items
+    </div>
+
+    <div class="right-controls">
+        <div class="page-size-selector">
+            <span>Display</span>
+            <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event.value)">
+                <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                    {{ size }}
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="pagination-buttons">
+            <button mat-stroked-button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <button *ngFor="let p of [].constructor(totalPages); let i = index" mat-stroked-button
+                (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">
+                {{ i + 1 }}
+            </button>
+
+            <button mat-stroked-button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

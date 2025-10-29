@@ -16,7 +16,6 @@ public class DynamoAssignmentService
         if (string.IsNullOrWhiteSpace(assignment.ProjectId) || string.IsNullOrWhiteSpace(assignment.UserId))
             return ApiResponse<ProjectAssignment>.Fail("ProjectId and UserId are required", ErrorCode.ValidationError);
 
-        // Optional: prevent duplicate assignment
         var scan = _context.ScanAsync<ProjectAssignment>(new[]
         {
             new ScanCondition("ProjectId", ScanOperator.Equal, assignment.ProjectId),

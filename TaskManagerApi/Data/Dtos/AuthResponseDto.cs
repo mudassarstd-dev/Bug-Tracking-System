@@ -1,1 +1,1 @@
-public record AuthResponseDto(string username, string token, string role);
+public record AuthResponseDto(string username, string token, string role, string? profileImageUrl);

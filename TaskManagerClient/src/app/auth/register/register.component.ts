@@ -122,7 +122,7 @@ export class RegisterComponent implements OnInit{
             this.successMessage = res.message || "Registration successful!"
             this.errorMessage = ""
             this.registerForm.reset({role: "Employee"})
-            this.navToHome()
+            this.navToLogin()
           } else {
             this.successMessage = ""
             this.errorMessage = res.error || "Registration failed"
@@ -142,7 +142,7 @@ export class RegisterComponent implements OnInit{
     }
       })
   }
-  navToHome() {
-     setTimeout(() => this.router.navigate(['/home']), 1000);
+  navToLogin() {
+     setTimeout(() => this.router.navigate(['/login']), 1000);
   }
 }

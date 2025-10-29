@@ -1,22 +1,28 @@
-public record CreateProjectDto(string Name, string? Description);
-public record UpdateProjectDto(string? Name, string? Description);
-
+public record CreateProjectDto(string Name, string? Description, List<string>? assigneeIds, string? logoPath);
+public record UpdateProjectDto(string? Name, string? Description, List<string>? assigneeIds, string? logoPath);
 public record AssignUserDto(string ProjectId, string UserId, string Role);
-
+public record ProjectDto(string id, string name, string? description, string? logoUrl,  DateTime createdAt, int totalTasks = 0, int completedTasks = 0, bool canEdit = false);
+public record BugDetailsDto(string id, string details, string status, string dueDate, List<UserAvatarDto> assignees,bool canDelete, bool canUpdate);
+public record UserAvatarDto(string id, string? avatar, string? name = null);
+public record UserProfileDto(string name, string email, string phone, string? imageUrl);
+public record UpdateUserDto(string? name, string? phone, string? imageUrl);
+public record UpdateBugStatusDto(string status);
+public record BugDetailsForUpdateDto(string id, string details, string title, string status, string dueDate, List<UserAvatarDto> assignees, string? screenshotUrl, bool canUpdate);
 public record CreateBugDto(
     string ProjectId,
     string Title,
-    string Type, 
-    string? Description,
+    string Type,
+    string? Details,
     DateTime? Deadline,
     string? ScreenshotUrl,
-    string AssignedTo); 
+    List<string> AssignedTo); 
 
 public record UpdateBugDto(
     string? Title,
-    string? Description,
+    string? Details,
     DateTime? Deadline,
     string? ScreenshotUrl,
     string? Type,
-    string? Status,
-    string? AssignedTo);
+    List<string> AssignedTo);
+
+public record ProjectAssigneeDto(string id, string username, string role, string? avatar = null);
