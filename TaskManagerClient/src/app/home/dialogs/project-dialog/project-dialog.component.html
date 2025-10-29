@@ -1,19 +1,19 @@
 <h2 mat-dialog-title>Add New Project</h2>
 
 <mat-dialog-content class="dialog-content">
-    <div class="form-section" [formGroup]="projectForm">
-        <div class="form-field">
-            <label class="field-label">Project Name</label>
-            <input matInput formControlName="name" placeholder="Enter project name" />
-        </div>
+  <div class="form-section" [formGroup]="projectForm">
+    <div class="form-field">
+      <label class="field-label">Project Name</label>
+      <input matInput formControlName="name" placeholder="Enter project name" />
+    </div>
 
-        <div class="form-field">
-            <label class="field-label">Short Details</label>
-            <input matInput formControlName="details" placeholder="Enter short details" />
-        </div>
+    <div class="form-field">
+      <label class="field-label">Short Details</label>
+      <input matInput formControlName="details" placeholder="Enter short details" />
+    </div>
 
-        <!-- Assign To -->
-        <!-- <div class="form-field">
+    <!-- Assign To -->
+    <!-- <div class="form-field">
       <label class="field-label">Assign To</label>
 
       <mat-form-field appearance="outline" class="full-width">
@@ -42,50 +42,51 @@
       </div>
     </div>
      -->
-    
-        <!-- Assign To -->
-        <div class="form-field assign-to-field" [formGroup]="projectForm">
-            <label class="field-label">Assign To</label>
 
-            <!-- Trigger Button -->
-            <div class="custom-dropdown-trigger" (click)="toggleDropdown($event)">
-                <span *ngIf="projectForm.value.assignTo?.length; else placeholder">
-                    {{ projectForm.value.assignTo.length }} user{{ projectForm.value.assignTo.length > 1 ? 's' : '' }}
-                    selected
-                </span>
-                <ng-template #placeholder> Select users... </ng-template>
-                <mat-icon class="dropdown-icon">expand_more</mat-icon>
-            </div>
+    <!-- Assign To -->
+    <div class="form-field assign-to-field" [formGroup]="projectForm">
+      <label class="field-label">Assign To</label>
 
-            <!-- Dropdown Card -->
-            <div class="custom-dropdown-card" *ngIf="dropdownOpen"
-                [ngStyle]="{ top: dropdownPosition.top + 'px', left: dropdownPosition.left + 'px' }">
-                <div class="dropdown-title">Assign To</div>
-                <hr class="dropdown-divider" />
+      <!-- Trigger Button -->
+      <div class="custom-dropdown-trigger" (click)="toggleDropdown($event)">
+        <span *ngIf="projectForm.value.assignTo?.length; else placeholder">
+          {{ projectForm.value.assignTo.length }} user{{ projectForm.value.assignTo.length > 1 ? 's' : '' }}
+          selected
+        </span>
+        <ng-template #placeholder> Select users... </ng-template>
+        <mat-icon class="dropdown-icon">expand_more</mat-icon>
+      </div>
 
-                <div class="dropdown-list">
-                    <div class="dropdown-item" *ngFor="let user of assignees" (click)="toggleAssignee(user)">
-                        <img [src]="user.avatar" alt="avatar" class="avatar" />
-                        <span class="name">{{ user.username }}</span>
-                        <mat-checkbox [checked]="projectForm.value.assignTo?.includes(user)"  color="primary"
-                            (click)="$event.stopPropagation(); toggleAssignee(user)"></mat-checkbox>
-                    </div>
-                </div>
-            </div>
+      <!-- Dropdown Card -->
+      <div class="custom-dropdown-card" *ngIf="dropdownOpen"
+        [ngStyle]="{ top: dropdownPosition.top + 'px', left: dropdownPosition.left + 'px' }">
+        <div class="dropdown-title">Assign To</div>
+        <hr class="dropdown-divider" />
 
-            <!-- Selected users (chips) -->
-            <div class="selected-users" *ngIf="projectForm.value.assignTo?.length">
-                <div class="selected-user" *ngFor="let user of projectForm.value.assignTo">
-                    <img [src]="user.avatar" alt="avatar" class="user-avatar" />
-                    <span>{{ user.username }}</span>
-                    <mat-icon class="remove-icon" (click)="removeUser(user)">close</mat-icon>
-                </div>
-            </div>
+        <div class="dropdown-list">
+          <div class="dropdown-item" *ngFor="let user of assignees" (click)="$event.stopPropagation(); toggleAssignee(user)">
+            <img [src]="user.avatar" alt="avatar" class="avatar" />
+            <span class="name">{{ user.username }}</span>
+            <mat-checkbox [checked]="projectForm.value.assignTo?.includes(user)" color="primary"
+              (click)="$event.stopPropagation()" (change)="toggleAssignee(user)">
+            </mat-checkbox>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- Right: Upload section -->
-    <!-- <div class="upload-section">
+      <!-- Selected users (chips) -->
+      <div class="selected-users" *ngIf="projectForm.value.assignTo?.length">
+        <div class="selected-user" *ngFor="let user of projectForm.value.assignTo">
+          <img [src]="user.avatar" alt="avatar" class="user-avatar" />
+          <span>{{ user.username }}</span>
+          <mat-icon class="remove-icon" (click)="removeUser(user)">close</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Upload section -->
+  <!-- <div class="upload-section">
     <label class="upload-placeholder" for="logoUpload">
       <input type="file" id="logoUpload" hidden (change)="onFileSelected($event)" />
       <img src="assets/icons/gallery-add.png" alt="project icon" width="52" height="52">
@@ -94,30 +95,30 @@
     </label>
   </div> -->
 
-    <!-- Right: Upload section -->
-    <div class="upload-section">
-        <label class="upload-placeholder" for="logoUpload">
-            <input type="file" id="logoUpload" hidden (change)="onFileSelected($event)" accept="image/*" />
+  <!-- Right: Upload section -->
+  <div class="upload-section">
+    <label class="upload-placeholder" for="logoUpload">
+      <input type="file" id="logoUpload" hidden (change)="onFileSelected($event)" accept="image/*" />
 
-            <ng-container *ngIf="logoPreview; else uploadIcon">
-                <img [src]="logoPreview" alt="Logo Preview" class="logo-preview" />
-            </ng-container>
+      <ng-container *ngIf="logoPreview; else uploadIcon">
+        <img [src]="logoPreview" alt="Logo Preview" class="logo-preview" />
+      </ng-container>
 
-            <ng-template #uploadIcon>
-                <img src="assets/icons/gallery-add.png" alt="project icon" width="52" height="52" />
-                <p>Upload Logo</p>
-            </ng-template>
+      <ng-template #uploadIcon>
+        <img src="assets/icons/gallery-add.png" alt="project icon" width="52" height="52" />
+        <p>Upload Logo</p>
+      </ng-template>
 
-            <p *ngIf="projectForm.get('logo')?.value as file">{{ file.name }}</p>
-        </label>
-    </div>
+      <!-- <p *ngIf="projectForm.get('logo')?.value as file">{{ file.name }}</p> -->
+    </label>
+  </div>
 
 
 
 </mat-dialog-content>
 
 <div class="form-actions">
-    <button mat-flat-button color="primary" (click)="save()" [disabled]="!projectForm.valid">{{ saveButtonText
-        }}</button>
-    <button mat-stroked-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="!projectForm.valid">{{ saveButtonText
+    }}</button>
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
 </div>

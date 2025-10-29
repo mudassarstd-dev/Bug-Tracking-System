@@ -42,11 +42,14 @@
                 <hr class="dropdown-divider" />
 
                 <div class="dropdown-list">
-                    <div class="dropdown-item" *ngFor="let user of allUsers" (click)="toggleAssignee(user)">
+                    <div class="dropdown-item" *ngFor="let user of allUsers" (click)="$event.stopPropagation(); toggleAssignee(user)">
                         <img [src]="user.avatar" alt="avatar" class="avatar" />
                         <span class="name">{{ user.name }}</span>
-                        <mat-checkbox [checked]="isAssigned(user)" color="primary"
+                        <!-- <mat-checkbox [checked]="isAssigned(user)" color="primary"
                             (click)="$event.stopPropagation(); toggleAssignee(user)">
+                        </mat-checkbox> -->
+                        <mat-checkbox [checked]="isAssigned(user)" color="primary"
+                            (click)="$event.stopPropagation()" (change)="toggleAssignee(user)">
                         </mat-checkbox>
                     </div>
                 </div>
@@ -111,7 +114,7 @@
 
         <p style="margin-left: 16px;">Drop any image here or <span class="browse"
                 (click)="fileInput.click()">Browse</span></p>
-        <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)" />
+        <input type="file" #fileInput hidden accept="image/png, image/gif" (change)="onFileSelected($event)" />
 
         <button mat-raised-button color="primary" (click)="save()" *ngIf="canUpdate">
             Update

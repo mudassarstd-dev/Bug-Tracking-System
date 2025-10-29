@@ -20,8 +20,8 @@
   }
 
   mat-icon {
-    margin-right: 6px;
-    color: #6b7280;
+    margin-right: 10px;
+    color: #868AA5;
   }
 
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
@@ -29,6 +29,9 @@
     border-radius: px;
     height: 64px;
     width: 440px;
+    font-weight: 500;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
     transition: background-color 0.2s ease;
   }
 
@@ -95,4 +98,3 @@
     height: 56px;
   }
 }
-

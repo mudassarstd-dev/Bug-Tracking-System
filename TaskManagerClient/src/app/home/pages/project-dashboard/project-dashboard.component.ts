@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ProjectDialogComponent } from '../../dialogs/project-dialog/project-dialog.component';
@@ -105,9 +105,10 @@ export class ProjectDashboardComponent implements OnInit {
         ? this.projectService.updateProject(project.id, result)
         : this.projectService.createProject(result);
 
-      action$.subscribe(() => { 
+      action$.subscribe(() => {
         alert("Completed successfully")
-        this.getProjects() });
+        this.getProjects()
+      });
     });
   }
 
@@ -165,5 +166,10 @@ export class ProjectDashboardComponent implements OnInit {
 
   get endItem() {
     return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: Event) {
+    this.router.navigate(['/login']);
   }
 }

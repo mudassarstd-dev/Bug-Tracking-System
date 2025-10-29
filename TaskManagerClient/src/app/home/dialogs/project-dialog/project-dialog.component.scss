@@ -103,15 +103,13 @@
     justify-content: center;
     align-items: center;
     background-color: #FAFBFC;
-    /* ✅ set background color */
-    color: rgba(0, 0, 0, 0.6);
     cursor: pointer;
     transition: 0.3s ease;
     gap: 12px;
 
     .logo-preview {
-      width: 80%;
-      height: 60%;
+      width: 90%;
+      height: 90%;
       border-radius: 12px;
       object-fit: cover;
     }
@@ -156,38 +154,40 @@
   // }
 
   // Dropdown options
-  .user-option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+  // .user-option {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: space-between;
+  //   gap: 12px;
 
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+  //   .user-info {
+  //     display: flex;
+  //     align-items: center;
+  //     gap: 8px;
+  //   }
 
-    .user-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
+  //   .user-avatar {
+  //     width: 28px;
+  //     height: 28px;
+  //     border-radius: 50%;
+  //     object-fit: cover;
+  //   }
 
-    .user-name {
-      font-size: 0.9rem;
-      color: rgba(0, 0, 0, 0.87);
-    }
+  //   .user-name {
+  //     font-size: 0.9rem;
+  //     color: rgba(0, 0, 0, 0.87);
+  //   }
 
-    .end-checkbox {
-      margin-left: auto;
-    }
-  }
+  //   .end-checkbox {
+  //     margin-left: auto;
+  //   }
+  // }
 
   // Selected users below
   .selected-users {
     display: flex;
+    align-items: center;
+    width: 550px;
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 8px;
@@ -219,20 +219,21 @@
   }
 }
 
-
-/* ===== Custom Dropdown ===== */
 .custom-dropdown-trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #ccc;
+  border: 1px solid #F4F4F5;
   border-radius: 6px;
-  height: 45px;
+  height: 52px;
+  width: 600px;
   padding: 0 12px;
   cursor: pointer;
-  font-size: 0.9rem;
   background: #fff;
-  transition: border-color 0.2s ease;
+  color: #A1A1AA;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
 
   &:hover {
     border-color: #1976d2;
@@ -240,72 +241,68 @@
 
   .dropdown-icon {
     font-size: 22px;
-    color: #666;
-  }
-
-  &::placeholder {
     color: #A1A1AA;
-    font-weight: 400;
-    font-size: 14px;
-    font-family: 'Poppins', sans-serif;
   }
+
 }
 
-.custom-dropdown-card {
-  position: absolute;
-  background: #fff;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  width: 260px;
-  z-index: 9999;
-  animation: fadeIn 0.15s ease-in-out;
-  padding: 8px 0;
+// .custom-dropdown-card {
+//   position: absolute;
+//   background: #fff;
+//   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+//   border-radius: 8px;
+//   width: 185px;
+//   z-index: 9999;
+//   animation: fadeIn 0.15s ease-in-out;
+//   padding: 8px 0;
 
-  .dropdown-title {
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 14px;
-    color: #374151;
-  }
+//   .dropdown-title {
+//     font-weight: 400;
+//     font-size: 16px;
+//     font-family: 'Poppins', sans-serif;
+//     padding: 8px 14px;
+//   }
 
-  .dropdown-divider {
-    border: none;
-    border-top: 1px solid #e5e7eb;
-    margin: 6px 0;
-  }
+//   .dropdown-divider {
+//     border: none;
+//     border-top: 1px solid #e5e7eb;
+//     margin: 6px 0;
+//   }
 
-  .dropdown-list {
-    max-height: 220px;
-    overflow-y: auto;
-  }
+//   .dropdown-list {
+//     max-height: 220px;
+//     overflow-y: auto;
+//   }
 
-  .dropdown-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 14px;
-    cursor: pointer;
-    transition: background 0.2s ease;
+//   .dropdown-item {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     padding: 8px 14px;
+//     cursor: pointer;
+//     transition: background 0.2s ease;
 
-    &:hover {
-      background: #f3f4f6;
-    }
+//     &:hover {
+//       background: #f3f4f6;
+//     }
 
-    .avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 8px;
-    }
+//     .avatar {
+//       width: 28px;
+//       height: 28px;
+//       border-radius: 50%;
+//       object-fit: cover;
+//       margin-right: 8px;
+//     }
 
-    .name {
-      flex: 1;
-      font-size: 0.9rem;
-      color: #374151;
-    }
-  }
-}
+//     .name {
+//       font-weight: 400;
+//       font-size: 12px;
+//       flex: 1;
+//       font-family: 'Poppins', sans-serif;
+//       color: #000;
+//     }
+//   }
+// }
 
 @keyframes fadeIn {
   from {

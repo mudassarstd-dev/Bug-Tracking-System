@@ -93,8 +93,12 @@
                     <div class="dropdown-item" *ngFor="let user of allUsers" (click)="toggleAssignee(user)">
                         <img [src]="user.avatar" alt="avatar" class="avatar" />
                         <span class="name">{{ user.name }}</span>
-                        <mat-checkbox [checked]="isSelected(user)" color="primary"
-                            (click)="$event.stopPropagation(); toggleAssignee(user)"></mat-checkbox>
+                        <!-- <mat-checkbox [checked]="isSelected(user)" color="primary"
+                            (click)="$event.stopPropagation(); toggleAssignee(user)"></mat-checkbox> -->
+
+                        <mat-checkbox [checked]="isSelected(user)" color="primary" (click)="$event.stopPropagation()"
+                            (change)="toggleAssignee(user)">
+                        </mat-checkbox>
                     </div>
                 </div>
             </div>
@@ -174,7 +178,7 @@
             <img [src]="previewUrl" alt="Preview" class="preview-image" />
         </ng-template>
 
-        <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/*" />
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)" accept="image/png, image/gif" />
     </div>
 
     <!-- Footer -->

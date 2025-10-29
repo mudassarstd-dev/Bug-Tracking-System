@@ -109,6 +109,13 @@ export class UpdateBugDialogComponent implements OnInit {
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
+
+    if (file.type !== 'image/png' && file.type !== 'image/gif') {
+      alert('Only PNG and GIF images are allowed.');
+      (event.target as HTMLInputElement).value = '';
+      return;
+    }
+
     if (file) {
       this.selectedFile = file;
       const reader = new FileReader();
@@ -121,7 +128,7 @@ export class UpdateBugDialogComponent implements OnInit {
     this.picker.open();
   }
 
-   onDatePicked(date: Date | null) {
+  onDatePicked(date: Date | null) {
     if (date) {
       this.bugForm.get('dueDate')?.setValue(date);
     }

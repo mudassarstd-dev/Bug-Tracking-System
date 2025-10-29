@@ -22,6 +22,7 @@
         p {
             font-size: 12px;
         }
+
         .titles {
             display: flex;
             flex-direction: column;
@@ -140,10 +141,6 @@ button[mat-flat-button] {
 
 }
 
-
-
-/* ===================== TABLE BASE ===================== */
-
 .table-wrap {
     overflow-x: auto;
     border: 1px solid #e5e7eb;
@@ -159,10 +156,8 @@ button[mat-flat-button] {
     table-layout: auto;
 }
 
-/* ===================== HEADER ===================== */
-
 .header-row {
-    background-color: #f9fafb;
+    background-color: #F9FAFC;
 }
 
 .custom-header {
@@ -170,14 +165,14 @@ button[mat-flat-button] {
     padding: 12px 16px;
     font-size: 12px;
     text-transform: uppercase;
-    color: #374151;
+    color: #3A3541DE;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
     border: none;
     text-align: center;
     vertical-align: middle;
 }
 
-/* Vertical divider between headers */
 .custom-header:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -194,8 +189,6 @@ button[mat-flat-button] {
     border-bottom: 1px solid #e5e7eb;
 }
 
-/* ===================== ROWS ===================== */
-
 .data-row {
     background: #ffffff;
 }
@@ -209,17 +202,13 @@ button[mat-flat-button] {
     text-align: center;
 }
 
-/* Horizontal row borders */
 .data-row .custom-cell {
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #E7E7E8;
 }
 
-/* Remove bottom border on last row */
 .data-row:last-child .custom-cell {
     border-bottom: none;
 }
-
-/* ===================== BUG DETAILS ===================== */
 
 .bug-details {
     display: flex;
@@ -248,7 +237,6 @@ button[mat-flat-button] {
 }
 
 
-/* ===================== STATUS CHIP ===================== */
 
 .status-chip {
     display: inline-block;
@@ -287,7 +275,6 @@ button[mat-flat-button] {
     color: #ef6c00;
 }
 
-/* ===================== DUE DATE ===================== */
 
 .calendar-icon {
     font-size: 20px;
@@ -295,7 +282,6 @@ button[mat-flat-button] {
     vertical-align: middle;
 }
 
-/* ===================== ASSIGNED TO (AVATARS) ===================== */
 
 .avatar-stack {
     display: flex;
@@ -322,7 +308,6 @@ button[mat-flat-button] {
     z-index: 10;
 }
 
-/* ===================== ACTION COLUMN ===================== */
 
 .action-cell {
     text-align: center;
@@ -337,7 +322,6 @@ button[mat-flat-button] {
     color: #111827;
 }
 
-/* ===================== RESPONSIVE ===================== */
 
 @media (max-width: 640px) {
 
@@ -348,14 +332,13 @@ button[mat-flat-button] {
     }
 }
 
-/* ===================== GLOBAL DROPDOWN ===================== */
 .global-dropdown {
     position: absolute;
     background: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     border-radius: 6px;
     padding: 8px 0;
-    width: 180px;
+    width: 150px;
     z-index: 9999;
     animation: fadeIn 0.15s ease-in-out;
 
@@ -366,7 +349,6 @@ button[mat-flat-button] {
         padding: 6px 12px 8px;
     }
 
-    /* --- Regular Dropdown Options --- */
     .dropdown-option {
         font-size: 13px;
         color: #374151;
@@ -395,7 +377,6 @@ button[mat-flat-button] {
         }
     }
 
-    /* --- CHIP STYLE OPTIONS --- */
     .chip-option {
         padding: 6px 12px;
         display: flex;
@@ -465,7 +446,6 @@ button[mat-flat-button] {
 }
 
 
-/* ===================== GRID VIEW WITH MAT-CARD ===================== */
 
 .grid-view {
     display: grid;
@@ -497,9 +477,9 @@ button[mat-flat-button] {
         padding-bottom: 4px;
 
         mat-card-title {
-            font-size: 1rem;
+            font-size: 17px;
             font-weight: 600;
-            color: #111827;
+            font-family: 'Poppins', sans-serif;
         }
 
         .more-btn {

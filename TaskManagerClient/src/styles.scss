@@ -25,7 +25,6 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  /* optional: ensures no vertical scroll */
 }
 
 
@@ -78,3 +77,63 @@ body {
   cursor: not-allowed !important;
 }
 
+
+// Shared styles
+
+.custom-dropdown-card {
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    width: 185px;
+    z-index: 9999;
+    animation: fadeIn 0.15s ease-in-out;
+    padding: 8px 0;
+
+    .dropdown-title {
+        font-weight: 400;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        padding: 8px 14px;
+    }
+
+    .dropdown-divider {
+        border: none;
+        border-top: 1px solid #e5e7eb;
+        margin: 6px 0;
+    }
+
+    .dropdown-list {
+        max-height: 220px;
+        overflow-y: auto;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+            background: #f3f4f6;
+        }
+
+        .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 8px;
+        }
+
+        .name {
+            font-weight: 400;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            flex: 1;
+            color: #000;
+        }
+    }
+}

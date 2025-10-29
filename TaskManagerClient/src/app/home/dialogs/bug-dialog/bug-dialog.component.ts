@@ -59,7 +59,7 @@ export class BugDialogComponent implements OnInit, OnDestroy {
     });
 
     this.minDate = new Date()
-    
+
     this.userService.getDevelopers().subscribe((resp) => {
       this.assignees = resp.data || [];
       this.allUsers = this.assignees;
@@ -96,6 +96,13 @@ export class BugDialogComponent implements OnInit, OnDestroy {
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
+
+    if (file.type !== 'image/png' && file.type !== 'image/gif') {
+      alert('Only PNG and GIF images are allowed.');
+      (event.target as HTMLInputElement).value = ''; 
+      return;
+    }
+
     if (file) {
       this.selectedFile = file;
       this.bugForm.patchValue({ attachment: file });

@@ -91,6 +91,7 @@
                     position: relative;
                     width: 36px;
                     height: 36px;
+                    margin-left: -10px;
                     border-radius: 50%;
                     border: 3px dotted #8D98AA;
                     background: transparent;
@@ -121,7 +122,6 @@
                         mat-icon {
                             font-size: 14px;
                             margin-top: 2px;
-                            // line-height: 1;
                         }
                     }
                 }
@@ -168,182 +168,184 @@
         }
     }
 
-        .drop-zone {
-            margin: 0 24px 16px;
-            // border: 2px dashed #cfd8dc;
-            border-radius: 8px;
-            // height: 120px;
-            display: flex;
-            gap: 8px;
-            flex: 1;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            color: #607d8b;
+    .drop-zone {
+        margin: 0 24px 16px;
+        // border: 2px dashed #cfd8dc;
+        border-radius: 8px;
+        // height: 120px;
+        display: flex;
+        gap: 8px;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        color: #607d8b;
 
-            img {
-                margin-bottom: 8px;
-            }
-
-            .drop-icon {
-                width: 32px;
-                height: 32px;
-                margin-bottom: 24px;
-                opacity: 0.7;
-            }
-
-            .preview-image {
-                max-width: 100%;
-                max-height: 80%;
-                ;
-                object-fit: contain;
-                border-radius: 8px;
-            }
-
-            .browse {
-                color: #1976d2;
-                font-weight: 500;
-                cursor: pointer;
-            }
-
+        img {
+            margin-bottom: 8px;
         }
 
-        .dialog-footer {
-            background-color: #fff;
-            height: 70px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 24px;
-            box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.15);
-
-            button {
-                border-radius: 8px;
-                width: 130px;
-                height: 40px;
-                font-weight: 500;
-            }
-        }
-
-        .form-field {
-            // margin: 0 24px 16px 24px;
-            margin-right: 50px;
-            margin-left: 24px;
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-
-            .field-label {
-                font-weight: 500;
-                color: rgba(0, 0, 0, 0.87);
-                font-size: 0.95rem;
-            }
-
-            input[matInput] {
-                border: 1px solid #F4F4F5;
-                border-radius: 6px;
-                height: 52px;
-                padding: 0 12px;
-                font-size: 0.9rem;
-                outline: none;
-
-                &:focus {
-                    border-color: #1976d2;
-                }
-            }
-        }
-    }
-
-
-    .dev-menu {
-        padding: 16px;
-
-        .menu-title {
-            font-weight: 600;
-            padding: 12px 16px;
-            font-size: 14px;
-        }
-
-        .avatar-small {
+        .drop-icon {
             width: 32px;
             height: 32px;
-            border-radius: 50%;
-            margin-right: 12px;
-            object-fit: cover;
+            margin-bottom: 24px;
+            opacity: 0.7;
         }
 
-        .dev-name {
-            flex: 1;
-            color: red;
-        }
-    }
-
-
-    .custom-dropdown-card {
-        position: absolute;
-        background: #fff;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-        border-radius: 8px;
-        width: 260px;
-        z-index: 9999;
-        animation: fadeIn 0.15s ease-in-out;
-        padding: 8px 0;
-
-        .dropdown-title {
-            font-weight: 600;
-            font-size: 14px;
-            padding: 8px 14px;
-            color: #374151;
+        .preview-image {
+            max-width: 100%;
+            max-height: 80%;
+            ;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
-        .dropdown-divider {
-            border: none;
-            border-top: 1px solid #e5e7eb;
-            margin: 6px 0;
-        }
-
-        .dropdown-list {
-            max-height: 220px;
-            overflow-y: auto;
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 14px;
+        .browse {
+            color: #1976d2;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s ease;
+        }
 
-            &:hover {
-                background: #f3f4f6;
-            }
+    }
 
-            .avatar {
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                object-fit: cover;
-                margin-right: 8px;
-            }
+    .dialog-footer {
+        background-color: #fff;
+        height: 70px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 24px;
+        box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.15);
 
-            .name {
-                flex: 1;
-                font-size: 0.9rem;
-                color: #374151;
-            }
+        button {
+            border-radius: 8px;
+            width: 130px;
+            height: 40px;
+            font-weight: 500;
         }
     }
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-4px);
+    .form-field {
+        // margin: 0 24px 16px 24px;
+        margin-right: 50px;
+        margin-left: 24px;
+        margin-bottom: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .field-label {
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.87);
+            font-size: 0.95rem;
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        input[matInput] {
+            border: 1px solid #F4F4F5;
+            border-radius: 6px;
+            height: 52px;
+            padding: 0 12px;
+            font-size: 0.9rem;
+            outline: none;
+
+            &:focus {
+                border-color: #1976d2;
+            }
         }
     }
+}
+
+
+.dev-menu {
+    padding: 16px;
+
+    .menu-title {
+        font-weight: 600;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .avatar-small {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        margin-right: 12px;
+        object-fit: cover;
+    }
+
+    .dev-name {
+        flex: 1;
+        color: red;
+    }
+}
+
+
+// .custom-dropdown-card {
+//     position: absolute;
+//     background: #fff;
+//     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+//     border-radius: 8px;
+//     width: 185px;
+//     z-index: 9999;
+//     animation: fadeIn 0.15s ease-in-out;
+//     padding: 8px 0;
+
+//     .dropdown-title {
+//         font-weight: 400;
+//         font-size: 16px;
+//         font-family: 'Poppins', sans-serif;
+//         padding: 8px 14px;
+//     }
+
+//     .dropdown-divider {
+//         border: none;
+//         border-top: 1px solid #e5e7eb;
+//         margin: 6px 0;
+//     }
+
+//     .dropdown-list {
+//         max-height: 220px;
+//         overflow-y: auto;
+//     }
+
+//     .dropdown-item {
+//         display: flex;
+//         align-items: center;
+//         justify-content: space-between;
+//         padding: 8px 14px;
+//         cursor: pointer;
+//         transition: background 0.2s ease;
+
+//         &:hover {
+//             background: #f3f4f6;
+//         }
+
+//         .avatar {
+//             width: 28px;
+//             height: 28px;
+//             border-radius: 50%;
+//             object-fit: cover;
+//             margin-right: 8px;
+//         }
+
+//         .name {
+//             font-weight: 400;
+//             font-size: 12px;
+//             font-family: 'Poppins', sans-serif;
+//             flex: 1;
+//             color: #000;
+//         }
+//     }
+// }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

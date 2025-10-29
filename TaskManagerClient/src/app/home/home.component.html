@@ -35,7 +35,7 @@
     </button> -->
 
     <button mat-icon-button matBadge=" " matBadgeColor="accent" matBadgeOverlap="false"
-      (click)="toggleNotifications($event)">
+      (click)="$event.stopPropagation(); toggleNotifications($event)">
       <mat-icon>notifications</mat-icon>
     </button>
 

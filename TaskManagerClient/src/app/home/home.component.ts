@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { MasterService } from '../services/master.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   userImage: string | null = null
   navbarOptions: any
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     this.isManager = this.authService.isManager()
@@ -61,9 +61,13 @@ export class HomeComponent implements OnInit {
     this.showNotifications = !this.showNotifications;
   }
 
-  // @HostListener('document:click')
-  // closeNotificationPanel(): void {
-  //   this.showNotifications = false;
-  // }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.showNotifications = false;
+    }
+  }
+
 
 }
