@@ -21,7 +21,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.isManager = this.authService.isManager()
     this.username = this.authService.getUsername().split(' ')[0] || "NA"
-    this.userImage = this.authService.getUserImage()
+    // this.userImage = this.authService.getUserImage()
+    this.authService.userImage$.subscribe(img => {
+      this.userImage = img;
+    });
 
     this.navbarOptions = [
       {

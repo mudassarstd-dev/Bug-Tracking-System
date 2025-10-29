@@ -42,12 +42,12 @@
         <img src="assets/icons/filter.png" width="32" height="32" [class.active]="isFilterActive"
             [matMenuTriggerFor]="filterMenu" />
 
-            <div class="space-between"></div>
+        <div class="space-between"></div>
 
         <img src="assets/icons/sort.png" width="32" height="32" [class.active]="isSortActive"
             [matMenuTriggerFor]="sortMenu" />
 
-            <div class="space-between"></div>
+        <div class="space-between"></div>
 
         <img src="assets/icons/disabled-grid-view.png" width="32" height="32" [class.active]="isGridView"
             (click)="toggleView('grid')" />
@@ -202,7 +202,8 @@
 
             <mat-card-content>
                 <div class="info-row">
-                    <div class="label">Due Date</div>
+                    <div class="label-date">Due Date</div>
+                    <mat-icon>calendar_today</mat-icon>
                     <div class="value">{{ bug.dueDate | date: 'mediumDate' }}</div>
                 </div>
 

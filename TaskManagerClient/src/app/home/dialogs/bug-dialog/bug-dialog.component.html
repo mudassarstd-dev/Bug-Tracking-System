@@ -14,7 +14,7 @@
     <hr class="divider" />
 
     <!-- Assignees + Due Date Row -->
-    <div class="assign-due-row">
+    <div class="assign-due-row-bug">
         <!-- Assignees -->
         <div class="assignees-section">
             <span class="label">Assign To</span>
@@ -136,9 +136,11 @@
         Due date cannot be in the past
     </mat-error>
 
+    <!-- <mat-calendar></mat-calendar> -->
+
 
     <!-- Bug Title Input -->
-    <div class="bug-title-input">
+    <div class="bug-title-input-bug">
         <input matInput formControlName="title" placeholder="Add title here" />
         <mat-error *ngIf="bugForm.get('title')?.touched && bugForm.get('title')?.invalid">
             Bug title is required
@@ -153,8 +155,10 @@
     <div class="form-field">
         <label class="field-label">Bug Details</label>
         <input matInput formControlName="details" placeholder="Add here" />
+        <mat-error *ngIf="bugForm.get('details')?.touched && bugForm.get('details')?.invalid">
+            Bug details required
+        </mat-error>
     </div>
-
 
     <!-- Drop Image Section -->
     <!-- <div class="drop-zone" (click)="fileInput.click()">
@@ -165,7 +169,7 @@
     </div> -->
 
     <!-- Drop Image Section -->
-    <div class="drop-zone" (click)="fileInput.click()">
+    <div class="drop-zone-bug" (click)="fileInput.click()">
         <ng-container *ngIf="!previewUrl; else imagePreview">
             <!-- <mat-icon>cloud_upload</mat-icon> -->
             <img src="assets/icons/image-drop.png" alt="upload-img" width="32" height="32">
@@ -182,7 +186,7 @@
     </div>
 
     <!-- Footer -->
-    <div class="dialog-footer">
+    <div class="dialog-footer-bug">
         <button mat-flat-button color="primary" type="submit">Add</button>
     </div>
 </form>

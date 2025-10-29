@@ -512,14 +512,29 @@ button[mat-flat-button] {
             margin: 6px 0;
 
             .label {
-                font-size: 0.875rem;
-                color: #6b7280;
+                font-size: 16px;
+                font-weight: 400;
+                font-family: 'Poppins', sans-serif;
+                color: #4C7399;
+            }
+
+            mat-icon {
+                font-size: 20px;
+                margin-right: 8px;
+            }
+
+            .label-date {
+                font-size: 16px;
+                font-weight: 400;
+                font-family: 'Poppins', sans-serif;
+                flex: 1;
+                color: #4C7399;
             }
 
             .value {
-                font-size: 0.875rem;
-                color: #111827;
-                font-weight: 500;
+                font-size: 15px;
+                font-weight: 400;
+                font-family: 'Poppins', sans-serif;
             }
         }
     }

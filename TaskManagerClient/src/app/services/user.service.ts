@@ -30,8 +30,8 @@ export class UserService {
     return this.http.get<ApiResponse<ProjectAssigneeDto[]>>(`${this.api_url}/assignees/${projectId}`)
   }
 
-  getDevelopers() {
-    return this.http.get<ApiResponse<AvatarUser[]>>(`${this.api_url}/devs`)
+  getDevelopers(projectId: string) {
+    return this.http.get<ApiResponse<AvatarUser[]>>(`${this.api_url}/devs/${projectId}`)
   }
 
   getUserProfile() {

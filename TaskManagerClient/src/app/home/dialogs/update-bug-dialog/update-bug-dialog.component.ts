@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -6,8 +6,6 @@ import { AvatarUser } from 'src/app/common/AvatarUser';
 import { ProjectAssigneeDto } from 'src/app/common/ProjectAssigneeDto';
 import { BugService } from 'src/app/services/bug.service';
 import { UserService } from 'src/app/services/user.service';
-
-
 
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
@@ -27,7 +25,9 @@ function futureDateValidator(control: AbstractControl): ValidationErrors | null 
 @Component({
   selector: 'app-update-bug-dialog',
   templateUrl: './update-bug-dialog.component.html',
-  styleUrls: ['./update-bug-dialog.component.scss']
+  styleUrls: ['./update-bug-dialog.component.scss'],
+  // encapsulation: ViewEncapsulation.None
+
 })
 export class UpdateBugDialogComponent implements OnInit {
   bugForm: FormGroup;
@@ -46,7 +46,7 @@ export class UpdateBugDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<UpdateBugDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public bugId: string,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private bugService: BugService,
     private userService: UserService,
     private fb: FormBuilder
@@ -66,7 +66,7 @@ export class UpdateBugDialogComponent implements OnInit {
   }
 
   loadBugDetails() {
-    this.bugService.getById(this.bugId).subscribe(res => {
+    this.bugService.getById(this.data.bugId).subscribe(res => {
       if (res.success && res.data) {
         const bug = res.data;
         this.bugForm.patchValue({
@@ -81,7 +81,7 @@ export class UpdateBugDialogComponent implements OnInit {
       }
     });
 
-    this.userService.getDevelopers().subscribe(resp => {
+    this.userService.getDevelopers(this.data.projectId).subscribe(resp => {
       this.allUsers = resp.data;
     });
   }
@@ -171,7 +171,7 @@ export class UpdateBugDialogComponent implements OnInit {
       formData.append('screenshot', this.selectedFile);
     }
 
-    this.bugService.update(this.bugId, formData).subscribe({
+    this.bugService.update(this.data.bugId, formData).subscribe({
       next: () => {
         alert("Updated successfully")
         this.dialogRef.close(true)

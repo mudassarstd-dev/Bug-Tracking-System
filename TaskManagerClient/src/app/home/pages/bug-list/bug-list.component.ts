@@ -1,9 +1,8 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-
 import { BugDialogComponent } from '../../dialogs/bug-dialog/bug-dialog.component';
 import { UpdateBugDialogComponent } from '../../dialogs/update-bug-dialog/update-bug-dialog.component';
 import { BugService } from 'src/app/services/bug.service';
@@ -53,7 +52,7 @@ export class BugListComponent implements OnInit {
   }
 
   private getBugDetails() {
-    
+
     this.isFilterActive = false
     this.isSortActive = false
 
@@ -68,8 +67,9 @@ export class BugListComponent implements OnInit {
     const dialogRef = this.dialog.open(BugDialogComponent, {
       width: '780px',
       height: '880px',
-      panelClass: 'light-dialog',
-      data: {}
+      panelClass: 'no-padding-dialog',
+      // panelClass: 'bug-dialog',
+      data: { projectId: this.projectId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -86,11 +86,12 @@ export class BugListComponent implements OnInit {
     const dialogRef = this.dialog.open(UpdateBugDialogComponent, {
       width: '780px',
       height: '880px',
-      data: bugId
+      panelClass: 'no-padding-dialog',
+      data: { bugId: bugId, projectId: this.projectId }
     });
 
-    dialogRef.afterClosed().subscribe(() => { 
-      this.getBugDetails() 
+    dialogRef.afterClosed().subscribe(() => {
+      this.getBugDetails()
     });
   }
 

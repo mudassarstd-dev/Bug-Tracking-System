@@ -1,5 +1,6 @@
 using System.Data;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data.Enums;
@@ -277,6 +278,86 @@ public class DynamoProjectService
 
 
     // ONLY MANAGER
+    // public async Task<ApiResponse<Project>> UpdateProjectAsync(string projectId, UpdateProjectDto dto)
+    // {
+    //     if (!isManager())
+    //         return ApiResponse<Project>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
+
+    //     var project = await _context.LoadAsync<Project>(projectId);
+    //     if (project == null)
+    //         return ApiResponse<Project>.Fail("Project not found", ErrorCode.NotFound);
+
+    //     if (!string.IsNullOrWhiteSpace(dto.Name))
+    //         project.Name = dto.Name;
+    //     if (dto.Description != null)
+    //         project.Description = dto.Description;
+    //     if (!string.IsNullOrWhiteSpace(dto.logoPath))
+    //         project.ImagePath = dto.logoPath;
+
+    //     if (dto.assigneeIds != null)
+    //     {
+    //         var query = _context.QueryAsync<ProjectAssignment>(
+    //             projectId,
+    //             new QueryConfig
+    //             {
+    //                 IndexName = "ProjectIdIndex"
+    //             });
+
+    //         var currentAssignments = await query.GetRemainingAsync();
+    //         var currentUserIds = currentAssignments.Select(a => a.UserId).ToList();
+    //         var newUserIds = dto.assigneeIds.Distinct().ToList();
+
+    //         var toRemove = currentAssignments
+    //             .Where(a => !newUserIds.Contains(a.UserId))
+    //             .ToList();
+
+    //         var toAddIds = newUserIds
+    //             .Where(id => !currentUserIds.Contains(id))
+    //             .ToList();
+
+    //         if (toRemove.Any())
+    //         {
+    //             var deleteBatch = _context.CreateBatchWrite<ProjectAssignment>();
+    //             deleteBatch.AddDeleteItems(toRemove);
+    //             await deleteBatch.ExecuteAsync();
+
+    //             // get all bugs on projectId and remove developer from each bug assignees
+    //             // need to remove developers from bugs as well.
+    //         }
+
+    //         if (toAddIds.Any())
+    //         {
+    //             var newAssignments = new List<ProjectAssignment>();
+
+    //             foreach (var userId in toAddIds)
+    //             {
+    //                 var user = await _context.LoadAsync<User>(userId);
+    //                 if (user is not null)
+    //                 {
+    //                     newAssignments.Add(new ProjectAssignment
+    //                     {
+    //                         UserId = user.Id,
+    //                         Role = user.Role.ToString(),
+    //                         ProjectId = project.Id
+    //                     });
+    //                 }
+    //             }
+
+    //             if (newAssignments.Any())
+    //             {
+    //                 var addBatch = _context.CreateBatchWrite<ProjectAssignment>();
+    //                 addBatch.AddPutItems(newAssignments);
+    //                 await addBatch.ExecuteAsync();
+    //             }
+    //         }
+    //     }
+
+    //     await _context.SaveAsync(project);
+    //     return ApiResponse<Project>.Ok(project, "Project updated successfully");
+    // }
+
+
+
     public async Task<ApiResponse<Project>> UpdateProjectAsync(string projectId, UpdateProjectDto dto)
     {
         if (!isManager())
@@ -295,14 +376,11 @@ public class DynamoProjectService
 
         if (dto.assigneeIds != null)
         {
-            var query = _context.QueryAsync<ProjectAssignment>(
+            var currentAssignments = await _context.QueryAsync<ProjectAssignment>(
                 projectId,
-                new QueryConfig
-                {
-                    IndexName = "ProjectIdIndex"
-                });
+                new QueryConfig { IndexName = "ProjectIdIndex" }
+            ).GetRemainingAsync();
 
-            var currentAssignments = await query.GetRemainingAsync();
             var currentUserIds = currentAssignments.Select(a => a.UserId).ToList();
             var newUserIds = dto.assigneeIds.Distinct().ToList();
 
@@ -319,6 +397,35 @@ public class DynamoProjectService
                 var deleteBatch = _context.CreateBatchWrite<ProjectAssignment>();
                 deleteBatch.AddDeleteItems(toRemove);
                 await deleteBatch.ExecuteAsync();
+
+                var removedDevIds = toRemove
+                    .Where(r => r.Role == Role.Developer.ToString())
+                    .Select(r => r.UserId)
+                    .Distinct()
+                    .ToList();
+
+                if (removedDevIds.Any())
+                {
+                    var bugQuery = _context.QueryAsync<Bug>(
+                        projectId,
+                        new QueryConfig { IndexName = "ProjectId-index" }
+                    );
+
+                    var bugs = await bugQuery.GetRemainingAsync();
+
+                    foreach (var bug in bugs)
+                    {
+                        if (bug.Assignees == null || bug.Assignees.Count == 0)
+                            continue;
+
+                        var updatedAssignees = bug.Assignees.Except(removedDevIds).ToList();
+                        if (updatedAssignees.Count != bug.Assignees.Count)
+                        {
+                            bug.Assignees = updatedAssignees;
+                            await _context.SaveAsync(bug);
+                        }
+                    }
+                }
             }
 
             if (toAddIds.Any())
@@ -349,8 +456,10 @@ public class DynamoProjectService
         }
 
         await _context.SaveAsync(project);
+
         return ApiResponse<Project>.Ok(project, "Project updated successfully");
     }
+
 
     // ONLY MANAGER
     public async Task<ApiResponse<bool>> DeleteProjectAsync(string projectId)
