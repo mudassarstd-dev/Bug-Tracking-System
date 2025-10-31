@@ -4,6 +4,7 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -29,6 +30,7 @@ function futureDateValidator(control: AbstractControl): ValidationErrors | null 
   selector: 'app-bug-dialog',
   templateUrl: './bug-dialog.component.html',
   styleUrls: ['./bug-dialog.component.scss'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class BugDialogComponent implements OnInit, OnDestroy {
   bugForm!: FormGroup;
@@ -60,7 +62,7 @@ export class BugDialogComponent implements OnInit, OnDestroy {
 
     this.minDate = new Date()
 
-    this.userService.getDevelopers().subscribe((resp) => {
+    this.userService.getDevelopers(this.data.projectId).subscribe((resp) => {
       this.assignees = resp.data || [];
       this.allUsers = this.assignees;
     });
@@ -99,7 +101,7 @@ export class BugDialogComponent implements OnInit, OnDestroy {
 
     if (file.type !== 'image/png' && file.type !== 'image/gif') {
       alert('Only PNG and GIF images are allowed.');
-      (event.target as HTMLInputElement).value = ''; 
+      (event.target as HTMLInputElement).value = '';
       return;
     }
 
@@ -139,7 +141,10 @@ export class BugDialogComponent implements OnInit, OnDestroy {
   }
 
   save(): void {
-    if (this.bugForm.invalid) return;
+    if (this.bugForm.invalid) {
+      this.bugForm.markAllAsTouched()
+      return
+    };
 
     const { title, details, assignees, dueDate, attachment } =
       this.bugForm.value;

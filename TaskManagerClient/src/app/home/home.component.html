@@ -14,7 +14,7 @@
 
       <img [src]="option.icon" class="custom-icon" alt="Custom Logo" width="20" height="20">
 
-      <button mat-button (click)="renderView()" *ngIf="option.show" [routerLink]="option.route">
+      <button mat-button (click)="renderView(option.title)" *ngIf="option.show" [routerLink]="option.route">
         <!-- <mat-icon>{{ option.icon }}</mat-icon> -->
 
         <span>{{ option.title }}</span>

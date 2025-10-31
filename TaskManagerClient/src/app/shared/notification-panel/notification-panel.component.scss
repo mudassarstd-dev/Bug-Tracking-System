@@ -13,7 +13,7 @@
     font-size: 15px;
     padding: 12px 16px;
     border-bottom: 1px solid #e5e7eb;
-    background-color: #f9fafb;
+    background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -43,7 +43,7 @@
 
     .content-row {
       display: flex;
-      align-items: flex-start; // ensure icon aligns to full row height
+      align-items: flex-start; 
       gap: 12px;
     }
 
@@ -52,7 +52,7 @@
       height: 24px;
       border-radius: 50%;
       flex-shrink: 0;
-      margin-top: 4px; // small tweak for better visual balance
+      margin-top: 4px; 
     }
 
     .text-section {
@@ -70,7 +70,7 @@
 
     .timestamp {
       font-size: 12px;
-      color: #6b7280;
+      color: #A5ACB8;
       margin-bottom: 6px;
     }
 

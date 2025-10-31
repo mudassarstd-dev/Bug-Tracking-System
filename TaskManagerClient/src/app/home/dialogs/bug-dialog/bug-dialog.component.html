@@ -1,6 +1,5 @@
 <form [formGroup]="bugForm" (ngSubmit)="save()" class="bug-dialog">
 
-    <!-- Top Bar -->
     <div class="dialog-topbar">
         <div class="close-bg">
             <button mat-icon-button class="close-btn" (click)="close()">
@@ -9,13 +8,12 @@
         </div>
     </div>
 
-    <!-- Title -->
     <div class="dialog-title">Add New Bug</div>
     <hr class="divider" />
 
     <!-- Assignees + Due Date Row -->
-    <div class="assign-due-row">
-        <!-- Assignees -->
+    <div class="assign-due-row-bug">
+        
         <div class="assignees-section">
             <span class="label">Assign To</span>
 
@@ -117,17 +115,12 @@
             <img src="assets/icons/calendar.png" alt="calendar" width="32" height="32" class="calendar-icon"
                 (click)="openDatePicker()">
 
-
-
-            <!-- Selected date text -->
             <span class="selected-date" *ngIf="bugForm.get('dueDate')?.value">
                 {{ bugForm.get('dueDate')?.value | date: 'mediumDate' }}
             </span>
 
-            <!-- Hidden input linked to datepicker -->
             <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dueDate" hidden />
 
-            <!-- Actual datepicker -->
             <mat-datepicker #picker (closed)="onDatePicked(picker._selected)"></mat-datepicker>
         </div>
     </div>
@@ -136,9 +129,10 @@
         Due date cannot be in the past
     </mat-error>
 
+    <!-- <mat-calendar></mat-calendar> -->
 
-    <!-- Bug Title Input -->
-    <div class="bug-title-input">
+
+    <div class="bug-title-input-bug">
         <input matInput formControlName="title" placeholder="Add title here" />
         <mat-error *ngIf="bugForm.get('title')?.touched && bugForm.get('title')?.invalid">
             Bug title is required
@@ -153,8 +147,10 @@
     <div class="form-field">
         <label class="field-label">Bug Details</label>
         <input matInput formControlName="details" placeholder="Add here" />
+        <mat-error *ngIf="bugForm.get('details')?.touched && bugForm.get('details')?.invalid">
+            Bug details required
+        </mat-error>
     </div>
-
 
     <!-- Drop Image Section -->
     <!-- <div class="drop-zone" (click)="fileInput.click()">
@@ -165,7 +161,7 @@
     </div> -->
 
     <!-- Drop Image Section -->
-    <div class="drop-zone" (click)="fileInput.click()">
+    <div class="drop-zone-bug" (click)="fileInput.click()">
         <ng-container *ngIf="!previewUrl; else imagePreview">
             <!-- <mat-icon>cloud_upload</mat-icon> -->
             <img src="assets/icons/image-drop.png" alt="upload-img" width="32" height="32">
@@ -182,7 +178,7 @@
     </div>
 
     <!-- Footer -->
-    <div class="dialog-footer">
+    <div class="dialog-footer-bug">
         <button mat-flat-button color="primary" type="submit">Add</button>
     </div>
 </form>

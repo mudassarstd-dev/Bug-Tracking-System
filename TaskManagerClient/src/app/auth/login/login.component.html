@@ -2,24 +2,19 @@
   <!-- LEFT SECTION (branding) -->
   <div class="login-left">
     <div class="branding">
-      <img
-        src="/assets/icons/branding-title.png"
-        alt="App Logo"
-        class="logo"
-      />
+      <img src="/assets/icons/branding-title.png" alt="App Logo" class="logo" />
       <!-- <h2 class="app-title">ManageBug</h2> -->
     </div>
   </div>
 
-  <!-- RIGHT SECTION (login form) -->
   <div class="login-right">
     <div class="login-content">
       <h1 class="headline">Login</h1>
       <p class="subtext">Please enter your login details.</p>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <!-- Username -->
-        <mat-form-field appearance="outline" >
+
+        <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <mat-icon matPrefix>email</mat-icon>
           <input matInput placeholder="Enter your username" formControlName="email" />
@@ -28,23 +23,13 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Password -->
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
           <mat-icon matPrefix>lock</mat-icon>
-          <input
-            matInput
-            placeholder="Enter your password"
-            [type]="hide ? 'password' : 'text'"
-            formControlName="password"
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            (click)="hide = !hide"
-            [attr.aria-label]="'Toggle password visibility'"
-          >
+          <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'"
+            formControlName="password" />
+          <button mat-icon-button matSuffix type="button" (click)="hide = !hide"
+            [attr.aria-label]="'Toggle password visibility'">
             <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <mat-error *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
@@ -52,19 +37,10 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Login Button -->
-        <button
-          mat-raised-button
-          color="primary"
-          class="submit-btn"
-          type="submit"
-          [disabled]="loading"
-        >
+        <button mat-raised-button color="primary" class="submit-btn" type="submit" [disabled]="loading">
           {{ loading ? 'Please wait...' : 'Login' }}
-          <mat-icon>arrow_forward</mat-icon>
+          <mat-icon>chevron_right</mat-icon>
         </button>
-
-        <!-- <button mat-raised-button color="primary">Log in</button> -->
 
         <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
         <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
@@ -75,7 +51,7 @@
 
       <div class="signup-text">
         <span>Don’t have an account?</span>
-        <button mat-button color="primary" routerLink="/onBoard">Create one</button>
+        <button mat-button color="primary" routerLink="/onBoard">Create account</button>
       </div>
     </div>
   </div>

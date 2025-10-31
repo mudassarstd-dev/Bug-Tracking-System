@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class ProfileComponent implements OnInit {
   selectedFile?: File;
   previewUrl?: string;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) { }
+  constructor(private fb: FormBuilder, private userService: UserService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.profileForm = this.fb.group({
@@ -79,6 +80,11 @@ export class ProfileComponent implements OnInit {
       this.userService.updateUserProfile(formData).subscribe({
         next: (res) => {
           console.log('Profile updated successfully:', res);
+
+          if (res.data) {
+            this.authService.setUserImage(res.data);
+          }
+
           alert('Profile updated!');
         },
         error: (err) => {

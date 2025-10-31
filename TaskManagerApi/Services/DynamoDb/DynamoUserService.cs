@@ -1,5 +1,6 @@
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
 using Microsoft.OpenApi.Validations;
 using SQLitePCL;
 using TaskManagerApi.Data.Enums;
@@ -62,17 +63,67 @@ public class DynamoUserService
         return ApiResponse<List<ProjectAssigneeDto>>.Ok(result);
     }
 
-    public async Task<ApiResponse<List<UserAvatarDto>>> GetDevelopers()
+    // public async Task<ApiResponse<List<UserAvatarDto>>> GetDevelopers(string projectId)
+    // {
+    //     // if (!isManager()) return ApiResponse<List<ProjectAssigneeDto>>.Fail("Manager Only", ErrorCode.InvalidRole);
+
+    //     var queryConfig = new QueryConfig
+    //     {
+    //         IndexName = "ProjectIdIndex"
+    //     };
+
+    //     var response = _context.QueryAsync<ProjectAssignment>(projectId, queryConfig);
+    //     var results = await response.GetRemainingAsync();
+
+    //     var devIds = results.Where(u => u.Role == Role.Developer.ToString()).Select(u => u.UserId).ToList();
+
+
+    //     var scanConditions = new List<ScanCondition>
+    //         {
+    //             new ScanCondition("Role", ScanOperator.In, new[] { Role.Developer.ToString() })
+    //         };
+
+    //     var scan = _context.ScanAsync<User>(scanConditions);
+    //     var users = await scan.GetRemainingAsync();
+
+    //     var result = users.Select(u => new UserAvatarDto(
+    //         id: u.Id,
+    //         name: u.Name,
+    //         avatar: string.IsNullOrWhiteSpace(u.ProfileImageUrl)
+    //             ? null
+    //             : $"http://localhost:5153/uploads/{Path.GetFileName(u.ProfileImageUrl)}"
+    //                 )).ToList();
+
+    //     return ApiResponse<List<UserAvatarDto>>.Ok(result);
+    // }
+
+
+    public async Task<ApiResponse<List<UserAvatarDto>>> GetDevelopers(string projectId)
     {
-        // if (!isManager()) return ApiResponse<List<ProjectAssigneeDto>>.Fail("Manager Only", ErrorCode.InvalidRole);
+        var queryConfig = new QueryConfig
+        {
+            IndexName = "ProjectIdIndex"
+        };
 
-        var scanConditions = new List<ScanCondition>
-            {
-                new ScanCondition("Role", ScanOperator.In, new[] { Role.Developer.ToString() })
-            };
+        var projectAssignments = await _context.QueryAsync<ProjectAssignment>(projectId, queryConfig)
+                                               .GetRemainingAsync();
+        var devIds = projectAssignments
+            .Where(pa => pa.Role == Role.Developer.ToString())
+            .Select(pa => pa.UserId)
+            .Distinct()
+            .ToList();
 
-        var scan = _context.ScanAsync<User>(scanConditions);
-        var users = await scan.GetRemainingAsync();
+        if (!devIds.Any())
+            return ApiResponse<List<UserAvatarDto>>.Ok(new List<UserAvatarDto>());
+
+        var batch = _context.CreateBatchGet<User>();
+        foreach (var devId in devIds)
+        {
+            batch.AddKey(devId);
+        }
+
+        await batch.ExecuteAsync();
+        var users = batch.Results;
 
         var result = users.Select(u => new UserAvatarDto(
             id: u.Id,
@@ -80,7 +131,7 @@ public class DynamoUserService
             avatar: string.IsNullOrWhiteSpace(u.ProfileImageUrl)
                 ? null
                 : $"http://localhost:5153/uploads/{Path.GetFileName(u.ProfileImageUrl)}"
-                    )).ToList();
+        )).ToList();
 
         return ApiResponse<List<UserAvatarDto>>.Ok(result);
     }
@@ -126,7 +177,7 @@ public class DynamoUserService
         return ApiResponse<List<User>>.Ok(users);
     }
 
-    public async Task<ApiResponse<string>> UpdateProfile(UpdateUserDto userDto)
+    public async Task<ApiResponse<string?>> UpdateProfile(UpdateUserDto userDto)
     {
         if (_user.Id == null) return ApiResponse<string>.Fail("User id not found", ErrorCode.InvalidCredentials);
 
@@ -143,9 +194,12 @@ public class DynamoUserService
         if (!string.IsNullOrWhiteSpace(userDto.imageUrl))
             user.Data.ProfileImageUrl = userDto.imageUrl;
 
+        var imageUrl = string.IsNullOrWhiteSpace(userDto.imageUrl)
+                        ? null
+                        : $"http://localhost:5153/uploads/{Path.GetFileName(userDto.imageUrl)}";
 
         await _context.SaveAsync<User>(user.Data);
-        return ApiResponse<string>.Ok("Profile updated successfully");
+        return ApiResponse<string?>.Ok(imageUrl);
     }
 
     private bool isManager()

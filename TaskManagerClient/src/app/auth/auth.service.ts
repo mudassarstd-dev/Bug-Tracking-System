@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';  
+import { environment } from '../../environments/environment';
 import { ApiResponse } from '../common/ApiResponse';
 import { AuthResponse } from '../common/AuthResponse';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +13,24 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  private userImageSubject = new BehaviorSubject<string | null>(this.getUserImage());
+  userImage$ = this.userImageSubject.asObservable();
+
   private api_url = `${environment.taskManagerApi_base}/auth`;
 
-  login(creds: {email: string, password:string}) {
-      return this.http.post<ApiResponse<AuthResponse>>(`${this.api_url}/login`, creds)
+  login(creds: { email: string, password: string }) {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.api_url}/login`, creds)
   }
 
-  register(data: {name: string, password: string, role: string}) {
-      return this.http.post<ApiResponse<AuthResponse>>(`${this.api_url}/register`, data)
+  register(data: { name: string, password: string, role: string }) {
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.api_url}/register`, data)
   }
 
   logout() {
     localStorage.removeItem("auth-token")
     localStorage.removeItem("user-role")
     localStorage.removeItem('user-name');
-    localStorage.removeItem('user-image');
+    localStorage.removeItem('user-image'); 
     this.router.navigate(['/login'])
   }
 
@@ -41,7 +45,7 @@ export class AuthService {
   getUsername(): string | null {
     return localStorage.getItem('user-name');
   }
-  
+
   getUserImage(): string | null {
     return localStorage.getItem('user-image');
   }
@@ -52,5 +56,10 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  setUserImage(newUrl: string) {
+    localStorage.setItem('user-image', newUrl);
+    this.userImageSubject.next(newUrl);
   }
 }

@@ -2,6 +2,7 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Runtime;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Microsoft.IdentityModel.Tokens;
 using TaskManagerApi.Data.Enums;
 using TaskManagerApi.Data.Models.Dynamo;
 using TaskManagerApi.Services;
@@ -24,7 +25,7 @@ public class DynamoBugService
     public async Task<ApiResponse<string>> CreateBugAsync(CreateBugDto dto)
     {
         if (!isQa())
-            return ApiResponse<string>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
+            return ApiResponse<string>.Fail("QA Only operation", ErrorCode.InvalidCredentials);
 
         if (string.IsNullOrWhiteSpace(dto.ProjectId))
             return ApiResponse<string>.Fail("ProjectId is required");
@@ -90,21 +91,24 @@ public class DynamoBugService
 
         var assignees = new List<UserAvatarDto>();
 
-        foreach (var userId in bug.Assignees)
+        if (!bug.Assignees.IsNullOrEmpty())
         {
-            var user = await _userService.GetByIdAsync(userId);
-            string? avatarUrl = null;
-
-            if (!string.IsNullOrWhiteSpace(user.Data?.ProfileImageUrl))
+            foreach (var userId in bug.Assignees)
             {
-                avatarUrl = $"http://localhost:5153/uploads/{Path.GetFileName(user.Data.ProfileImageUrl)}";
-            }
-            else
-            {
-                avatarUrl = "https://avatar.iran.liara.run/public/boy";
-            }
+                var user = await _userService.GetByIdAsync(userId);
+                string? avatarUrl = null;
 
-            assignees.Add(new UserAvatarDto(userId, avatarUrl));
+                if (!string.IsNullOrWhiteSpace(user.Data?.ProfileImageUrl))
+                {
+                    avatarUrl = $"http://localhost:5153/uploads/{Path.GetFileName(user.Data.ProfileImageUrl)}";
+                }
+                else
+                {
+                    avatarUrl = "https://avatar.iran.liara.run/public/boy";
+                }
+
+                assignees.Add(new UserAvatarDto(userId, avatarUrl));
+            }
         }
 
         var bugDetail = new BugDetailsForUpdateDto(

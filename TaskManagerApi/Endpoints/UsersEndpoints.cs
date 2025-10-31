@@ -21,8 +21,8 @@ public static class UsersEndpoints
         group.MapGet("/profile", async (DynamoUserService userService) =>
         (await userService.GetMyProfile()).ToHttpResult());
 
-        group.MapGet("/devs", async (DynamoUserService userService) =>
-         (await userService.GetDevelopers()).ToHttpResult());
+        group.MapGet("/devs/{projectId}", async (string projectId, DynamoUserService userService) =>
+         (await userService.GetDevelopers(projectId)).ToHttpResult());
 
         group.MapGet("/assignees/{projectId}", async (string projectId, DynamoUserService userService) =>
         (await userService.GetProjectAssignees(projectId)).ToHttpResult());

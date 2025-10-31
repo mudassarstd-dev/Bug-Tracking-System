@@ -39,15 +39,15 @@
 
     <div class="icon-section">
 
-        <img src="assets/icons/filter.png" width="32" height="32" [class.active]="isFilterActive"
+        <img src="assets/icons/filter.png" width="32" height="32" [class.active]="isFilterActive" class="sort-filter"
             [matMenuTriggerFor]="filterMenu" />
 
-            <div class="space-between"></div>
+        <div class="space-between"></div>
 
-        <img src="assets/icons/sort.png" width="32" height="32" [class.active]="isSortActive"
+        <img src="assets/icons/sort.png" width="32" height="32" [class.active]="isSortActive" class="sort-filter"
             [matMenuTriggerFor]="sortMenu" />
 
-            <div class="space-between"></div>
+        <div class="space-between"></div>
 
         <img src="assets/icons/disabled-grid-view.png" width="32" height="32" [class.active]="isGridView"
             (click)="toggleView('grid')" />
@@ -82,7 +82,6 @@
     <div class="table-wrap" *ngIf="!isGridView">
         <table mat-table [dataSource]="dataSource" class="custom-material-table">
 
-            <!-- BUG DETAILS -->
             <ng-container matColumnDef="details">
                 <th mat-header-cell *matHeaderCellDef class="custom-header bug-details-header">Bug Details</th>
                 <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
@@ -93,7 +92,6 @@
                 </td>
             </ng-container>
 
-            <!-- STATUS -->
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Status</th>
                 <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
@@ -101,7 +99,6 @@
                 </td>
             </ng-container>
 
-            <!-- DUE DATE -->
             <ng-container matColumnDef="dueDate">
                 <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Due Date</th>
                 <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
@@ -113,7 +110,6 @@
             </ng-container>
 
 
-            <!-- ASSIGNED TO -->
             <ng-container matColumnDef="assignedTo">
                 <th mat-header-cell *matHeaderCellDef class="custom-header text-center">Assigned To</th>
                 <td mat-cell *matCellDef="let bug" class="custom-cell text-center">
@@ -202,7 +198,8 @@
 
             <mat-card-content>
                 <div class="info-row">
-                    <div class="label">Due Date</div>
+                    <div class="label-date">Due Date</div>
+                    <mat-icon>calendar_today</mat-icon>
                     <div class="value">{{ bug.dueDate | date: 'mediumDate' }}</div>
                 </div>
 

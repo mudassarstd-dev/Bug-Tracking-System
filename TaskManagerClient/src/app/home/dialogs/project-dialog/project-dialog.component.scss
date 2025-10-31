@@ -1,6 +1,6 @@
 .dialog-content {
   display: flex;
-  gap: 40px;
+  gap: 80px;
   align-items: flex-start;
   min-width: 800px;
   max-height: 550px;
@@ -21,6 +21,7 @@
     .field-label {
       font-weight: 400;
       font-size: 16px;
+      color: #000;
       font-family: 'Poppins', sans-serif;
     }
 
@@ -28,6 +29,7 @@
       border: 1px solid #F4F4F5;
       border-radius: 6px;
       height: 52px;
+      width: 440px;
       padding: 0 12px;
       font-size: 0.9rem;
       outline: none;
@@ -55,7 +57,9 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  flex: 0 0 200px;
+  // flex: 0 0 200px;
+  margin-right: 90px;
+  // margin-left: -40px;
   margin-top: 15px;
 
   // .upload-placeholder {
@@ -92,15 +96,16 @@
   // }
 
   .upload-placeholder {
-    width: 160px;
-    height: 160px;
+    width: 180px;
+    height: 180px;
     position: relative;
     overflow: hidden;
-    border: 3px dashed #4C535F;
+    border: 1.47px dashed #4C535F;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     align-items: center;
     background-color: #FAFBFC;
     cursor: pointer;
@@ -142,82 +147,86 @@
   }
 }
 
-.form-field {
+// .form-field {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 8px;
+
+//   input {
+//     width: 440px;
+//   }
+
+// .field-label {
+//   font-weight: 500;
+//   color: rgba(0, 0, 0, 0.87);
+//   font-size: 0.95rem;
+// }
+
+// Dropdown options
+// .user-option {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   gap: 12px;
+
+//   .user-info {
+//     display: flex;
+//     align-items: center;
+//     gap: 8px;
+//   }
+
+//   .user-avatar {
+//     width: 28px;
+//     height: 28px;
+//     border-radius: 50%;
+//     object-fit: cover;
+//   }
+
+//   .user-name {
+//     font-size: 0.9rem;
+//     color: rgba(0, 0, 0, 0.87);
+//   }
+
+//   .end-checkbox {
+//     margin-left: auto;
+//   }
+// }
+
+.selected-users {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  width: 440px;
+  flex-wrap: wrap;
   gap: 8px;
+  margin-top: 8px;
 
-  // .field-label {
-  //   font-weight: 500;
-  //   color: rgba(0, 0, 0, 0.87);
-  //   font-size: 0.95rem;
-  // }
-
-  // Dropdown options
-  // .user-option {
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: space-between;
-  //   gap: 12px;
-
-  //   .user-info {
-  //     display: flex;
-  //     align-items: center;
-  //     gap: 8px;
-  //   }
-
-  //   .user-avatar {
-  //     width: 28px;
-  //     height: 28px;
-  //     border-radius: 50%;
-  //     object-fit: cover;
-  //   }
-
-  //   .user-name {
-  //     font-size: 0.9rem;
-  //     color: rgba(0, 0, 0, 0.87);
-  //   }
-
-  //   .end-checkbox {
-  //     margin-left: auto;
-  //   }
-  // }
-
-  // Selected users below
-  .selected-users {
+  .selected-user {
     display: flex;
     align-items: center;
-    width: 550px;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
+    gap: 6px;
+    background: #f1f3f4;
+    border-radius: 20px;
+    padding: 4px 8px;
 
-    .selected-user {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: #f1f3f4;
-      border-radius: 20px;
-      padding: 4px 8px;
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
 
-      .user-avatar {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-      }
+    .remove-icon {
+      font-size: 18px;
+      color: #555;
+      cursor: pointer;
 
-      .remove-icon {
-        font-size: 18px;
-        color: #555;
-        cursor: pointer;
-
-        &:hover {
-          color: #d32f2f;
-        }
+      &:hover {
+        color: #d32f2f;
       }
     }
   }
 }
+
+// }
 
 .custom-dropdown-trigger {
   display: flex;
@@ -226,7 +235,7 @@
   border: 1px solid #F4F4F5;
   border-radius: 6px;
   height: 52px;
-  width: 600px;
+  width: 440px;
   padding: 0 12px;
   cursor: pointer;
   background: #fff;
