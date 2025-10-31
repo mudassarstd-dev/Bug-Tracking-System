@@ -20,25 +20,68 @@
   }
 
   mat-icon {
-    margin-right: 10px;
-    color: #868AA5;
+    margin-right: 18px;
+    margin-left: 4px;
+    color: #6b7280;
+  }
+
+
+  // ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  //   background-color: #F5F5F7 !important;
+  //   border-radius: px;
+  //   height: 64px;
+  //   width: 440px;
+  //   font-weight: 500;
+  //   font-size: 15px;
+  //   font-family: 'Poppins', sans-serif;
+  //   transition: background-color 0.2s ease;
+  // }
+
+  // ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex,
+  // ::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-flex {
+  //   background-color: #ffffff !important;
+  // }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    display: none;
+    /* remove Angular Material's outline border */
   }
 
   ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
     background-color: #F5F5F7 !important;
-    border-radius: px;
+    border-radius: 6px;
+    /* your choice of rounding */
     height: 64px;
-    width: 440px;
+    width: 443px;
     font-weight: 500;
+    // color: #8B8FA8;
     font-size: 15px;
     font-family: 'Poppins', sans-serif;
     transition: background-color 0.2s ease;
+    padding: 0 16px;
+    /* add padding so text doesn't touch edges */
+    box-sizing: border-box;
+    align-items: center;
   }
 
-  ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-flex,
-  ::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-flex {
+  /* Optional: remove ripple and focus border color effects */
+  ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
     background-color: #ffffff !important;
+
+    // display: none;
   }
+
+  ::ng-deep .mat-form-field-label-wrapper {
+    margin-top: 2px;
+    // transform: translateY(-60%);
+
+  }
+
+  ::ng-deep .mat-form-field-label {
+    display: none !important;
+  }
+
+
 }
 
 .profile-image-container {

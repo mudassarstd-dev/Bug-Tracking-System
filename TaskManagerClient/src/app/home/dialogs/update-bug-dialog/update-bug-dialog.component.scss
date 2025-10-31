@@ -44,6 +44,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            margin-left: 10px;
 
             .status-chip {
                 display: inline-flex;
@@ -262,7 +263,7 @@
 
     .bug-title-input {
         // background-color: #f9fafb;
-        margin: 0 24px 16px 4px;
+        margin: 0 24px 16px 16px;
         border-radius: 8px;
         padding: 12px 16px;
 
@@ -279,7 +280,7 @@
 
 
     .drop-zone {
-        margin: 24px 24px 16px;
+        margin: 24px 32px 16px 32px;
         border: 2px dashed #cfd8dc;
         border-radius: 8px;
         height: 140px;
@@ -471,7 +472,7 @@
 }
 
 .bug-details-field.simple-textarea {
-    margin: 0 24px 16px;
+    margin: 0 48px 16px 32px;
     display: flex;
     flex-direction: column;
 
@@ -484,7 +485,7 @@
     }
 
     textarea {
-        width: 700px;
+        width: 686px;
         min-height: 120px;
         border: 1px solid #e0e0e0;
         border-radius: 8px;

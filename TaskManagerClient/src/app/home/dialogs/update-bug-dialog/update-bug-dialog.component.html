@@ -8,7 +8,6 @@
         </div>
     </div>
 
-    <!-- STATUS + AVATARS + DATE -->
     <div class="bug-status-section">
         <div class="status-group">
             <div class="status-chip" [ngStyle]="{
@@ -25,7 +24,6 @@
             </div>
         </div>
 
-        <!-- Avatars -->
         <div class="avatars">
             <img *ngFor="let user of assignees" [src]="user.avatar" class="avatar" />
             <button type="button" class="add-avatar hollow-add"
@@ -35,7 +33,6 @@
                 </div>
             </button>
 
-            <!-- Dropdown Card -->
             <div class="custom-dropdown-card" *ngIf="dropdownOpen"
                 [ngStyle]="{ top: dropdownPosition.top + 'px', left: dropdownPosition.left + 'px' }">
                 <div class="dropdown-title">Assign To</div>
@@ -59,7 +56,6 @@
         <div class="spacer"></div>
         <div class="full-divider-vertical"></div>
 
-        <!-- DUE DATE -->
         <div class="creation-date">
             <div class="date-text">
                 <h3>Due Date</h3>
@@ -79,12 +75,10 @@
 
     <hr class="divider" />
 
-    <!-- Editable Title -->
     <div class="bug-title-input">
         <input formControlName="title" placeholder="Enter bug title..." />
     </div>
 
-    <!-- DROP ZONE -->
     <div class="drop-zone">
         <img *ngIf="imagePreview || screenshotUrl" [src]="imagePreview || screenshotUrl" alt="Screenshot"
             class="preview-image" />
@@ -108,7 +102,6 @@
 
     <div class="space"></div>
 
-    <!-- FOOTER -->
     <div class="dialog-footer">
         <img src="assets/icons/image-drop.png" alt="upload-img" width="32" height="32">
 

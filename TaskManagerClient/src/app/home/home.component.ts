@@ -43,11 +43,12 @@ export class HomeComponent implements OnInit {
 
   }
 
-  renderView() {
-    // this.router.navigate(['/bugs'])
+  renderView(option: string) {
+    if (option === "Projects")
+      this.router.navigate(['/dashboard'])
   }
 
-  private renderDashboard() {
+  renderDashboard() {
     this.router.navigate(['/dashboard'])
   }
 

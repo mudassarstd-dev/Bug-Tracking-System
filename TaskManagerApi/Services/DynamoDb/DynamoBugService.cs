@@ -25,7 +25,7 @@ public class DynamoBugService
     public async Task<ApiResponse<string>> CreateBugAsync(CreateBugDto dto)
     {
         if (!isQa())
-            return ApiResponse<string>.Fail("Manager Only operation", ErrorCode.InvalidCredentials);
+            return ApiResponse<string>.Fail("QA Only operation", ErrorCode.InvalidCredentials);
 
         if (string.IsNullOrWhiteSpace(dto.ProjectId))
             return ApiResponse<string>.Fail("ProjectId is required");

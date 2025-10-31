@@ -43,11 +43,9 @@
     </div>
      -->
 
-    <!-- Assign To -->
     <div class="form-field assign-to-field" [formGroup]="projectForm">
       <label class="field-label">Assign To</label>
 
-      <!-- Trigger Button -->
       <div class="custom-dropdown-trigger" (click)="toggleDropdown($event)">
         <span *ngIf="projectForm.value.assignTo?.length; else placeholder">
           {{ projectForm.value.assignTo.length }} user{{ projectForm.value.assignTo.length > 1 ? 's' : '' }}
@@ -57,7 +55,6 @@
         <mat-icon class="dropdown-icon">expand_more</mat-icon>
       </div>
 
-      <!-- Dropdown Card -->
       <div class="custom-dropdown-card" *ngIf="dropdownOpen"
         [ngStyle]="{ top: dropdownPosition.top + 'px', left: dropdownPosition.left + 'px' }">
         <div class="dropdown-title">Assign To</div>
@@ -74,7 +71,6 @@
         </div>
       </div>
 
-      <!-- Selected users (chips) -->
       <div class="selected-users" *ngIf="projectForm.value.assignTo?.length">
         <div class="selected-user" *ngFor="let user of projectForm.value.assignTo">
           <img [src]="user.avatar" alt="avatar" class="user-avatar" />
@@ -95,7 +91,6 @@
     </label>
   </div> -->
 
-  <!-- Right: Upload section -->
   <div class="upload-section">
     <label class="upload-placeholder" for="logoUpload">
       <input type="file" id="logoUpload" hidden (change)="onFileSelected($event)" accept="image/*" />

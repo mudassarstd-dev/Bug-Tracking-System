@@ -30,7 +30,7 @@ export class AuthService {
     localStorage.removeItem("auth-token")
     localStorage.removeItem("user-role")
     localStorage.removeItem('user-name');
-    localStorage.removeItem('user-image');
+    localStorage.removeItem('user-image'); 
     this.router.navigate(['/login'])
   }
 
@@ -59,7 +59,7 @@ export class AuthService {
   }
 
   setUserImage(newUrl: string) {
-    localStorage.setItem('userImage', newUrl);
+    localStorage.setItem('user-image', newUrl);
     this.userImageSubject.next(newUrl);
   }
 }

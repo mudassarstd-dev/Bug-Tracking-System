@@ -71,8 +71,6 @@ body {
   padding: 0 !important;
 }
 
-
-/* Override disabled button color */
 .mat-button[disabled],
 .mat-raised-button[disabled],
 .mat-flat-button[disabled] {
@@ -82,8 +80,6 @@ body {
   cursor: not-allowed !important;
 }
 
-
-// Shared styles
 
 .custom-dropdown-card {
   position: absolute;
@@ -126,8 +122,8 @@ body {
     }
 
     .avatar {
-      width: 28px;
-      height: 28px;
+      width: 29px;
+      height: 29px;
       border-radius: 50%;
       object-fit: cover;
       margin-right: 8px;

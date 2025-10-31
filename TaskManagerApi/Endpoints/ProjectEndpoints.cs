@@ -65,6 +65,10 @@ public static class ProjectEndpoints
         group.MapDelete("/{projectId}", async (string projectId, DynamoProjectService service) =>
             (await service.DeleteProjectAsync(projectId)).ToHttpResult());
 
+
+        group.MapGet("/notifications", async (NotificationService service, IUser user) =>
+            await service.GetAllUnread(user.Id));
+
         return app;
     }
 }

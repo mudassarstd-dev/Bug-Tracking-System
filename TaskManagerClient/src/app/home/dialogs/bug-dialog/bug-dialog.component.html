@@ -1,6 +1,5 @@
 <form [formGroup]="bugForm" (ngSubmit)="save()" class="bug-dialog">
 
-    <!-- Top Bar -->
     <div class="dialog-topbar">
         <div class="close-bg">
             <button mat-icon-button class="close-btn" (click)="close()">
@@ -9,13 +8,12 @@
         </div>
     </div>
 
-    <!-- Title -->
     <div class="dialog-title">Add New Bug</div>
     <hr class="divider" />
 
     <!-- Assignees + Due Date Row -->
     <div class="assign-due-row-bug">
-        <!-- Assignees -->
+        
         <div class="assignees-section">
             <span class="label">Assign To</span>
 
@@ -117,17 +115,12 @@
             <img src="assets/icons/calendar.png" alt="calendar" width="32" height="32" class="calendar-icon"
                 (click)="openDatePicker()">
 
-
-
-            <!-- Selected date text -->
             <span class="selected-date" *ngIf="bugForm.get('dueDate')?.value">
                 {{ bugForm.get('dueDate')?.value | date: 'mediumDate' }}
             </span>
 
-            <!-- Hidden input linked to datepicker -->
             <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dueDate" hidden />
 
-            <!-- Actual datepicker -->
             <mat-datepicker #picker (closed)="onDatePicked(picker._selected)"></mat-datepicker>
         </div>
     </div>
@@ -139,7 +132,6 @@
     <!-- <mat-calendar></mat-calendar> -->
 
 
-    <!-- Bug Title Input -->
     <div class="bug-title-input-bug">
         <input matInput formControlName="title" placeholder="Add title here" />
         <mat-error *ngIf="bugForm.get('title')?.touched && bugForm.get('title')?.invalid">

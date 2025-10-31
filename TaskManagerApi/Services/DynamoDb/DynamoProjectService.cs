@@ -14,13 +14,15 @@ public class DynamoProjectService
     private readonly IUser _user;
     private readonly DynamoUserService _userService;
     private readonly EmailService _emailService;
+    private readonly NotificationService _notificationService;
 
-    public DynamoProjectService(IDynamoDBContext context, IUser user, DynamoUserService userService, EmailService emailService)
+    public DynamoProjectService(IDynamoDBContext context, IUser user, DynamoUserService userService, EmailService emailService, NotificationService notificationService)
     {
         _context = context;
         _user = user;
         _userService = userService;
         _emailService = emailService;
+        _notificationService = notificationService;
     }
     public async Task<ApiResponse<Project>> CreateProjectAsync(CreateProjectDto dto)
     {
@@ -91,6 +93,16 @@ public class DynamoProjectService
             });
         }
 
+        var notification = new Notification
+        {
+            UserId = _user.Id,
+            Text = "Project created",
+            NotificationType = NotificationType.Project_Created,
+            UnreadIndexKey = _user.Id
+        };
+
+        await _notificationService.Save(notification);
+        
         return ApiResponse<Project>.Ok(project, "Project created successfully");
     }
 
@@ -127,90 +139,19 @@ public class DynamoProjectService
     //     return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
     // }
 
-    // public async Task<ApiResponse<List<ProjectDto>>> GetAllAsync()
-    // {
-    //     var projectDtos = new List<ProjectDto>();
-
-    //     List<Project> projects = new();
-
-    //     if (isManager())
-    //     {
-    //         var query = _context.QueryAsync<Project>(
-    //             _user.Id,
-    //             new QueryConfig { IndexName = "ManagerIdIndex" }
-    //         );
-    //         projects = await query.GetRemainingAsync();
-    //     }
-    //     else if (IsQaOrDev())
-    //     {
-    //         var assignedQuery = _context.QueryAsync<ProjectAssignment>(
-    //             _user.Id,
-    //             new QueryConfig { IndexName = "UserIdIndex" }
-    //         );
-    //         var assignments = await assignedQuery.GetRemainingAsync();
-    //         var assignedProjectIds = assignments.Select(a => a.ProjectId).ToList();
-
-    //         if (assignedProjectIds.Count > 0)
-    //         {
-    //             var batch = _context.CreateBatchGet<Project>();
-    //             foreach (var pid in assignedProjectIds)
-    //                 batch.AddKey(pid);
-
-    //             await batch.ExecuteAsync();
-    //             projects = batch.Results;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
-    //         projects = await scan.GetRemainingAsync();
-    //     }
-
-    //     foreach (var project in projects)
-    //     {
-    //         int totalTasks = 0;
-    //         int completedTasks = 0;
-
-    //         var bugQuery = _context.QueryAsync<Bug>(
-    //             project.Id,
-    //             new QueryConfig { IndexName = "ProjectId-index" }
-    //         );
-
-    //         var bugs = await bugQuery.GetRemainingAsync();
-
-    //         if (bugs.Any())
-    //         {
-    //             totalTasks = bugs.Count;
-    //             completedTasks = bugs.Count(b => b.Status == BugStatus.Resolved);
-    //         }
-
-    //         var dto = new ProjectDto(
-    //             id: project.Id,
-    //             name: project.Name,
-    //             description: project.Description,
-    //             logoUrl: string.IsNullOrWhiteSpace(project.ImagePath)
-    //                 ? null
-    //                 : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}",
-    //             totalTasks: totalTasks,
-    //             completedTasks: completedTasks
-    //         );
-
-    //         projectDtos.Add(dto);
-    //     }
-
-    //     return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
-    // }
-
-
     public async Task<ApiResponse<List<ProjectDto>>> GetAllAsync()
     {
         var projectDtos = new List<ProjectDto>();
+
         List<Project> projects = new();
 
         if (isManager())
         {
-            var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
-            projects = await scan.GetRemainingAsync();
+            var query = _context.QueryAsync<Project>(
+                _user.Id,
+                new QueryConfig { IndexName = "ManagerIdIndex" }
+            );
+            projects = await query.GetRemainingAsync();
         }
         else if (IsQaOrDev())
         {
@@ -255,19 +196,17 @@ public class DynamoProjectService
                 completedTasks = bugs.Count(b => b.Status == BugStatus.Resolved);
             }
 
-            bool canEdit = isManager() && project.ManagerId == _user.Id;
-
             var dto = new ProjectDto(
                 id: project.Id,
                 name: project.Name,
                 description: project.Description,
-                createdAt: project.CreatedAt,
                 logoUrl: string.IsNullOrWhiteSpace(project.ImagePath)
                     ? null
                     : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}",
                 totalTasks: totalTasks,
                 completedTasks: completedTasks,
-                canEdit: canEdit
+                canEdit: true,
+                createdAt: project.CreatedAt
             );
 
             projectDtos.Add(dto);
@@ -275,6 +214,81 @@ public class DynamoProjectService
 
         return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
     }
+
+
+    // public async Task<ApiResponse<List<ProjectDto>>> GetAllAsync()
+    // {
+    //     var projectDtos = new List<ProjectDto>();
+    //     List<Project> projects = new();
+
+    //     if (isManager())
+    //     {
+    //         var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
+    //         projects = await scan.GetRemainingAsync();
+    //     }
+    //     else if (IsQaOrDev())
+    //     {
+    //         var assignedQuery = _context.QueryAsync<ProjectAssignment>(
+    //             _user.Id,
+    //             new QueryConfig { IndexName = "UserIdIndex" }
+    //         );
+    //         var assignments = await assignedQuery.GetRemainingAsync();
+    //         var assignedProjectIds = assignments.Select(a => a.ProjectId).ToList();
+
+    //         if (assignedProjectIds.Count > 0)
+    //         {
+    //             var batch = _context.CreateBatchGet<Project>();
+    //             foreach (var pid in assignedProjectIds)
+    //                 batch.AddKey(pid);
+
+    //             await batch.ExecuteAsync();
+    //             projects = batch.Results;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         var scan = _context.ScanAsync<Project>(new List<ScanCondition>());
+    //         projects = await scan.GetRemainingAsync();
+    //     }
+
+    //     foreach (var project in projects)
+    //     {
+    //         int totalTasks = 0;
+    //         int completedTasks = 0;
+
+    //         var bugQuery = _context.QueryAsync<Bug>(
+    //             project.Id,
+    //             new QueryConfig { IndexName = "ProjectId-index" }
+    //         );
+
+    //         var bugs = await bugQuery.GetRemainingAsync();
+
+    //         if (bugs.Any())
+    //         {
+    //             totalTasks = bugs.Count;
+    //             completedTasks = bugs.Count(b => b.Status == BugStatus.Resolved);
+    //         }
+
+    //         bool canEdit = isManager() && project.ManagerId == _user.Id;
+
+    //         var dto = new ProjectDto(
+    //             id: project.Id,
+    //             name: project.Name,
+    //             description: project.Description,
+    //             createdAt: project.CreatedAt,
+    //             logoUrl: string.IsNullOrWhiteSpace(project.ImagePath)
+    //                 ? null
+    //                 : $"http://localhost:5153/uploads/{Path.GetFileName(project.ImagePath)}",
+    //             totalTasks: totalTasks,
+    //             completedTasks: completedTasks,
+    //             canEdit: canEdit
+    //         );
+
+    //         projectDtos.Add(dto);
+    //     }
+
+    //     return ApiResponse<List<ProjectDto>>.Ok(projectDtos);
+    // }
 
 
     // ONLY MANAGER

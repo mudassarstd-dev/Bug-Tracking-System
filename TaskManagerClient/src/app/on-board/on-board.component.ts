@@ -10,29 +10,33 @@ export class OnBoardComponent implements OnInit {
 
   constructor(private router: Router) { }
 
- cards = [
+  cards = [
     {
       icon: 'group',
       title: 'Manager',
-      description: 'Work seamlessly with your team in real-time.',
+      description: 'Signup as a manager to manage the tasks and bugs',
       hover: false,
     },
     {
       icon: 'check_circle',
       title: 'Developer',
-      description: 'Keep track of every task and deadline efficiently.',
+      description: 'Signup as a Developer to assign the relevant task to QA.',
       hover: false,
     },
     {
       icon: 'insights',
       title: 'QA',
-      description: 'Visualize your achievements and performance.',
+      description: 'Signup as a QA to create the bugs and report in tasks.',
       hover: false,
     },
   ];
 
   ngOnInit(): void {
     localStorage.removeItem("onboard-selected-role")
+
+    console.log(window.innerWidth);  // e.g., 1440
+    console.log(window.innerHeight); // e.g., 900
+
   }
 
   navToLogin() {

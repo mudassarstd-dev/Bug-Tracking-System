@@ -54,11 +54,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ManagerOnly", policy => policy.RequireRole("Manager"));
 });
 
-
 builder.Services.AddScoped<DynamoAuthService>();
 builder.Services.AddScoped<DynamoProjectService>();
 builder.Services.AddScoped<DynamoUserService>();
 builder.Services.AddScoped<DynamoBugService>();
+builder.Services.AddScoped<NotificationService>();
 
 // var awsRegion = Amazon.RegionEndpoint.EUNorth1;
 // var awsAccessKey = builder.Configuration["AWS:AccessKey"];

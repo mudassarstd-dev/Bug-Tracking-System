@@ -56,36 +56,9 @@
     .subnav-right {
         display: flex;
         align-items: center;
-        /* vertically center search + button */
         gap: 16px;
         height: 100%;
 
-        // .search-field {
-        //     width: 240px;
-
-        //     ::ng-deep .mat-mdc-form-field-outline {
-        //         border-radius: 20px;
-        //     }
-
-        //     input {
-        //         padding-left: 8px;
-        //     }
-
-        //     .mat-mdc-form-field-flex {
-        //         height: 40px;
-        //         /* matches button height visually */
-        //         align-items: center;
-        //     }
-        // }
-
-        // button[mat-flat-button] {
-        //     border-radius: 20px;
-        //     padding: 0 16px;
-        //     display: flex;
-        //     align-items: center;
-        //     gap: 4px;
-        //     height: 40px;
-        // }
     }
 }
 
@@ -127,24 +100,25 @@ button[mat-flat-button] {
     .icon-section {
         display: flex;
         align-items: center;
+
+        .sort-filter {
+            margin-right: -4px;
+        }
     }
 
     mat-form-field {
         margin-top: 20px;
+        
     }
 
-    // .right-section button {
-    //     display: flex;
-    //     align-items: center;
-    //     gap: 4px;
-    // }
+    
+
 
 }
 
 .table-wrap {
     overflow-x: auto;
     border: 1px solid #e5e7eb;
-    /* outer border */
     border-radius: 6px;
 }
 
@@ -184,7 +158,6 @@ button[mat-flat-button] {
     background-color: #d1d5db;
 }
 
-/* Header bottom border */
 .header-row .custom-header {
     border-bottom: 1px solid #e5e7eb;
 }
@@ -290,8 +263,8 @@ button[mat-flat-button] {
 }
 
 .avatar-stack .avatar {
-    width: 28px;
-    height: 28px;
+    width: 25.45px;
+    height: 25.45px;
     border-radius: 50%;
     border: 2px solid #fff;
     object-fit: cover;
@@ -450,9 +423,8 @@ button[mat-flat-button] {
 .grid-view {
     display: grid;
     // grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-
+    background: #fff;
     grid-template-columns: repeat(3, 1fr);
-    /* exactly 3 columns */
     width: 100%;
     gap: 16px;
     justify-content: space-between;
@@ -460,15 +432,14 @@ button[mat-flat-button] {
 }
 
 .bug-card {
-    // width: 370px;
     height: 300px;
-    // flex: 1 1 calc(33.333% - 24px);
-    /* 3 cards per row with spacing */
     background-color: #F7FAFC;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+    margin-bottom: 8px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
 
     mat-card-header {
         display: flex;
@@ -532,7 +503,7 @@ button[mat-flat-button] {
             }
 
             .value {
-                font-size: 15px;
+                font-size: 14px;
                 font-weight: 400;
                 font-family: 'Poppins', sans-serif;
             }
@@ -565,7 +536,7 @@ button[mat-flat-button] {
 }
 
 .icon-section {
-    margin-right: 12px;
+    margin-right: 0px;
 
     .space-between {
         margin-right: 8px;
@@ -589,7 +560,7 @@ button[mat-flat-button] {
     overflow-x: hidden;
     padding-right: 4px;
     scroll-behavior: smooth;
-    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+    // box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .scroll-container::-webkit-scrollbar {
