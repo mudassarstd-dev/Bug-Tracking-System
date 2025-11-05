@@ -96,7 +96,7 @@ export class ProjectDashboardComponent implements OnInit {
   }
 
   openProjectDialog(project?: any) {
-    const dialogRef = this.dialog.open(ProjectDialogComponent, { data: { project } });
+    const dialogRef = this.dialog.open(ProjectDialogComponent, { maxWidth: '823px', data: { project } });
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return;

@@ -29,7 +29,7 @@
         <mat-card class="onboard-card" *ngFor="let item of cards" (mouseenter)="item.hover = true"
           (mouseleave)="item.hover = false" [class.hovered]="item.hover" (click)="navToRegister(item.title)">
           <div class="card-content">
-            <mat-icon color="primary">{{ item.icon }}</mat-icon>
+            <mat-icon color="primary" class="prefix-icon">{{ item.icon }}</mat-icon>
 
             <div class="card-text">
               <h3>{{ item.title }}</h3>

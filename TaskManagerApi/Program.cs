@@ -29,10 +29,8 @@ builder.Services.AddCors();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);  // Encodes the JWT secret key string to a byte array
-
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -80,7 +78,6 @@ builder.Services.AddSingleton<IAmazonDynamoDB>(sp =>
 
     return new AmazonDynamoDBClient("FakeId", "FakeSecretKey", config);
 });
-
 
 
 builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
